@@ -57,8 +57,8 @@ traditional Bengali toys.
 - **4 Dhaka-Themed Teams** - Lalbagh Rickshaw (Red),
   Dhanmondi CNG (Green), Sonargaon Tiger (Yellow), and
   Buriganga Launch (Blue), each with unique sound effects
-- **3 Game Modes** - 1P vs AI, 2P Local, and 4P Local
-  multiplayer
+- **4 Game Modes** - 1P vs AI, 2P Local, 4P Local,
+  and Online 2P (peer-to-peer via WebRTC)
 - **Smart AI Opponent** - Heuristic-based AI that
   prioritizes captures, safe squares, and home stretches
 - **Procedural Audio Engine** - Real-time Tone.js
@@ -90,6 +90,9 @@ traditional Bengali toys.
   interface, dialogues, and toast notifications
 - **Mobile Responsive** - Touch-optimized with adaptive UI
   for phones and tablets
+- **Online Multiplayer** - Peer-to-peer via PeerJS/WebRTC
+  DataChannels, no backend server needed. Share a 6-character
+  room code via WhatsApp or Messenger to connect
 - **Google Analytics** - Integrated page-level tracking
 
 ---
@@ -101,6 +104,7 @@ traditional Bengali toys.
 | Language      | HTML, CSS, JavaScript (Vanilla)     |
 | 3D Engine     | Three.js r128                       |
 | Audio Engine  | Tone.js 14.8                        |
+| P2P Network   | PeerJS 1.5 (WebRTC DataChannels)    |
 | CSS Framework | Tailwind CSS (CDN)                  |
 | Fonts         | Google Fonts (Cinzel, Inter, Rozha) |
 | Icons         | Material Symbols Rounded            |
@@ -151,9 +155,25 @@ traditional Bengali toys.
 ### Starting a Match
 
 1. **Select Game Mode** - Choose between 1P vs AI,
-   2P Local, or 4P Local
+   2P Local, 4P Local, or Online 2P
 2. **Choose Your Team** - Pick from the four Dhaka teams
 3. **Press START** to begin
+
+### Online Multiplayer
+
+1. Select **🌐 Online** from the game mode selector
+2. **Create Room** - A 6-character room code is generated.
+   Share it with your friend via WhatsApp, Messenger, or
+   any chat app
+3. **Join Room** - Your friend pastes the code and clicks
+   Connect
+4. Once connected, the host clicks **START ONLINE MATCH**
+5. The game syncs dice rolls, piece moves, and Dhaka Twist
+   events in real-time over a direct WebRTC DataChannel
+
+> **Note:** Both players must have internet access for the
+> initial WebRTC handshake. After connecting, game data
+> flows directly between browsers with no server.
 
 ### Rules
 
@@ -298,7 +318,6 @@ Contributions are welcome! Here are some ways to help:
 
 ### Ideas for Contributions
 
-- Online multiplayer support (WebSocket/WebRTC)
 - Additional Dhaka Twist events
 - More FPS-mode interactable vendors and items
 - Performance optimizations for mobile devices
