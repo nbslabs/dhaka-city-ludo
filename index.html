@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="en" class="dark">
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RH8XMH0PXE"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-RH8XMH0PXE');
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Dhaka City 3D Ludo — Chhad Rooftop Edition</title>
@@ -107,22 +116,20 @@
         }
         @keyframes discoGlitter {
             0%, 100% {
-                background-position: 0% 50%, 0 0, 0 0;
-                box-shadow: 0 0 18px rgba(236, 72, 153, 0.75), 0 0 34px rgba(56, 189, 248, 0.55), inset 0 0 14px rgba(255, 255, 255, 0.85);
+                filter: hue-rotate(0deg) brightness(1);
             }
             50% {
-                background-position: 100% 50%, 12px 12px, -12px 12px;
-                box-shadow: 0 0 26px rgba(250, 204, 21, 0.95), 0 0 48px rgba(168, 85, 247, 0.85), inset 0 0 20px rgba(255, 255, 255, 1);
+                filter: hue-rotate(90deg) brightness(1.2);
             }
         }
         .disco-sphere-btn {
             background-image:
                 radial-gradient(circle at 30% 28%, rgba(255, 255, 255, 0.98) 0%, rgba(226, 232, 240, 0.65) 22%, rgba(236, 72, 153, 0.6) 52%, rgba(30, 27, 75, 0.95) 100%),
-                repeating-linear-gradient(0deg, rgba(255,255,255,0.28) 0px, rgba(255,255,255,0.28) 4px, transparent 4px, transparent 8px),
-                repeating-linear-gradient(90deg, rgba(255,255,255,0.28) 0px, rgba(255,255,255,0.28) 4px, transparent 4px, transparent 8px);
-            background-size: 160% 160%, 8px 8px, 8px 8px;
-            background-blend-mode: normal, overlay, overlay;
-            animation: discoGlitter 2.6s infinite ease-in-out;
+                repeating-linear-gradient(0deg, rgba(255,255,255,0.25) 0px, rgba(255,255,255,0.25) 4px, transparent 4px, transparent 8px),
+                repeating-linear-gradient(90deg, rgba(255,255,255,0.25) 0px, rgba(255,255,255,0.25) 4px, transparent 4px, transparent 8px);
+            box-shadow: 0 0 18px rgba(236, 72, 153, 0.7), inset 0 0 12px rgba(255, 255, 255, 0.8);
+            will-change: transform, filter;
+            animation: discoGlitter 3s infinite ease-in-out;
             transition: transform 0.25s cubic-bezier(0.2, 0, 0, 1);
         }
         .disco-sphere-btn:hover {
@@ -132,7 +139,7 @@
             transform: scale(0.95);
         }
         .disco-sphere-btn.disco-active {
-            animation: discoGlitter 0.45s infinite linear;
+            animation: discoGlitter 0.8s infinite linear;
             border-color: #fde047;
         }
         /* Minimal Artisanal 2D Die Styling */
@@ -1082,7 +1089,7 @@
                 cssBorder: 'border-rose-500',
                 startOffset: 0,
                 baseCoords: [[-4.5, 4.5], [-2.5, 4.5], [-4.5, 2.5], [-2.5, 2.5]],
-                homeStretch: [[-6, 0], [-5, 0], [-4, 0], [-3, 0], [-2, 0], [-1, 0]]
+                homeStretch: [[0, 6], [0, 5], [0, 4], [0, 3], [0, 2], [0, 1]]
             },
             {
                 id: 1,
@@ -1094,7 +1101,7 @@
                 cssBorder: 'border-emerald-500',
                 startOffset: 13,
                 baseCoords: [[-4.5, -4.5], [-2.5, -4.5], [-4.5, -2.5], [-2.5, -2.5]],
-                homeStretch: [[0, -6], [0, -5], [0, -4], [0, -3], [0, -2], [0, -1]]
+                homeStretch: [[-6, 0], [-5, 0], [-4, 0], [-3, 0], [-2, 0], [-1, 0]]
             },
             {
                 id: 2,
@@ -1106,7 +1113,7 @@
                 cssBorder: 'border-amber-400',
                 startOffset: 26,
                 baseCoords: [[2.5, -4.5], [4.5, -4.5], [2.5, -2.5], [4.5, -2.5]],
-                homeStretch: [[6, 0], [5, 0], [4, 0], [3, 0], [2, 0], [1, 0]]
+                homeStretch: [[0, -6], [0, -5], [0, -4], [0, -3], [0, -2], [0, -1]]
             },
             {
                 id: 3,
@@ -1118,30 +1125,34 @@
                 cssBorder: 'border-sky-500',
                 startOffset: 39,
                 baseCoords: [[2.5, 2.5], [4.5, 2.5], [2.5, 4.5], [4.5, 4.5]],
-                homeStretch: [[0, 6], [0, 5], [0, 4], [0, 3], [0, 2], [0, 1]]
+                homeStretch: [[6, 0], [5, 0], [4, 0], [3, 0], [2, 0], [1, 0]]
             }
         ];
 
         // 52-tile clockwise perimeter track on the 15x15 grid (-7 to +7)
+        // Each team starts on the arm to the right of its corner yard and enters that same arm's home stretch:
+        // Red (0, Bottom-Left) -> [-1, 6] | Green (1, Top-Left) -> [-6, -1] | Yellow (2, Top-Right) -> [1, -6] | Blue (3, Bottom-Right) -> [6, 1]
         const MAIN_TRACK = [
-            // Red bottom-left arm going right then up
-            [-6, -1], [-5, -1], [-4, -1], [-3, -1], [-2, -1],
-            // Up into top-left Green arm
-            [-1, -2], [-1, -3], [-1, -4], [-1, -5], [-1, -6], [-1, -7],
-            [0, -7],
-            [1, -7], [1, -6], [1, -5], [1, -4], [1, -3], [1, -2],
-            // Right into top-right Yellow arm
-            [2, -1], [3, -1], [4, -1], [5, -1], [6, -1], [7, -1],
-            [7, 0],
-            [7, 1], [6, 1], [5, 1], [4, 1], [3, 1], [2, 1],
-            // Down into bottom-right Blue arm
-            [1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7],
-            [0, 7],
-            [-1, 7], [-1, 6], [-1, 5], [-1, 4], [-1, 3], [-1, 2],
-            // Left into bottom-left Red arm
+            // Bottom arm going up from Red's start square [-1, 6], then turning left into Left arm
+            [-1, 6], [-1, 5], [-1, 4], [-1, 3], [-1, 2],
             [-2, 1], [-3, 1], [-4, 1], [-5, 1], [-6, 1], [-7, 1],
             [-7, 0],
-            [-7, -1]
+            [-7, -1],
+            // Left arm going right from Green's start square [-6, -1], then turning up into Top arm
+            [-6, -1], [-5, -1], [-4, -1], [-3, -1], [-2, -1],
+            [-1, -2], [-1, -3], [-1, -4], [-1, -5], [-1, -6], [-1, -7],
+            [0, -7],
+            [1, -7],
+            // Top arm going down from Yellow's start square [1, -6], then turning right into Right arm
+            [1, -6], [1, -5], [1, -4], [1, -3], [1, -2],
+            [2, -1], [3, -1], [4, -1], [5, -1], [6, -1], [7, -1],
+            [7, 0],
+            [7, 1],
+            // Right arm going left from Blue's start square [6, 1], then turning down into Bottom arm
+            [6, 1], [5, 1], [4, 1], [3, 1], [2, 1],
+            [1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7],
+            [0, 7],
+            [-1, 7]
         ];
 
         // Safe star indices on the 52-tile perimeter
@@ -1153,14 +1164,14 @@
         const container = document.getElementById('canvas-container');
         const scene = new THREE.Scene();
         scene.background = new THREE.Color(0x1a1025);
-        scene.fog = new THREE.FogExp2(0x1a1025, 0.0042);
+        scene.fog = new THREE.FogExp2(0x1a1025, 0.0032);
 
         const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 220);
         const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
         renderer.shadowMap.enabled = true;
-        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        renderer.shadowMap.type = THREE.PCFShadowMap;
         container.appendChild(renderer.domElement);
 
         // Orbit Camera State
@@ -1192,8 +1203,8 @@
         const mainSpot = new THREE.DirectionalLight(0xffdba8, 1.25);
         mainSpot.position.set(16, 28, 14);
         mainSpot.castShadow = true;
-        mainSpot.shadow.mapSize.width = 2048;
-        mainSpot.shadow.mapSize.height = 2048;
+        mainSpot.shadow.mapSize.width = 1024;
+        mainSpot.shadow.mapSize.height = 1024;
         mainSpot.shadow.camera.near = 5;
         mainSpot.shadow.camera.far = 75;
         const d = 14;
@@ -1328,32 +1339,29 @@
             rig.visible = false;
 
             const cable = new THREE.Mesh(
-                new THREE.CylinderGeometry(0.05, 0.05, 8, 8),
+                new THREE.CylinderGeometry(0.05, 0.05, 8, 6),
                 new THREE.MeshBasicMaterial({ color: 0x94a3b8 })
             );
             cable.position.y = 4.0;
             rig.add(cable);
 
-            const ballGeo = new THREE.SphereGeometry(1.45, 24, 18);
-            const ballMat = new THREE.MeshStandardMaterial({
+            const ballGeo = new THREE.SphereGeometry(1.45, 14, 10);
+            const ballMat = new THREE.MeshLambertMaterial({
                 color: 0xffffff,
                 emissive: 0x94a3b8,
-                emissiveIntensity: 0.45,
-                roughness: 0.08,
-                metalness: 0.96,
                 flatShading: true
             });
             const ballMesh = new THREE.Mesh(ballGeo, ballMat);
             rig.add(ballMesh);
 
             const cageMesh = new THREE.Mesh(
-                new THREE.SphereGeometry(1.48, 16, 12),
+                new THREE.SphereGeometry(1.48, 10, 8),
                 new THREE.MeshBasicMaterial({ color: 0xfef08a, wireframe: true, transparent: true, opacity: 0.65 })
             );
             ballMesh.add(cageMesh);
 
             const beamColors = [0xf43f5e, 0x38bdf8, 0xfacc15, 0x10b981, 0xa855f7, 0xec4899];
-            const beamGeo = new THREE.ConeGeometry(4.2, 14.5, 16, 1, true);
+            const beamGeo = new THREE.ConeGeometry(4.2, 14.5, 10, 1, true);
             beamGeo.translate(0, -7.25, 0);
 
             discoState.beamCones = [];
@@ -1375,14 +1383,6 @@
                 pivot.add(cone);
                 rig.add(pivot);
                 discoState.beamCones.push({ pivot, cone, mat: beamMat, baseColor: colHex });
-            });
-
-            [0xff007f, 0x00f0ff, 0xffe600, 0x9d00ff].forEach((lCol, idx) => {
-                const pLight = new THREE.PointLight(lCol, 0, 28);
-                const a = (idx / 4) * Math.PI * 2;
-                pLight.position.set(Math.cos(a) * 6, -3.5, Math.sin(a) * 6);
-                rig.add(pLight);
-                discoState.spotLights.push(pLight);
             });
 
             scene.add(rig);
@@ -1431,11 +1431,9 @@
                     id: 0,
                     primary: 0xf43f5e,
                     secondary: 0xfde047,
-                    style: 'SAREE',
-                    // 6 Empty spots in & around Bottom-Left Red Yard / Track
+                    // 3 Cheerleaders per corner yard for smooth 60 FPS performance
                     targets: [
-                        [-3.5, 3.5], [-5.4, 3.5], [-3.5, 5.4],
-                        [-1.6, 3.5], [-3.5, 1.6], [-5.4, 5.4]
+                        [-3.5, 3.5], [-5.2, 3.5], [-3.5, 5.2]
                     ],
                     entryOrigin: [-13.5, 13.5]
                 },
@@ -1443,11 +1441,8 @@
                     id: 1,
                     primary: 0x10b981,
                     secondary: 0xfef08a,
-                    style: 'PANJABI_TOPI',
-                    // 6 Empty spots in & around Top-Left Green Yard / Track
                     targets: [
-                        [-3.5, -3.5], [-5.4, -3.5], [-3.5, -5.4],
-                        [-1.6, -3.5], [-3.5, -1.6], [-5.4, -5.4]
+                        [-3.5, -3.5], [-5.2, -3.5], [-3.5, -5.2]
                     ],
                     entryOrigin: [-13.5, -13.5]
                 },
@@ -1455,11 +1450,8 @@
                     id: 2,
                     primary: 0xf59e0b,
                     secondary: 0xffffff,
-                    style: 'SAREE',
-                    // 6 Empty spots in & around Top-Right Yellow Yard / Track
                     targets: [
-                        [3.5, -3.5], [5.4, -3.5], [3.5, -5.4],
-                        [1.6, -3.5], [3.5, -1.6], [5.4, -5.4]
+                        [3.5, -3.5], [5.2, -3.5], [3.5, -5.2]
                     ],
                     entryOrigin: [13.5, -13.5]
                 },
@@ -1467,39 +1459,24 @@
                     id: 3,
                     primary: 0x0ea5e9,
                     secondary: 0xfde047,
-                    style: 'PANJABI_TOPI',
-                    // 6 Empty spots in & around Bottom-Right Blue Yard / Track
                     targets: [
-                        [3.5, 3.5], [5.4, 3.5], [3.5, 5.4],
-                        [1.6, 3.5], [3.5, 1.6], [5.4, 5.4]
+                        [3.5, 3.5], [5.2, 3.5], [3.5, 5.2]
                     ],
                     entryOrigin: [13.5, 13.5]
                 }
             ];
 
-            const pomGeo = new THREE.DodecahedronGeometry(0.15, 1);
+            const pomGeo = new THREE.DodecahedronGeometry(0.15, 0);
 
             teamDanceConfigs.forEach((tCfg, teamIdx) => {
-                const pomMat1 = new THREE.MeshStandardMaterial({
-                    color: tCfg.secondary,
-                    emissive: tCfg.secondary,
-                    emissiveIntensity: 0.45,
-                    roughness: 0.2,
-                    metalness: 0.85
-                });
-                const pomMat2 = new THREE.MeshStandardMaterial({
-                    color: tCfg.primary,
-                    emissive: tCfg.primary,
-                    emissiveIntensity: 0.35,
-                    roughness: 0.2,
-                    metalness: 0.85
-                });
+                const pomMat1 = new THREE.MeshBasicMaterial({ color: tCfg.secondary });
+                const pomMat2 = new THREE.MeshBasicMaterial({ color: tCfg.primary });
 
                 tCfg.targets.forEach(([tx, tz], idx) => {
                     const style = idx % 2 === 0 ? 'SAREE' : 'PANJABI_TOPI';
-                    const dancer = createDeshiSpectator(style, tCfg.primary, tCfg.secondary, teamIdx * 1.7 + idx * 0.85);
+                    const dancer = createDeshiSpectator(style, tCfg.primary, tCfg.secondary, teamIdx * 1.7 + idx * 0.85, false);
 
-                    // Add glittering cheerleader pom-poms to both hands
+                    // Add lightweight cheerleader pom-poms to both hands
                     const ud = dancer.userData;
                     if (ud.leftArmPivot && ud.rightArmPivot) {
                         const leftPom = new THREE.Mesh(pomGeo, idx % 2 === 0 ? pomMat1 : pomMat2);
@@ -1511,9 +1488,8 @@
                         ud.rightArmPivot.add(rightPom);
                     }
 
-                    // Spread starting positions slightly around each corner entry
-                    const ox = tCfg.entryOrigin[0] + (idx % 3 - 1) * 1.1;
-                    const oz = tCfg.entryOrigin[1] + (Math.floor(idx / 3) - 0.5) * 1.1;
+                    const ox = tCfg.entryOrigin[0] + (idx - 1) * 1.1;
+                    const oz = tCfg.entryOrigin[1] + (idx % 2 - 0.5) * 1.1;
 
                     dancer.position.set(ox, 0.14, oz);
                     dancer.visible = false;
@@ -1721,6 +1697,18 @@
         let roamingHawkers = [];
         let crowdExcitementTimer = 0;
 
+        // Extra Dhaka Rooftop & Skyline Activity Trackers
+        let rooftopKites = [];
+        let pigeonFlock = [];
+        let bbqSmokePuffs = [];
+        let bbqFanArm = null;
+        let bbqCoalsMat = null;
+        let addaGuitarArm = null;
+        let addaMusicNotes = [];
+        let skyAirplane = null;
+        let skyFireworks = [];
+        let hatirjheelArches = [];
+
         const banglaAdScreen = {
             canvas: null,
             ctx: null,
@@ -1732,55 +1720,55 @@
                     bg1: '#7f1d1d',
                     bg2: '#be123c',
                     accent: '#fde047',
-                    brand: 'কাচ্চি ভাই • KACCHI BHAI',
+                    brand: 'নবাবী স্বাদ বিরিয়ানি • NAWABI BIRIYANI',
                     headline: 'সেরা বাসমতি কাচ্চি!',
-                    subtext: 'আজই অর্ডার করুন • ফ্রি হোম ডেলিভারি',
-                    priceTag: 'মাত্র ২৯০ টাকা!',
-                    ticker: '★ কাচ্চি ভাইয়ের স্পেশাল অফার! ধানমন্ডি, গুলশান, মিরপুর ও উত্তরা শাখায় চলছে ধামাকা ডিসকাউন্ট ★',
+                    subtext: 'বিজ্ঞাপনের জন্য আজই আমাদের সাথে যোগাযোগ করুন',
+                    priceTag: 'বিজ্ঞাপন দিন!',
+                    ticker: '★ এখানে আপনার প্রতিষ্ঠানের বিজ্ঞাপন দিন! বিজ্ঞাপনের জন্য যোগাযোগ করুন: ০১৭০০-০০০০০০ ★',
                     motif: 'BIRIYANI'
                 },
                 {
                     bg1: '#831843',
                     bg2: '#db2777',
                     accent: '#fef08a',
-                    brand: 'বিকাশ পেমেন্ট • bKash',
+                    brand: 'দ্রুত পে • DRUTO PAY (ডামি ব্র্যান্ড)',
                     headline: 'ক্যাশব্যাক উৎসব!',
-                    subtext: 'পেমেন্ট বিকাশ করলেই ২০% ইনস্ট্যান্ট ক্যাশব্যাক',
-                    priceTag: 'ডায়াল *247#',
-                    ticker: '★ বিকাশ অ্যাপ দিয়ে সেন্ড মানি, মোবাইল রিচার্জ ও বিদ্যুৎ বিল পেমেন্ট একদম সহজ ও নিরাপদ ★',
+                    subtext: 'আপনার ব্র্যান্ডের প্রচারণার জন্য সেরা ডিজিটাল স্ক্রিন',
+                    priceTag: 'যোগাযোগ করুন',
+                    ticker: '★ আপনার পণ্য বা সেবার বিজ্ঞাপনের জন্য আজই যোগাযোগ করুন — ছাদ টিভি বিজ্ঞাপন বিভাগ ★',
                     motif: 'BKASH'
                 },
                 {
                     bg1: '#064e3b',
                     bg2: '#059669',
                     accent: '#fde047',
-                    brand: 'ইস্পাহানি মির্জাপুর চা',
+                    brand: 'সবুজ পাতা চা • SHOBUJ PATA TEA',
                     headline: 'সেরা পাতার সেরা চা!',
-                    subtext: 'ছাদের লুডু আড্ডা জমে উঠুক এক কাপ গরম চায়ের সাথে',
-                    priceTag: '১ নম্বর চা',
-                    ticker: '★ ইস্পাহানি মির্জাপুর বেস্ট লিফ টি — বাংলাদেশের প্রতিটি ঘরে ও টং দোকানে সবার প্রিয় ★',
+                    subtext: 'ছাদের লুডু আড্ডা জমে উঠুক গরম চায়ের সাথে • বিজ্ঞাপনের জন্য যোগাযোগ করুন',
+                    priceTag: 'ফোন: ০১৭০০-০০০০০০',
+                    ticker: '★ এই বিলবোর্ডে আপনার প্রতিষ্ঠানের বিজ্ঞাপন দিতে আমাদের সাথে যোগাযোগ করুন ★',
                     motif: 'TEA'
                 },
                 {
                     bg1: '#0c4a6e',
                     bg2: '#0284c7',
                     accent: '#38bdf8',
-                    brand: 'ওয়ালটন • WALTON BD',
-                    headline: 'আমাদের পণ্য!',
-                    subtext: 'স্মার্ট ফ্রিজ, এসি ও এলইডি টিভিতে ১০০% পর্যন্ত ক্যাশব্যাক',
-                    priceTag: 'মেড ইন বাংলাদেশ',
-                    ticker: '★ ওয়ালটন ডিজিটাল ক্যাম্পেইন চলছে! দেশজুড়ে ওয়ালটন প্লাজায় পাচ্ছেন সহজ কিস্তি সুবিধা ★',
+                    brand: 'আলো ইলেকট্রনিক্স • ALO TECH',
+                    headline: 'স্মার্ট হোম অ্যাপ্লায়েন্স!',
+                    subtext: 'এখানে আপনার প্রতিষ্ঠানের বিজ্ঞাপন প্রদর্শনের জন্য বুকিং চলছে',
+                    priceTag: 'বুকিং চলছে',
+                    ticker: '★ বিজ্ঞাপনের জন্য যোগাযোগ করুন! আপনার ব্যবসাকে পৌঁছে দিন সবার কাছে ★',
                     motif: 'TV'
                 },
                 {
                     bg1: '#14532d',
                     bg2: '#16a34a',
                     accent: '#fef08a',
-                    brand: 'ঢাকা মেট্রোরেল • MRT-6',
-                    headline: 'যানজটমুক্ত ঢাকা!',
-                    subtext: 'উত্তরা থেকে মতিঝিল মাত্র ৩২ মিনিটে শীতাতপ নিয়ন্ত্রিত যাত্রা',
-                    priceTag: 'র‍্যাপিড পাস নিন',
-                    ticker: '★ মেট্রোরেল আমাদের জাতীয় সম্পদ — স্টেশন ও ট্রেনের ভেতর পরিষ্কার-পরিচ্ছন্নতা বজায় রাখুন ★',
+                    brand: 'ছাদ মিডিয়া • CHHAD MEDIA AD',
+                    headline: 'বিজ্ঞাপনের জন্য খালি!',
+                    subtext: 'আপনার প্রতিষ্ঠানের বিজ্ঞাপন দিতে আজই আমাদের সাথে যোগাযোগ করুন',
+                    priceTag: 'যোগাযোগ করুন',
+                    ticker: '★ বিজ্ঞাপনের জন্য যোগাযোগ করুন • ইমেইল: ads@chhadludo.bd • হটলাইন: ০১৭০০-০০০০০০ ★',
                     motif: 'METRO'
                 }
             ]
@@ -2024,95 +2012,106 @@
             return new THREE.CanvasTexture(c);
         }
 
-        function createDeshiSpectator(styleType, primaryHex, secondaryHex, phaseOffset) {
+        // Shared Geometries & Materials for Crowd Spectators & Dancers to minimize GPU draw overhead
+        const SHARED_CROWD_ASSETS = {
+            skinMat: new THREE.MeshLambertMaterial({ color: 0xc68642 }),
+            darkHairMat: new THREE.MeshLambertMaterial({ color: 0x111827 }),
+            goldTrimMat: new THREE.MeshLambertMaterial({ color: 0xfbbf24 }),
+            topiMat: new THREE.MeshLambertMaterial({ color: 0xf8fafc }),
+            whiteMat: new THREE.MeshBasicMaterial({ color: 0xffffff }),
+            redTipMat: new THREE.MeshBasicMaterial({ color: 0xe11d48 }),
+            gamchaMat: new THREE.MeshLambertMaterial({ color: 0xe11d48 }),
+            umbPoleMat: new THREE.MeshLambertMaterial({ color: 0xe2e8f0 }),
+            umbHandleMat: new THREE.MeshLambertMaterial({ color: 0x451a03 }),
+            lowerGeo: new THREE.CylinderGeometry(0.22, 0.27, 0.58, 8),
+            hemGeo: new THREE.CylinderGeometry(0.272, 0.275, 0.07, 8),
+            torsoGeo: new THREE.CylinderGeometry(0.24, 0.22, 0.6, 8),
+            headGeo: new THREE.SphereGeometry(0.21, 10, 8),
+            eyeGeo: new THREE.SphereGeometry(0.025, 6, 6),
+            topiGeo: new THREE.CylinderGeometry(0.19, 0.21, 0.13, 8),
+            placketGeo: new THREE.BoxGeometry(0.06, 0.26, 0.03),
+            hairCapGeo: new THREE.SphereGeometry(0.215, 8, 8, 0, Math.PI * 2, 0, Math.PI * 0.6),
+            hairBunGeo: new THREE.SphereGeometry(0.12, 8, 6),
+            beliRingGeo: new THREE.TorusGeometry(0.11, 0.025, 6, 10),
+            tipGeo: new THREE.SphereGeometry(0.02, 6, 6),
+            anchalGeo: new THREE.BoxGeometry(0.16, 0.62, 0.46),
+            gamchaGeo: new THREE.TorusGeometry(0.21, 0.045, 6, 10),
+            armGeo: new THREE.CylinderGeometry(0.06, 0.05, 0.48, 6),
+            handGeo: new THREE.SphereGeometry(0.06, 6, 6),
+            umbPoleGeo: new THREE.CylinderGeometry(0.016, 0.016, 0.92, 6),
+            umbHandleGeo: new THREE.TorusGeometry(0.045, 0.015, 6, 8, Math.PI),
+            umbCanopyGeo: new THREE.ConeGeometry(0.68, 0.28, 8, 1, true),
+            umbRimGeo: new THREE.TorusGeometry(0.67, 0.014, 6, 8),
+            umbTipGeo: new THREE.ConeGeometry(0.028, 0.1, 6)
+        };
+
+        function createDeshiSpectator(styleType, primaryHex, secondaryHex, phaseOffset, withUmbrella = true) {
             const person = new THREE.Group();
             const bodyPivot = new THREE.Group();
             person.add(bodyPivot);
 
-            const skinMat = new THREE.MeshStandardMaterial({ color: 0xc68642, roughness: 0.55 });
-            const darkHairMat = new THREE.MeshStandardMaterial({ color: 0x111827, roughness: 0.8 });
-            const clothMat = new THREE.MeshStandardMaterial({ color: primaryHex, roughness: 0.5 });
-            const accentMat = new THREE.MeshStandardMaterial({ color: secondaryHex, roughness: 0.45 });
-            const goldTrimMat = new THREE.MeshStandardMaterial({ color: 0xfbbf24, metalness: 0.7, roughness: 0.3 });
+            const clothMat = new THREE.MeshLambertMaterial({ color: primaryHex });
+            const accentMat = new THREE.MeshLambertMaterial({ color: secondaryHex });
 
             // Lower garment (Lungi / Saree skirt / Pajama)
-            const lowerMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.27, 0.58, 12), accentMat);
+            const lowerMesh = new THREE.Mesh(SHARED_CROWD_ASSETS.lowerGeo, accentMat);
             lowerMesh.position.y = 0.29;
-            lowerMesh.castShadow = true;
             bodyPivot.add(lowerMesh);
 
             // Decorative border at bottom of Lungi/Saree
-            const hemRing = new THREE.Mesh(new THREE.CylinderGeometry(0.272, 0.275, 0.07, 12), goldTrimMat);
+            const hemRing = new THREE.Mesh(SHARED_CROWD_ASSETS.hemGeo, SHARED_CROWD_ASSETS.goldTrimMat);
             hemRing.position.y = 0.06;
             bodyPivot.add(hemRing);
 
             // Torso (Panjabi / Kameez / Blouse)
-            const torsoMesh = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.22, 0.6, 12), clothMat);
+            const torsoMesh = new THREE.Mesh(SHARED_CROWD_ASSETS.torsoGeo, clothMat);
             torsoMesh.position.y = 0.8;
-            torsoMesh.castShadow = true;
             bodyPivot.add(torsoMesh);
 
             // Head & facial details
-            const headMesh = new THREE.Mesh(new THREE.SphereGeometry(0.21, 14, 14), skinMat);
+            const headMesh = new THREE.Mesh(SHARED_CROWD_ASSETS.headGeo, SHARED_CROWD_ASSETS.skinMat);
             headMesh.position.y = 1.26;
-            headMesh.castShadow = true;
             bodyPivot.add(headMesh);
 
             // Eyes
-            const eyeGeo = new THREE.SphereGeometry(0.025, 8, 8);
             [-0.07, 0.07].forEach(ex => {
-                const eye = new THREE.Mesh(eyeGeo, darkHairMat);
+                const eye = new THREE.Mesh(SHARED_CROWD_ASSETS.eyeGeo, SHARED_CROWD_ASSETS.darkHairMat);
                 eye.position.set(ex, 1.28, 0.18);
                 bodyPivot.add(eye);
             });
 
             if (styleType === 'PANJABI_TOPI') {
-                // White prayer Topi cap + collar placket
-                const topi = new THREE.Mesh(
-                    new THREE.CylinderGeometry(0.19, 0.21, 0.13, 14),
-                    new THREE.MeshStandardMaterial({ color: 0xf8fafc, roughness: 0.35 })
-                );
+                const topi = new THREE.Mesh(SHARED_CROWD_ASSETS.topiGeo, SHARED_CROWD_ASSETS.topiMat);
                 topi.position.y = 1.42;
                 bodyPivot.add(topi);
 
-                const placket = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.26, 0.03), goldTrimMat);
+                const placket = new THREE.Mesh(SHARED_CROWD_ASSETS.placketGeo, SHARED_CROWD_ASSETS.goldTrimMat);
                 placket.position.set(0, 0.92, 0.22);
                 bodyPivot.add(placket);
             } else if (styleType === 'SAREE') {
-                // Saree Anchals/Pallu drape + Khopa hair bun + Beli flower garland + red Tip
-                const hairCap = new THREE.Mesh(new THREE.SphereGeometry(0.215, 12, 12, 0, Math.PI * 2, 0, Math.PI * 0.6), darkHairMat);
+                const hairCap = new THREE.Mesh(SHARED_CROWD_ASSETS.hairCapGeo, SHARED_CROWD_ASSETS.darkHairMat);
                 hairCap.position.y = 1.27;
                 hairCap.rotation.x = -0.25;
                 bodyPivot.add(hairCap);
 
-                const hairBun = new THREE.Mesh(new THREE.SphereGeometry(0.12, 10, 10), darkHairMat);
+                const hairBun = new THREE.Mesh(SHARED_CROWD_ASSETS.hairBunGeo, SHARED_CROWD_ASSETS.darkHairMat);
                 hairBun.position.set(0, 1.25, -0.21);
                 bodyPivot.add(hairBun);
 
-                // Beli ফুলের মালা (white flower ring around bun)
-                const beliRing = new THREE.Mesh(
-                    new THREE.TorusGeometry(0.11, 0.025, 8, 14),
-                    new THREE.MeshBasicMaterial({ color: 0xffffff })
-                );
+                const beliRing = new THREE.Mesh(SHARED_CROWD_ASSETS.beliRingGeo, SHARED_CROWD_ASSETS.whiteMat);
                 beliRing.position.set(0, 1.25, -0.18);
                 bodyPivot.add(beliRing);
 
-                // Red Bindi / Tip on forehead
-                const tip = new THREE.Mesh(new THREE.SphereGeometry(0.02, 8, 8), new THREE.MeshBasicMaterial({ color: 0xe11d48 }));
+                const tip = new THREE.Mesh(SHARED_CROWD_ASSETS.tipGeo, SHARED_CROWD_ASSETS.redTipMat);
                 tip.position.set(0, 1.32, 0.2);
                 bodyPivot.add(tip);
 
-                // Diagonal Saree Anchal sash
-                const anchal = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.62, 0.46), accentMat);
+                const anchal = new THREE.Mesh(SHARED_CROWD_ASSETS.anchalGeo, accentMat);
                 anchal.position.set(-0.08, 0.82, 0);
                 anchal.rotation.z = 0.32;
                 bodyPivot.add(anchal);
             } else if (styleType === 'GAMCHA') {
-                // Red checkered Gamcha scarf around neck/head
-                const gamchaRing = new THREE.Mesh(
-                    new THREE.TorusGeometry(0.21, 0.045, 8, 14),
-                    new THREE.MeshStandardMaterial({ color: 0xe11d48, roughness: 0.6 })
-                );
+                const gamchaRing = new THREE.Mesh(SHARED_CROWD_ASSETS.gamchaGeo, SHARED_CROWD_ASSETS.gamchaMat);
                 gamchaRing.rotation.x = Math.PI / 2;
                 gamchaRing.position.y = 1.06;
                 bodyPivot.add(gamchaRing);
@@ -2121,75 +2120,68 @@
             // Left & Right Arms
             const leftArmPivot = new THREE.Group();
             leftArmPivot.position.set(-0.29, 0.98, 0);
-            const leftArm = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.05, 0.48, 8), clothMat);
+            const leftArm = new THREE.Mesh(SHARED_CROWD_ASSETS.armGeo, clothMat);
             leftArm.position.y = -0.2;
             leftArmPivot.add(leftArm);
-            const leftHand = new THREE.Mesh(new THREE.SphereGeometry(0.06, 8, 8), skinMat);
+            const leftHand = new THREE.Mesh(SHARED_CROWD_ASSETS.handGeo, SHARED_CROWD_ASSETS.skinMat);
             leftHand.position.y = -0.45;
             leftArmPivot.add(leftHand);
             bodyPivot.add(leftArmPivot);
 
             const rightArmPivot = new THREE.Group();
             rightArmPivot.position.set(0.29, 0.98, 0);
-            const rightArm = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.05, 0.48, 8), clothMat);
+            const rightArm = new THREE.Mesh(SHARED_CROWD_ASSETS.armGeo, clothMat);
             rightArm.position.y = -0.2;
             rightArmPivot.add(rightArm);
-            const rightHand = new THREE.Mesh(new THREE.SphereGeometry(0.06, 8, 8), skinMat);
+            const rightHand = new THREE.Mesh(SHARED_CROWD_ASSETS.handGeo, SHARED_CROWD_ASSETS.skinMat);
             rightHand.position.y = -0.45;
             rightArmPivot.add(rightHand);
             bodyPivot.add(rightArmPivot);
 
-            // Personal Deshi Umbrella ("Chhata") that opens during Rainy weather and closes when rain stops
-            const umbrellaColors = [0x0f172a, 0xe11d48, 0x0284c7, 0x10b981, 0x9333ea, 0xd97706];
-            const umbColor = umbrellaColors[Math.floor(Math.abs(phaseOffset * 10)) % umbrellaColors.length];
+            let umbrellaGroup = null;
+            let umbCanopyPivot = null;
 
-            const umbrellaGroup = new THREE.Group();
-            umbrellaGroup.position.set(0.24, 0.95, 0.14);
-            umbrellaGroup.scale.set(0.001, 0.001, 0.001);
-            umbrellaGroup.visible = false;
+            if (withUmbrella) {
+                const umbrellaColors = [0x0f172a, 0xe11d48, 0x0284c7, 0x10b981, 0x9333ea, 0xd97706];
+                const umbColor = umbrellaColors[Math.floor(Math.abs(phaseOffset * 10)) % umbrellaColors.length];
 
-            const umbPoleMat = new THREE.MeshStandardMaterial({ color: 0xe2e8f0, metalness: 0.85, roughness: 0.2 });
-            const umbPole = new THREE.Mesh(new THREE.CylinderGeometry(0.016, 0.016, 0.92, 8), umbPoleMat);
-            umbPole.position.set(-0.12, 0.42, -0.06);
-            umbPole.rotation.z = 0.22;
-            umbPole.rotation.x = -0.12;
-            umbrellaGroup.add(umbPole);
+                umbrellaGroup = new THREE.Group();
+                umbrellaGroup.position.set(0.24, 0.95, 0.14);
+                umbrellaGroup.scale.set(0.001, 0.001, 0.001);
+                umbrellaGroup.visible = false;
 
-            // Curved J-Hook Umbrella Handle
-            const umbHandle = new THREE.Mesh(
-                new THREE.TorusGeometry(0.045, 0.015, 6, 12, Math.PI),
-                new THREE.MeshStandardMaterial({ color: 0x451a03, roughness: 0.7 })
-            );
-            umbHandle.rotation.z = Math.PI;
-            umbHandle.position.set(-0.02, -0.02, 0);
-            umbrellaGroup.add(umbHandle);
+                const umbPole = new THREE.Mesh(SHARED_CROWD_ASSETS.umbPoleGeo, SHARED_CROWD_ASSETS.umbPoleMat);
+                umbPole.position.set(-0.12, 0.42, -0.06);
+                umbPole.rotation.z = 0.22;
+                umbPole.rotation.x = -0.12;
+                umbrellaGroup.add(umbPole);
 
-            // Canopy Pivot at top of the shaft (scales X/Z from folded tube to wide open dome)
-            const umbCanopyPivot = new THREE.Group();
-            umbCanopyPivot.position.set(-0.22, 0.86, -0.12);
+                const umbHandle = new THREE.Mesh(SHARED_CROWD_ASSETS.umbHandleGeo, SHARED_CROWD_ASSETS.umbHandleMat);
+                umbHandle.rotation.z = Math.PI;
+                umbHandle.position.set(-0.02, -0.02, 0);
+                umbrellaGroup.add(umbHandle);
 
-            const umbCanopy = new THREE.Mesh(
-                new THREE.ConeGeometry(0.68, 0.28, 12, 1, true),
-                new THREE.MeshStandardMaterial({ color: umbColor, roughness: 0.45, side: THREE.DoubleSide })
-            );
-            umbCanopy.castShadow = true;
-            umbCanopyPivot.add(umbCanopy);
+                umbCanopyPivot = new THREE.Group();
+                umbCanopyPivot.position.set(-0.22, 0.86, -0.12);
 
-            // Decorative Rim Trim & Top Ferrule Tip
-            const umbRim = new THREE.Mesh(
-                new THREE.TorusGeometry(0.67, 0.014, 6, 12),
-                goldTrimMat
-            );
-            umbRim.rotation.x = Math.PI / 2;
-            umbRim.position.y = -0.14;
-            umbCanopyPivot.add(umbRim);
+                const umbCanopy = new THREE.Mesh(
+                    SHARED_CROWD_ASSETS.umbCanopyGeo,
+                    new THREE.MeshLambertMaterial({ color: umbColor, side: THREE.DoubleSide })
+                );
+                umbCanopyPivot.add(umbCanopy);
 
-            const umbTip = new THREE.Mesh(new THREE.ConeGeometry(0.028, 0.1, 8), umbPoleMat);
-            umbTip.position.y = 0.18;
-            umbCanopyPivot.add(umbTip);
+                const umbRim = new THREE.Mesh(SHARED_CROWD_ASSETS.umbRimGeo, SHARED_CROWD_ASSETS.goldTrimMat);
+                umbRim.rotation.x = Math.PI / 2;
+                umbRim.position.y = -0.14;
+                umbCanopyPivot.add(umbRim);
 
-            umbrellaGroup.add(umbCanopyPivot);
-            bodyPivot.add(umbrellaGroup);
+                const umbTip = new THREE.Mesh(SHARED_CROWD_ASSETS.umbTipGeo, SHARED_CROWD_ASSETS.umbPoleMat);
+                umbTip.position.y = 0.18;
+                umbCanopyPivot.add(umbTip);
+
+                umbrellaGroup.add(umbCanopyPivot);
+                bodyPivot.add(umbrellaGroup);
+            }
 
             person.userData = {
                 bodyPivot,
@@ -2239,6 +2231,10 @@
 
             // Floor Slabs, Balconies ("Baranda") & Lit Apartment Windows on the 2 Stories Below Us
             const slabMat = new THREE.MeshStandardMaterial({ color: 0x475569, roughness: 0.75 });
+            const sharedWinWarmMat = new THREE.MeshBasicMaterial({ color: 0xfef08a, transparent: true, opacity: 0.85, side: THREE.DoubleSide });
+            const sharedWinCoolMat = new THREE.MeshBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.85, side: THREE.DoubleSide });
+            weatherState.nightGlowMaterials.push(sharedWinWarmMat, sharedWinCoolMat);
+
             for (let floorY = -3.4; floorY >= -5.6; floorY -= 2.1) {
                 const floorRing = new THREE.Mesh(new THREE.CylinderGeometry(16.65, 16.65, 0.24, 8), slabMat);
                 floorRing.position.y = floorY;
@@ -2249,14 +2245,7 @@
                     const wx = Math.cos(a) * 15.15;
                     const wz = Math.sin(a) * 15.15;
 
-                    const winMat = new THREE.MeshBasicMaterial({
-                        color: (side + Math.abs(Math.round(floorY))) % 3 === 0 ? 0x38bdf8 : 0xfef08a,
-                        transparent: true,
-                        opacity: 0.85,
-                        side: THREE.DoubleSide
-                    });
-                    weatherState.nightGlowMaterials.push(winMat);
-
+                    const winMat = (side + Math.abs(Math.round(floorY))) % 3 === 0 ? sharedWinCoolMat : sharedWinWarmMat;
                     const winPane = new THREE.Mesh(new THREE.PlaneGeometry(6.8, 1.15), winMat);
                     winPane.position.set(wx, floorY + 0.9, wz);
                     winPane.rotation.y = -a + Math.PI / 2;
@@ -2385,8 +2374,15 @@
                 envGroup.add(pGroup);
             }
 
-            // Morich Bati Fairy Lights strung between pillars
+            // Morich Bati Fairy Lights strung between pillars (using 4 shared materials & shared geometry for fast batching)
             const fairyColors = [0xfef08a, 0xf43f5e, 0x10b981, 0x38bdf8];
+            const sharedFairyMats = fairyColors.map(c => {
+                const m = new THREE.MeshBasicMaterial({ color: c, transparent: true, opacity: 0.92 });
+                weatherState.nightGlowMaterials.push(m);
+                return m;
+            });
+            const sharedBulbGeo = new THREE.SphereGeometry(0.11, 6, 6);
+
             for (let i = 0; i < 8; i++) {
                 const startP = pillarPositions[i];
                 const endP = pillarPositions[(i + 1) % 8];
@@ -2395,13 +2391,7 @@
                     const bx = THREE.MathUtils.lerp(startP.x, endP.x, t);
                     const bz = THREE.MathUtils.lerp(startP.z, endP.z, t);
                     const sag = Math.sin(t * Math.PI) * 0.9;
-                    const bulbMat = new THREE.MeshBasicMaterial({
-                        color: fairyColors[(i + b) % fairyColors.length],
-                        transparent: true,
-                        opacity: 0.92
-                    });
-                    weatherState.nightGlowMaterials.push(bulbMat);
-                    const bulb = new THREE.Mesh(new THREE.SphereGeometry(0.11, 8, 8), bulbMat);
+                    const bulb = new THREE.Mesh(sharedBulbGeo, sharedFairyMats[(i + b) % sharedFairyMats.length]);
                     bulb.position.set(bx, 5.1 - sag, bz);
                     envGroup.add(bulb);
                 }
@@ -2485,12 +2475,6 @@
             );
             tvHeaderMesh.position.set(0, 2.82, 0.15);
             jumbotronGroup.add(tvHeaderMesh);
-
-            // Dynamic Screen Spill PointLight casting commercial colors onto the rooftop arena
-            const screenLight = new THREE.PointLight(0xfde047, 0.95, 16);
-            screenLight.position.set(0, 0.2, 1.8);
-            jumbotronGroup.add(screenLight);
-            banglaAdScreen.glowLight = screenLight;
 
             envGroup.add(jumbotronGroup);
 
@@ -2785,7 +2769,7 @@
             crowdCharacters.push(paanWala);
             envGroup.add(paanKiosk);
 
-            // East-Side Biriyani & Kacchi Degh Stall ("হাজী বিরিয়ানি ও কাচ্চি")
+            // East-Side Biriyani & Kacchi Degh Stall ("ছাদ বিরিয়ানি ও কাচ্চি")
             const biriyaniStall = new THREE.Group();
             biriyaniStall.position.set(12.2, 0, 0);
             biriyaniStall.rotation.y = -Math.PI / 2;
@@ -2813,7 +2797,7 @@
             deghNeck.position.set(0, 1.54, 0);
             biriyaniStall.add(deghNeck);
 
-            const biriyaniSignTex = createBanglaBillboardTexture('#881337', '#fde047', 'ঢাকাইয়া কাচ্চি ঘর', 'HAJI BIRIYANI & TEHARI');
+            const biriyaniSignTex = createBanglaBillboardTexture('#881337', '#fde047', 'ঢাকাইয়া কাচ্চি ঘর', 'SHAHI BIRIYANI & TEHARI');
             const biriyaniSign = new THREE.Mesh(
                 new THREE.PlaneGeometry(2.1, 0.62),
                 new THREE.MeshBasicMaterial({ map: biriyaniSignTex, side: THREE.DoubleSide })
@@ -3415,11 +3399,6 @@
                 sangsad.add(triCut);
             }
 
-            // Warm Architectural Floodlight illuminating Jatiya Sangsad at night
-            const sangsadLight = new THREE.PointLight(0xfef08a, 1.4, 26);
-            sangsadLight.position.set(0, 11, 8);
-            sangsad.add(sangsadLight);
-
             // Banner above Parliament plaza
             const sangsadTex = createBanglaBillboardTexture('#1e293b', '#fde047', 'জাতীয় সংসদ ভবন', 'JATIYA SANGSAD BHABAN');
             const sangsadSign = new THREE.Mesh(
@@ -3433,12 +3412,12 @@
 
             // Ring of High-Visibility Bangla Rooftop Neon Billboards Mounted on Surrounding Lower Rooftops
             const billboardData = [
-                { pos: [-22.5, 2.2, -22.5], bg: '#881337', border: '#fde047', title: 'কাচ্চি ভাই', sub: 'KACCHI BHAI • DHAKA' },
-                { pos: [22.5, 2.2, -22.5],  bg: '#064e3b', border: '#34d399', title: 'মায়ের দোয়া', sub: 'MAYER DOA PARIBAHAN' },
-                { pos: [22.5, 2.2, 22.5],   bg: '#1e3a8a', border: '#38bdf8', title: 'হাজী বিরিয়ানি', sub: 'OLD DHAKA HAJI BIRIYANI' },
-                { pos: [-22.5, 2.2, 22.5],  bg: '#78350f', border: '#facc15', title: 'বিউটি লাচ্ছি', sub: 'BEAUTY LACCHI & FALUDA' },
-                { pos: [-27.5, 3.2, 0],     bg: '#4c1d95', border: '#f472b6', title: 'বিকাশ এজেন্ট', sub: 'BKASH • NAGAD • FLEXILOAD' },
-                { pos: [27.5, 3.2, 0],      bg: '#14532d', border: '#fde047', title: 'স্টার কাবাব', sub: 'STAR KABAB & FALOODA' }
+                { pos: [-22.5, 2.2, -22.5], bg: '#881337', border: '#fde047', title: 'বিজ্ঞাপন দিন', sub: 'বিজ্ঞাপনের জন্য যোগাযোগ করুন' },
+                { pos: [22.5, 2.2, -22.5],  bg: '#064e3b', border: '#34d399', title: 'সোনার বাংলা পরিবহন', sub: 'বিজ্ঞাপনের জন্য যোগাযোগ করুন' },
+                { pos: [22.5, 2.2, 22.5],   bg: '#1e3a8a', border: '#38bdf8', title: 'নবাবী কাচ্চি ঘর', sub: 'বিজ্ঞাপনের জন্য যোগাযোগ করুন' },
+                { pos: [-22.5, 2.2, 22.5],  bg: '#78350f', border: '#facc15', title: 'শাহী লাচ্ছি ও ফালুদা', sub: 'বিজ্ঞাপনের জন্য যোগাযোগ করুন' },
+                { pos: [-27.5, 3.2, 0],     bg: '#4c1d95', border: '#f472b6', title: 'দ্রুত পে এজেন্ট', sub: 'বিজ্ঞাপনের জন্য যোগাযোগ করুন' },
+                { pos: [27.5, 3.2, 0],      bg: '#14532d', border: '#fde047', title: 'ছাদ কাবাব ঘর', sub: 'বিজ্ঞাপনের জন্য যোগাযোগ করুন' }
             ];
 
             billboardData.forEach(bb => {
@@ -3515,22 +3494,701 @@
                     mast.position.set(bx - 0.8, roofTopY + 2.2, bz + 0.8);
                     envGroup.add(mast);
 
-                    const beaconBulb = new THREE.Mesh(new THREE.SphereGeometry(0.18, 8, 8), mastRedMat);
+                    const beaconBulb = new THREE.Mesh(new THREE.SphereGeometry(0.18, 6, 6), mastRedMat);
                     beaconBulb.position.set(bx - 0.8, roofTopY + 4.45, bz + 0.8);
                     envGroup.add(beaconBulb);
                 }
 
-                // Illuminated Apartment Window Glow
-                const winMat = new THREE.MeshBasicMaterial({ color: 0xfef08a, transparent: true, opacity: 0.88 });
-                weatherState.nightGlowMaterials.push(winMat);
-                const winPlane = new THREE.Mesh(new THREE.PlaneGeometry(3.2, bh * 0.72), winMat);
+                // Illuminated Apartment Window Glow (reusing sharedWinWarmMat)
+                const winPlane = new THREE.Mesh(new THREE.PlaneGeometry(3.2, bh * 0.72), sharedWinWarmMat);
                 winPlane.position.set(bx, centerY + 1.0, bz);
                 winPlane.lookAt(0, centerY + 1.0, 0);
                 winPlane.translateZ(2.63);
                 envGroup.add(winPlane);
             }
 
+            // 12B. OUTER FAR-HORIZON DHAKA HIGH-RISE SKYLINE RING & ICONIC NATIONAL MONUMENTS
+            const farTowerColors = [0x0f172a, 0x1e293b, 0x172554, 0x312e81];
+            for (let fb = 0; fb < 36; fb++) {
+                const fAngle = (fb / 36) * Math.PI * 2 + 0.06;
+                const fDist = 48.0 + (fb % 4) * 7.5;
+                const fbx = Math.cos(fAngle) * fDist;
+                const fbz = Math.sin(fAngle) * fDist;
+                const fbh = 18.0 + (fb % 6) * 5.2;
+                const fRoofY = 8.0 + (fb % 6) * 4.2;
+                const fCenterY = fRoofY - fbh / 2;
+                const fWidth = 6.2 + (fb % 3) * 1.6;
+
+                const farBldg = new THREE.Mesh(
+                    new THREE.BoxGeometry(fWidth, fbh, fWidth),
+                    new THREE.MeshLambertMaterial({ color: farTowerColors[fb % farTowerColors.length] })
+                );
+                farBldg.position.set(fbx, fCenterY, fbz);
+                envGroup.add(farBldg);
+
+                // Illuminated high-rise window grid facing the arena
+                const farWinMat = fb % 3 === 0 ? sharedWinCoolMat : sharedWinWarmMat;
+                const farWin = new THREE.Mesh(
+                    new THREE.PlaneGeometry(fWidth * 0.68, fbh * 0.78),
+                    farWinMat
+                );
+                farWin.position.set(fbx, fCenterY + 1.2, fbz);
+                farWin.lookAt(0, fCenterY + 1.2, 0);
+                farWin.translateZ(fWidth / 2 + 0.08);
+                envGroup.add(farWin);
+
+                // Aviation warning beacon or rooftop crown on tall horizon towers
+                if (fb % 2 === 0) {
+                    const crown = new THREE.Mesh(
+                        new THREE.BoxGeometry(fWidth * 0.65, 1.4, fWidth * 0.65),
+                         farWinMat
+                    );
+                    crown.position.set(fbx, fRoofY + 0.7, fbz);
+                    envGroup.add(crown);
+
+                    const redTop = new THREE.Mesh(new THREE.SphereGeometry(0.24, 6, 6), mastRedMat);
+                    redTop.position.set(fbx, fRoofY + 2.2, fbz);
+                    envGroup.add(redTop);
+                }
+            }
+
+            // FAR MONUMENT 1: CENTRAL SHAHEED MINAR (Language Movement Monument in the West-Southwest Vista)
+            const shaheedMinar = new THREE.Group();
+            shaheedMinar.position.set(-41.0, -5.8, 12.5);
+            shaheedMinar.lookAt(0, -2.0, 0);
+
+            // Red-brick & white marble stepped altar platform ("Bedi")
+            const bediBase = new THREE.Mesh(
+                new THREE.BoxGeometry(14.5, 1.4, 8.5),
+                new THREE.MeshLambertMaterial({ color: 0x991b1b })
+            );
+            bediBase.position.y = 0.7;
+            shaheedMinar.add(bediBase);
+
+            const bediTop = new THREE.Mesh(
+                new THREE.BoxGeometry(12.8, 0.5, 6.8),
+                new THREE.MeshBasicMaterial({ color: 0xf8fafc })
+            );
+            bediTop.position.y = 1.65;
+            shaheedMinar.add(bediTop);
+
+            // Iconic Glowing Crimson Sun Disc behind the white marble columns
+            const crimsonSun = new THREE.Mesh(
+                new THREE.CircleGeometry(5.2, 28),
+                new THREE.MeshBasicMaterial({ color: 0xe11d48, side: THREE.DoubleSide })
+            );
+            crimsonSun.position.set(0, 8.2, -1.2);
+            shaheedMinar.add(crimsonSun);
+
+            const minarWhiteMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+            // Central tallest frame with the iconic 20-degree bent upper hood ("Mother" frame)
+            const centerFrame = new THREE.Group();
+            centerFrame.position.set(0, 1.9, 0);
+            [-1.1, 1.1].forEach(cx => {
+                const lowerCol = new THREE.Mesh(new THREE.BoxGeometry(0.42, 7.5, 0.42), minarWhiteMat);
+                lowerCol.position.set(cx, 3.75, 0);
+                centerFrame.add(lowerCol);
+
+                const bentCol = new THREE.Mesh(new THREE.BoxGeometry(0.42, 4.2, 0.42), minarWhiteMat);
+                bentCol.position.set(cx, 9.1, 0.95);
+                bentCol.rotation.x = 0.48;
+                centerFrame.add(bentCol);
+            });
+            const topBar = new THREE.Mesh(new THREE.BoxGeometry(2.65, 0.42, 0.42), minarWhiteMat);
+            topBar.position.set(0, 10.9, 1.85);
+            centerFrame.add(topBar);
+            shaheedMinar.add(centerFrame);
+
+            // Flanking 4 angled smaller white marble frames ("Children" frames)
+            [
+                { x: -3.2, h: 8.4, rotY: 0.25 },
+                { x: 3.2,  h: 8.4, rotY: -0.25 },
+                { x: -5.4, h: 6.6, rotY: 0.42 },
+                { x: 5.4,  h: 6.6, rotY: -0.42 }
+            ].forEach(fc => {
+                const fGrp = new THREE.Group();
+                fGrp.position.set(fc.x, 1.9, 0.4);
+                fGrp.rotation.y = fc.rotY;
+                [-0.65, 0.65].forEach(px => {
+                    const pCol = new THREE.Mesh(new THREE.BoxGeometry(0.34, fc.h, 0.34), minarWhiteMat);
+                    pCol.position.set(px, fc.h / 2, 0);
+                    fGrp.add(pCol);
+                });
+                const fTop = new THREE.Mesh(new THREE.BoxGeometry(1.65, 0.34, 0.34), minarWhiteMat);
+                fTop.position.set(0, fc.h, 0);
+                fGrp.add(fTop);
+                shaheedMinar.add(fGrp);
+            });
+
+            const minarSignTex = createBanglaBillboardTexture('#881337', '#ffffff', 'কেন্দ্রীয় শহীদ মিনার', 'CENTRAL SHAHEED MINAR');
+            const minarSign = new THREE.Mesh(
+                new THREE.PlaneGeometry(6.8, 1.5),
+                new THREE.MeshBasicMaterial({ map: minarSignTex, side: THREE.DoubleSide })
+            );
+            minarSign.position.set(0, 15.2, 0);
+            shaheedMinar.add(minarSign);
+            envGroup.add(shaheedMinar);
+
+            // FAR MONUMENT 2: JATIYA SMRITI SOUDHO (National Martyrs' Memorial with 7 Concentric Triangular Prisms in North-West)
+            const smritiSoudho = new THREE.Group();
+            smritiSoudho.position.set(-34.0, -5.8, -36.5);
+            smritiSoudho.lookAt(0, -2.0, 0);
+
+            const soudhoConcreteMat = new THREE.MeshLambertMaterial({ color: 0xe2e8f0, side: THREE.DoubleSide });
+            const soudhoAccentMat = new THREE.MeshBasicMaterial({ color: 0xf8fafc, wireframe: true });
+
+            // 7 Triangular Stepped Walls (tallest narrowest in front, lowest widest at back)
+            for (let w = 0; w < 7; w++) {
+                const apexH = 21.5 - w * 2.25;
+                const halfBase = 3.2 + w * 1.45;
+                const zOffset = (3 - w) * 0.95;
+
+                const triGeo = new THREE.BufferGeometry();
+                const verts = new Float32Array([
+                    0, apexH, zOffset + 0.55,
+                    -halfBase, 0, zOffset - 0.55,
+                    halfBase, 0, zOffset - 0.55,
+
+                    0, apexH, zOffset + 0.55,
+                    -halfBase, 0, zOffset - 0.55,
+                    0, 0, zOffset + 0.75,
+
+                    0, apexH, zOffset + 0.55,
+                    0, 0, zOffset + 0.75,
+                    halfBase, 0, zOffset - 0.55
+                ]);
+                triGeo.setAttribute('position', new THREE.BufferAttribute(verts, 3));
+                triGeo.computeVertexNormals();
+
+                const wallMesh = new THREE.Mesh(triGeo, soudhoConcreteMat);
+                smritiSoudho.add(wallMesh);
+
+                const wireEdge = new THREE.Mesh(triGeo, soudhoAccentMat);
+                smritiSoudho.add(wireEdge);
+            }
+
+            const soudhoSignTex = createBanglaBillboardTexture('#0f172a', '#fde047', 'জাতীয় স্মৃতিসৌধ', 'JATIYA SMRITI SOUDHO');
+            const soudhoSign = new THREE.Mesh(
+                new THREE.PlaneGeometry(7.2, 1.6),
+                new THREE.MeshBasicMaterial({ map: soudhoSignTex, side: THREE.DoubleSide })
+            );
+            soudhoSign.position.set(0, 23.6, 0);
+            smritiSoudho.add(soudhoSign);
+            envGroup.add(smritiSoudho);
+
+            // FAR MONUMENT 3: HATIRJHEEL ILLUMINATED RAINBOW ARCH BRIDGES & OVERPASS (East-Northeast Horizon)
+            hatirjheelArches = [];
+            const hatirjheelGroup = new THREE.Group();
+            hatirjheelGroup.position.set(42.0, -3.2, -10.5);
+            hatirjheelGroup.rotation.y = -Math.PI * 0.42;
+
+            // Bridge roadway deck over Hatirjheel lake water
+            const hjDeck = new THREE.Mesh(
+                new THREE.BoxGeometry(28.0, 0.65, 4.8),
+                new THREE.MeshLambertMaterial({ color: 0x334155 })
+            );
+            hjDeck.position.y = 2.2;
+            hatirjheelGroup.add(hjDeck);
+
+            const hjWater = new THREE.Mesh(
+                new THREE.PlaneGeometry(32.0, 14.0),
+                new THREE.MeshBasicMaterial({ color: 0x0c4a6e, side: THREE.DoubleSide })
+            );
+            hjWater.rotation.x = -Math.PI / 2;
+            hjWater.position.y = -2.5;
+            hatirjheelGroup.add(hjWater);
+
+            // Twin Parabolic Illuminated Steel Arch Ribs + Vertical Suspender Cables
+            [-2.2, 2.2].forEach((az, aIdx) => {
+                const archMat = new THREE.MeshBasicMaterial({ color: aIdx === 0 ? 0xf43f5e : 0x38bdf8 });
+                const archTorus = new THREE.Mesh(
+                    new THREE.TorusGeometry(11.5, 0.32, 10, 32, Math.PI),
+                    archMat
+                );
+                archTorus.position.set(0, 2.2, az);
+                hatirjheelGroup.add(archTorus);
+                hatirjheelArches.push({ mat: archMat, phase: aIdx * 1.6 });
+
+                for (let sx = -9; sx <= 9; sx += 2.25) {
+                    const hCable = Math.sin(Math.acos(sx / 11.5)) * 11.5;
+                    const cable = new THREE.Mesh(
+                        new THREE.CylinderGeometry(0.05, 0.05, hCable, 6),
+                        archMat
+                    );
+                    cable.position.set(sx, 2.2 + hCable / 2, az);
+                    hatirjheelGroup.add(cable);
+                }
+            });
+
+            const hjSignTex = createBanglaBillboardTexture('#1e1b4b', '#38bdf8', 'হাতিরঝিল ব্রিজ', 'HATIRJHEEL LAKEFRONT');
+            const hjSign = new THREE.Mesh(
+                new THREE.PlaneGeometry(6.8, 1.5),
+                new THREE.MeshBasicMaterial({ map: hjSignTex, side: THREE.DoubleSide })
+            );
+            hjSign.position.set(0, 15.6, 0);
+            hjSign.rotation.y = Math.PI / 2;
+            hatirjheelGroup.add(hjSign);
+            envGroup.add(hatirjheelGroup);
+
+            // FAR MONUMENT 4: MOTIJHEEL CITY CENTRE GLASS SKYSCRAPER & SHAPING HELIPAD TOWER (South-East Financial District)
+            const cityCentreGroup = new THREE.Group();
+            cityCentreGroup.position.set(37.5, -5.8, 28.5);
+            cityCentreGroup.lookAt(0, 5.0, 0);
+
+            const glassTowerMat = new THREE.MeshLambertMaterial({ color: 0x0284c7 });
+            const mainSkyscraper = new THREE.Mesh(new THREE.BoxGeometry(7.8, 34.0, 7.8), glassTowerMat);
+            mainSkyscraper.position.y = 17.0;
+            cityCentreGroup.add(mainSkyscraper);
+
+            // Glowing vertical LED facade strips along the 37-story Motijheel skyscraper
+            [-2.8, 0, 2.8].forEach(lx => {
+                const ledStrip = new THREE.Mesh(
+                    new THREE.BoxGeometry(0.32, 33.5, 8.0),
+                    sharedWinCoolMat
+                );
+                ledStrip.position.set(lx, 17.0, 0);
+                cityCentreGroup.add(ledStrip);
+            });
+
+            // Rooftop Helipad Pad & Spire
+            const helipad = new THREE.Mesh(
+                new THREE.CylinderGeometry(3.4, 3.4, 0.45, 20),
+                new THREE.MeshBasicMaterial({ color: 0xfacc15 })
+            );
+            helipad.position.y = 34.3;
+            cityCentreGroup.add(helipad);
+
+            const spire = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.35, 6.5, 8), minarWhiteMat);
+            spire.position.y = 37.5;
+            cityCentreGroup.add(spire);
+
+            const spireBeacon = new THREE.Mesh(new THREE.SphereGeometry(0.32, 8, 8), mastRedMat);
+            spireBeacon.position.y = 40.8;
+            cityCentreGroup.add(spireBeacon);
+
+            const motijheelSignTex = createBanglaBillboardTexture('#0c4a6e', '#fde047', 'মতিঝিল সিটি সেন্টার', 'MOTIJHEEL COMMERCIAL HUB');
+            const motijheelSign = new THREE.Mesh(
+                new THREE.PlaneGeometry(7.4, 1.6),
+                new THREE.MeshBasicMaterial({ map: motijheelSignTex, side: THREE.DoubleSide })
+            );
+            motijheelSign.position.set(0, 36.2, 4.1);
+            cityCentreGroup.add(motijheelSign);
+            envGroup.add(cityCentreGroup);
+
+            // FAR MONUMENT 5: OLD DHAKA TARA MASJID (STAR MOSQUE) & LALBAGH FORT GATEWAY DOMES (South-West Heritage Horizon)
+            const heritageGroup = new THREE.Group();
+            heritageGroup.position.set(-35.5, -5.8, 31.5);
+            heritageGroup.lookAt(0, -1.0, 0);
+
+            const fortWallMat = new THREE.MeshLambertMaterial({ color: 0x9a3412 });
+            const whiteDomeMat = new THREE.MeshLambertMaterial({ color: 0xf8fafc });
+            const goldFinialMat = new THREE.MeshBasicMaterial({ color: 0xfbbf24 });
+
+            // Mughal Gateway Base Structure
+            const fortHall = new THREE.Mesh(new THREE.BoxGeometry(15.5, 9.2, 6.2), fortWallMat);
+            fortHall.position.y = 4.6;
+            heritageGroup.add(fortHall);
+
+            // Central & Flanking Mughal Archways
+            [-4.6, 0, 4.6].forEach((ax, ai) => {
+                const archCut = new THREE.Mesh(
+                    new THREE.BoxGeometry(ai === 1 ? 3.4 : 2.2, ai === 1 ? 6.4 : 4.8, 6.4),
+                    new THREE.MeshBasicMaterial({ color: 0x090d16 })
+                );
+                archCut.position.set(ax, ai === 1 ? 3.2 : 2.4, 0);
+                heritageGroup.add(archCut);
+
+                // Three Iconic White Chini-Tikri Domes crowned with Golden Finials
+                const dRadius = ai === 1 ? 3.2 : 2.25;
+                const dome = new THREE.Mesh(
+                    new THREE.SphereGeometry(dRadius, 16, 12, 0, Math.PI * 2, 0, Math.PI * 0.58),
+                    whiteDomeMat
+                );
+                dome.position.set(ax, 9.2, 0);
+                heritageGroup.add(dome);
+
+                const spireTip = new THREE.Mesh(new THREE.ConeGeometry(0.22, 1.4, 8), goldFinialMat);
+                spireTip.position.set(ax, 9.2 + dRadius + 0.6, 0);
+                heritageGroup.add(spireTip);
+            });
+
+            // Twin Corner Minarets with Illuminated Balconies
+            [-8.4, 8.4].forEach(mx => {
+                const minaret = new THREE.Mesh(new THREE.CylinderGeometry(0.75, 0.95, 16.5, 12), fortWallMat);
+                minaret.position.set(mx, 8.25, 0);
+                heritageGroup.add(minaret);
+
+                const minBalcony = new THREE.Mesh(new THREE.CylinderGeometry(1.15, 1.15, 0.6, 12), sharedWinWarmMat);
+                minBalcony.position.set(mx, 14.5, 0);
+                heritageGroup.add(minBalcony);
+
+                const minCupola = new THREE.Mesh(new THREE.SphereGeometry(0.85, 10, 10), whiteDomeMat);
+                minCupola.position.set(mx, 16.8, 0);
+                heritageGroup.add(minCupola);
+            });
+
+            const lalbaghSignTex = createBanglaBillboardTexture('#7c2d12', '#fde047', 'লালবাগ কেল্লা ও তারা মসজিদ', 'OLD DHAKA HERITAGE');
+            const lalbaghSign = new THREE.Mesh(
+                new THREE.PlaneGeometry(7.6, 1.6),
+                new THREE.MeshBasicMaterial({ map: lalbaghSignTex, side: THREE.DoubleSide })
+            );
+            lalbaghSign.position.set(0, 15.8, 2.0);
+            heritageGroup.add(lalbaghSign);
+            envGroup.add(heritageGroup);
+
+            // 13. SHAKRAIN ROOFTOP KITE FLYING ("Ghuri Utsab" with Natai Spools & Swooping Diamond Kites)
+            rooftopKites = [];
+            const kiteConfigs = [
+                { flyerPos: [-9.2, 0, -11.2], rotY: 0.4, kiteCol: 0xf43f5e, tailCol: 0xfde047, skyAnchor: [-14.5, 11.5, -16.5], phase: 0.0 },
+                { flyerPos: [9.5, 0, -11.0],  rotY: -0.4, kiteCol: 0x0ea5e9, tailCol: 0xffffff, skyAnchor: [15.0, 12.8, -15.5],  phase: 2.1 },
+                { flyerPos: [11.2, 0, 5.2],   rotY: -1.8, kiteCol: 0x10b981, tailCol: 0xfacc15, skyAnchor: [18.5, 10.8, 8.5],    phase: 4.2 }
+            ];
+            const kiteStringMat = new THREE.LineBasicMaterial({ color: 0xe2e8f0, transparent: true, opacity: 0.45 });
+
+            kiteConfigs.forEach((kc, ki) => {
+                const flyer = createDeshiSpectator('PANJABI_TOPI', kc.kiteCol, 0xf8fafc, ki * 1.7, true);
+                flyer.position.set(...kc.flyerPos);
+                flyer.rotation.y = kc.rotY;
+
+                // Wooden Natai (kite string reel) in left hand
+                const natai = new THREE.Mesh(
+                    new THREE.CylinderGeometry(0.08, 0.08, 0.18, 8),
+                    new THREE.MeshLambertMaterial({ color: 0x92400e })
+                );
+                natai.position.set(0, -0.45, 0.08);
+                flyer.userData.leftArmPivot.add(natai);
+                envGroup.add(flyer);
+                crowdCharacters.push(flyer);
+
+                // Diamond Paper Kite (Ghuri) high in the Dhaka breeze
+                const kiteGrp = new THREE.Group();
+                const diamondMesh = new THREE.Mesh(
+                    new THREE.PlaneGeometry(0.95, 0.95),
+                    new THREE.MeshBasicMaterial({ color: kc.kiteCol, side: THREE.DoubleSide })
+                );
+                diamondMesh.rotation.z = Math.PI / 4;
+                kiteGrp.add(diamondMesh);
+
+                const innerDiamond = new THREE.Mesh(
+                    new THREE.PlaneGeometry(0.45, 0.45),
+                    new THREE.MeshBasicMaterial({ color: kc.tailCol, side: THREE.DoubleSide })
+                );
+                innerDiamond.rotation.z = Math.PI / 4;
+                innerDiamond.position.z = 0.01;
+                kiteGrp.add(innerDiamond);
+
+                // Trailing kite tail ribbons
+                const tailSegments = [];
+                for (let t = 0; t < 4; t++) {
+                    const seg = new THREE.Mesh(
+                        new THREE.PlaneGeometry(0.18, 0.28),
+                        new THREE.MeshBasicMaterial({ color: t % 2 === 0 ? kc.tailCol : kc.kiteCol, side: THREE.DoubleSide })
+                    );
+                    seg.position.set(0, -0.75 - t * 0.28, 0);
+                    kiteGrp.add(seg);
+                    tailSegments.push(seg);
+                }
+
+                kiteGrp.position.set(...kc.skyAnchor);
+                envGroup.add(kiteGrp);
+
+                // Kite string line connecting flyer's Natai spool to the airborne kite
+                const strGeo = new THREE.BufferGeometry().setFromPoints([
+                    new THREE.Vector3(kc.flyerPos[0], 1.15, kc.flyerPos[2]),
+                    new THREE.Vector3(...kc.skyAnchor)
+                ]);
+                const stringLine = new THREE.Line(strGeo, kiteStringMat);
+                envGroup.add(stringLine);
+
+                rooftopKites.push({
+                    kiteGrp,
+                    tailSegments,
+                    stringLine,
+                    skyAnchor: new THREE.Vector3(...kc.skyAnchor),
+                    phase: kc.phase
+                });
+            });
+
+            // 14. PURAN DHAKA PIGEON COOP ("Kabutar Khop") & FREE-ROAMING CITY BIRDS
+            const coopGroup = new THREE.Group();
+            coopGroup.position.set(-10.5, 3.25, -10.5);
+            coopGroup.rotation.y = Math.PI / 4;
+
+            const coopPost = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.1, 1.4, 8), poleMat);
+            coopPost.position.y = 0.7;
+            coopGroup.add(coopPost);
+
+            const coopBox = new THREE.Mesh(
+                new THREE.BoxGeometry(1.35, 0.85, 0.95),
+                new THREE.MeshLambertMaterial({ color: 0xb45309 })
+            );
+            coopBox.position.y = 1.65;
+            coopGroup.add(coopBox);
+
+            const coopRoof = new THREE.Mesh(
+                new THREE.ConeGeometry(1.05, 0.45, 4),
+                new THREE.MeshLambertMaterial({ color: 0x475569 })
+            );
+            coopRoof.position.y = 2.3;
+            coopRoof.rotation.y = Math.PI / 4;
+            coopGroup.add(coopRoof);
+
+            // Arched pigeon cubby holes
+            for (let chX = -0.4; chX <= 0.4; chX += 0.4) {
+                const hole = new THREE.Mesh(
+                    new THREE.BoxGeometry(0.22, 0.28, 0.98),
+                    new THREE.MeshBasicMaterial({ color: 0x0f172a })
+                );
+                hole.position.set(chX, 1.6, 0);
+                coopGroup.add(hole);
+            }
+            envGroup.add(coopGroup);
+
+            // Free-roaming birds (White Jalali Pigeons, Grey Doves & Dhaka Kites/Crows) flying randomly across the entire city skyline
+            pigeonFlock = [];
+            const birdPalette = [
+                new THREE.MeshBasicMaterial({ color: 0xf8fafc, side: THREE.DoubleSide }), // White Jalali Kabutar
+                new THREE.MeshBasicMaterial({ color: 0xcbd5e1, side: THREE.DoubleSide }), // Silver-Grey Pigeon
+                new THREE.MeshBasicMaterial({ color: 0x475569, side: THREE.DoubleSide })  // Dark Dhaka Crow / Kite (Chil)
+            ];
+            const wingGeoR = new THREE.PlaneGeometry(0.32, 0.16);
+            wingGeoR.translate(0.16, 0, 0);
+            const wingGeoL = new THREE.PlaneGeometry(0.32, 0.16);
+            wingGeoL.translate(-0.16, 0, 0);
+
+            const randomCitySkyPoint = () => new THREE.Vector3(
+                (Math.random() - 0.5) * 76,
+                4.2 + Math.random() * 14.5,
+                (Math.random() - 0.5) * 76
+            );
+
+            for (let p = 0; p < 18; p++) {
+                const bMat = birdPalette[p % birdPalette.length];
+                const bird = new THREE.Group();
+                const scale = p % 3 === 2 ? 1.25 : 1.0;
+                bird.scale.setScalar(scale);
+
+                const body = new THREE.Mesh(new THREE.ConeGeometry(0.065, 0.28, 6), bMat);
+                body.rotation.x = Math.PI / 2;
+                bird.add(body);
+
+                const leftWing = new THREE.Mesh(wingGeoL, bMat);
+                leftWing.rotation.x = Math.PI / 2;
+                const rightWing = new THREE.Mesh(wingGeoR, bMat);
+                rightWing.rotation.x = Math.PI / 2;
+                bird.add(leftWing, rightWing);
+
+                const startPos = randomCitySkyPoint();
+                bird.position.copy(startPos);
+                const initTarget = randomCitySkyPoint();
+                const initVel = new THREE.Vector3().subVectors(initTarget, startPos).normalize().multiplyScalar(5.5);
+
+                envGroup.add(bird);
+                pigeonFlock.push({
+                    bird,
+                    leftWing,
+                    rightWing,
+                    velocity: initVel,
+                    target: initTarget,
+                    speed: 4.8 + Math.random() * 3.4,
+                    flapSpeed: 15.0 + Math.random() * 6.0,
+                    flapPhase: Math.random() * Math.PI * 2,
+                    retargetTimer: 2.0 + Math.random() * 5.0
+                });
+            }
+
+            // 15. CHHAD-ER SMOKE BBQ ("Shik Kabab & Parata" Charcoal Grill Station)
+            const bbqGroup = new THREE.Group();
+            bbqGroup.position.set(5.6, 0, 12.2);
+            bbqGroup.rotation.y = Math.PI;
+
+            const grillBox = new THREE.Mesh(
+                new THREE.BoxGeometry(1.5, 0.35, 0.7),
+                new THREE.MeshLambertMaterial({ color: 0x1e293b })
+            );
+            grillBox.position.y = 0.82;
+            bbqGroup.add(grillBox);
+
+            [[-0.65, -0.28], [0.65, -0.28], [-0.65, 0.28], [0.65, 0.28]].forEach(([lx, lz]) => {
+                const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.8, 6), poleMat);
+                leg.position.set(lx, 0.4, lz);
+                bbqGroup.add(leg);
+            });
+
+            // Glowing red-orange charcoal ember bed
+            bbqCoalsMat = new THREE.MeshBasicMaterial({ color: 0xf97316 });
+            const coalsBed = new THREE.Mesh(new THREE.PlaneGeometry(1.36, 0.56), bbqCoalsMat);
+            coalsBed.rotation.x = -Math.PI / 2;
+            coalsBed.position.y = 1.01;
+            bbqGroup.add(coalsBed);
+
+            // Iron Shik Kabab skewers across the grill
+            for (let sk = -0.5; sk <= 0.5; sk += 0.25) {
+                const skewer = new THREE.Mesh(
+                    new THREE.CylinderGeometry(0.025, 0.025, 0.78, 6),
+                    new THREE.MeshLambertMaterial({ color: 0x7c2d12 })
+                );
+                skewer.rotation.x = Math.PI / 2;
+                skewer.position.set(sk, 1.05, 0);
+                bbqGroup.add(skewer);
+            }
+
+            // Chef fanning the coals with a woven hand fan ("Hath Pakha")
+            const bbqChef = createDeshiSpectator('GAMCHA', 0xdc2626, 0xfef08a, 2.8, true);
+            bbqChef.position.set(0, 0, -0.65);
+            const hathPakha = new THREE.Mesh(
+                new THREE.CircleGeometry(0.16, 10),
+                new THREE.MeshBasicMaterial({ color: 0xfacc15, side: THREE.DoubleSide })
+            );
+            hathPakha.position.set(0, -0.48, 0.12);
+            bbqChef.userData.rightArmPivot.add(hathPakha);
+            bbqFanArm = bbqChef.userData.rightArmPivot;
+            bbqGroup.add(bbqChef);
+            crowdCharacters.push(bbqChef);
+
+            // Rising aromatic BBQ smoke puffs
+            bbqSmokePuffs = [];
+            const smokeMat = new THREE.MeshBasicMaterial({ color: 0xe2e8f0, transparent: true, opacity: 0.38 });
+            for (let sm = 0; sm < 5; sm++) {
+                const puff = new THREE.Mesh(new THREE.SphereGeometry(0.14, 8, 8), smokeMat.clone());
+                bbqGroup.add(puff);
+                bbqSmokePuffs.push({ mesh: puff, phase: sm * 0.2 });
+            }
+            envGroup.add(bbqGroup);
+
+            // 16. ROOFTOP ACOUSTIC GUITAR "GAAN-ER ADDA" CIRCLE (Seated Friends Singing on a Shitalpati Mat)
+            const addaGroup = new THREE.Group();
+            addaGroup.position.set(-5.8, 0, 12.0);
+            addaGroup.rotation.y = Math.PI * 0.9;
+
+            const shitalpati = new THREE.Mesh(
+                new THREE.BoxGeometry(2.3, 0.03, 1.7),
+                new THREE.MeshLambertMaterial({ color: 0xd97706 })
+            );
+            shitalpati.position.y = 0.02;
+            addaGroup.add(shitalpati);
+
+            // Warm hurricane lantern ("Hariken") in the center of the adda mat
+            const lantern = new THREE.Mesh(
+                new THREE.CylinderGeometry(0.1, 0.13, 0.28, 8),
+                new THREE.MeshBasicMaterial({ color: 0xfef08a })
+            );
+            lantern.position.set(0, 0.16, 0.1);
+            addaGroup.add(lantern);
+
+            // Guitarist seated in center + two friends clapping along
+            const guitarist = createDeshiSpectator('PANJABI_TOPI', 0x6366f1, 0xf8fafc, 0.5, true);
+            guitarist.scale.set(0.88, 0.72, 0.88);
+            guitarist.position.set(0, 0.02, -0.45);
+            guitarist.userData.seated = true;
+
+            // Acoustic Guitar Body & Neck held across chest
+            const guitarBody = new THREE.Mesh(
+                new THREE.CylinderGeometry(0.18, 0.22, 0.08, 12),
+                new THREE.MeshLambertMaterial({ color: 0xb45309 })
+            );
+            guitarBody.rotation.x = Math.PI / 2;
+            guitarBody.rotation.z = -0.35;
+            guitarBody.position.set(0.05, 0.72, 0.26);
+            guitarist.userData.bodyPivot.add(guitarBody);
+
+            const guitarNeck = new THREE.Mesh(
+                new THREE.BoxGeometry(0.45, 0.05, 0.04),
+                new THREE.MeshLambertMaterial({ color: 0x451a03 })
+            );
+            guitarNeck.position.set(-0.22, 0.82, 0.28);
+            guitarNeck.rotation.z = 0.35;
+            guitarist.userData.bodyPivot.add(guitarNeck);
+            addaGuitarArm = guitarist.userData.rightArmPivot;
+            addaGroup.add(guitarist);
+            crowdCharacters.push(guitarist);
+
+            [[-0.75, 0.15, 0.7, 0xec4899, 'SAREE'], [0.75, 0.15, -0.7, 0x14b8a6, 'GAMCHA']].forEach(([fx, fz, frot, fcol, fstyle], fi) => {
+                const friend = createDeshiSpectator(fstyle, fcol, 0xfef08a, 1.5 + fi, true);
+                friend.scale.set(0.88, 0.72, 0.88);
+                friend.position.set(fx, 0.02, fz);
+                friend.rotation.y = frot;
+                friend.userData.seated = true;
+                addaGroup.add(friend);
+                crowdCharacters.push(friend);
+            });
+
+            // Floating glowing music note particles rising from the Gaan-er Adda
+            addaMusicNotes = [];
+            const noteColors = [0xfde047, 0xf43f5e, 0x38bdf8];
+            for (let n = 0; n < 3; n++) {
+                const noteMesh = new THREE.Mesh(
+                    new THREE.OctahedronGeometry(0.09, 0),
+                    new THREE.MeshBasicMaterial({ color: noteColors[n], transparent: true, opacity: 0.85 })
+                );
+                addaGroup.add(noteMesh);
+                addaMusicNotes.push({ mesh: noteMesh, phase: n * 0.33 });
+            }
+            envGroup.add(addaGroup);
+
+            // 17. BIMAN PASSENGER AIRPLANE IN SKY ON APPROACH TO HAZRAT SHAHJALAL AIRPORT
+            skyAirplane = new THREE.Group();
+            skyAirplane.position.set(-55, 21.5, -36);
+
+            const planeMat = new THREE.MeshBasicMaterial({ color: 0xf8fafc });
+            const tailRedMat = new THREE.MeshBasicMaterial({ color: 0xe11d48 });
+            const fuselage = new THREE.Mesh(new THREE.CylinderGeometry(0.28, 0.28, 3.4, 10), planeMat);
+            fuselage.rotation.z = Math.PI / 2;
+            skyAirplane.add(fuselage);
+
+            const mainWings = new THREE.Mesh(new THREE.BoxGeometry(0.75, 0.06, 3.2), planeMat);
+            skyAirplane.add(mainWings);
+
+            const tailFin = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.75, 0.08), tailRedMat);
+            tailFin.position.set(-1.45, 0.42, 0);
+            skyAirplane.add(tailFin);
+
+            // Blinking green/red wingtip navigation strobe lights
+            const navRed = new THREE.Mesh(new THREE.SphereGeometry(0.12, 6, 6), new THREE.MeshBasicMaterial({ color: 0xef4444 }));
+            navRed.position.set(0, 0, 1.65);
+            const navGreen = new THREE.Mesh(new THREE.SphereGeometry(0.12, 6, 6), new THREE.MeshBasicMaterial({ color: 0x22c55e }));
+            navGreen.position.set(0, 0, -1.65);
+            skyAirplane.add(navRed, navGreen);
+            skyAirplane.userData = { navRed, navGreen };
+            envGroup.add(skyAirplane);
+
             scene.add(envGroup);
+        }
+
+        function spawnCelebrationFirework() {
+            const origins = [
+                [-18, 14 + Math.random() * 5, -24],
+                [18, 15 + Math.random() * 5, -24],
+                [0, 16 + Math.random() * 4, -26],
+                [-20, 13 + Math.random() * 4, 16],
+                [20, 13 + Math.random() * 4, 16]
+            ];
+            const [ox, oy, oz] = origins[Math.floor(Math.random() * origins.length)];
+            const palette = [0xf43f5e, 0xfde047, 0x38bdf8, 0x10b981, 0xec4899, 0xa855f7];
+            const colorHex = palette[Math.floor(Math.random() * palette.length)];
+
+            const count = 28;
+            const positions = new Float32Array(count * 3);
+            const velocities = [];
+            for (let i = 0; i < count; i++) {
+                positions[i * 3] = ox;
+                positions[i * 3 + 1] = oy;
+                positions[i * 3 + 2] = oz;
+                const theta = Math.random() * Math.PI * 2;
+                const phi = Math.random() * Math.PI;
+                const spd = 3.5 + Math.random() * 4.5;
+                velocities.push(new THREE.Vector3(
+                    Math.sin(phi) * Math.cos(theta) * spd,
+                    Math.cos(phi) * spd,
+                    Math.sin(phi) * Math.sin(theta) * spd
+                ));
+            }
+            const geo = new THREE.BufferGeometry();
+            geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            const mat = new THREE.PointsMaterial({ color: colorHex, size: 0.42, transparent: true, opacity: 1.0 });
+            const pts = new THREE.Points(geo, mat);
+            scene.add(pts);
+            skyFireworks.push({ pts, geo, mat, velocities, age: 0, maxAge: 1.15 });
         }
 
         /***********************************************************************
@@ -4804,6 +5462,8 @@
             if (val === 6) {
                 crowdExcitementTimer = Math.max(crowdExcitementTimer, 2.5);
                 audio.playChhakkaFanfare();
+                spawnCelebrationFirework();
+                spawnCelebrationFirework();
             }
 
             const valid = getValidPiecesForRoll(gameState.currentTurn, val);
@@ -4907,6 +5567,8 @@
 
                 const runStrike = () => {
                     crowdExcitementTimer = Math.max(crowdExcitementTimer, 4.0);
+                    spawnCelebrationFirework();
+                    spawnCelebrationFirework();
                     updateHUD(`⚡ TAKKAR! ${piece.player.name} strikes ${capturedEnemies[0].player.shortName}!`);
                     piece.startAttackAnimation(finalTarget, capturedEnemies[0], () => {
                         capturedEnemies.slice(1).forEach(extra => extra.startShatterAnimation());
@@ -5385,16 +6047,18 @@
                 shaplaMonument.rotation.y += dt * (discoState.active ? 2.5 : 0.45);
             }
 
-            // Update the Big LED Monitor's Live Bangla Video Commercials (~25 FPS canvas refresh for smooth motion)
-            if (elapsed - banglaAdScreen.lastDrawTime > 0.04) {
+            // Pulse the Hatirjheel Rainbow Arch Bridge LEDs across the eastern horizon
+            const hjPalette = [0xf43f5e, 0x38bdf8, 0x10b981, 0xfacc15, 0xa855f7, 0xec4899];
+            for (let i = 0; i < hatirjheelArches.length; i++) {
+                const ha = hatirjheelArches[i];
+                const colIdx = Math.floor(elapsed * (discoState.active ? 6.0 : 0.85) + i * 2) % hjPalette.length;
+                ha.mat.color.setHex(hjPalette[colIdx]);
+            }
+
+            // Update the Big LED Monitor's Live Bangla Video Commercials (throttled to ~10 FPS for low GPU texture upload overhead)
+            if (elapsed - banglaAdScreen.lastDrawTime > 0.1) {
                 banglaAdScreen.lastDrawTime = elapsed;
                 updateBanglaVideoAdCanvas(elapsed);
-                if (banglaAdScreen.glowLight) {
-                    const adIdx = Math.floor(elapsed / 5.5) % banglaAdScreen.ads.length;
-                    const glowColors = [0xfde047, 0xec4899, 0x10b981, 0x38bdf8, 0x22c55e];
-                    banglaAdScreen.glowLight.color.setHex(discoState.active ? 0xf43f5e : glowColors[adIdx]);
-                    banglaAdScreen.glowLight.intensity = 0.85 + Math.sin(elapsed * 6) * 0.25;
-                }
             }
 
             // Animate Dhaka Metro Rail (MRT-6) gliding across the northern viaduct
@@ -5436,6 +6100,155 @@
                 const lc = weatherState.laundryCloths[i];
                 const windBoost = weatherState.activePresetIdx === 8 ? 2.4 : 1.0;
                 lc.mesh.rotation.x = Math.sin(elapsed * 3.5 * windBoost + lc.phase) * (0.22 * windBoost);
+            }
+
+            // Animate Shakrain Rooftop Kites ("Ghuri"), Tails & Strings
+            for (let i = 0; i < rooftopKites.length; i++) {
+                const rk = rooftopKites[i];
+                const swayX = Math.sin(elapsed * 1.9 + rk.phase) * 2.2;
+                const swayY = Math.cos(elapsed * 2.5 + rk.phase) * 1.15;
+                const swayZ = Math.sin(elapsed * 1.4 + rk.phase) * 1.2;
+
+                rk.kiteGrp.position.set(
+                    rk.skyAnchor.x + swayX,
+                    rk.skyAnchor.y + swayY,
+                    rk.skyAnchor.z + swayZ
+                );
+                rk.kiteGrp.lookAt(camera.position);
+                rk.kiteGrp.rotation.z = Math.sin(elapsed * 3.2 + rk.phase) * 0.38;
+
+                for (let t = 0; t < rk.tailSegments.length; t++) {
+                    rk.tailSegments[t].position.x = Math.sin(elapsed * 7.5 - t * 0.7 + rk.phase) * (0.12 + t * 0.05);
+                }
+
+                const posAttr = rk.stringLine.geometry.attributes.position;
+                posAttr.setXYZ(1, rk.kiteGrp.position.x, rk.kiteGrp.position.y, rk.kiteGrp.position.z);
+                posAttr.needsUpdate = true;
+            }
+
+            // Animate Free-Roaming City Birds across the entire Dhaka Skyline
+            for (let i = 0; i < pigeonFlock.length; i++) {
+                const pg = pigeonFlock[i];
+                pg.retargetTimer -= dt;
+
+                const toTarget = new THREE.Vector3().subVectors(pg.target, pg.bird.position);
+                const dist = toTarget.length();
+
+                // Pick a new random 3D destination anywhere across the city skyline when close or timer expires
+                if (dist < 3.5 || pg.retargetTimer <= 0) {
+                    // Mix of wide city-skyline waypoints (near buildings, flyover, metro, parliament) and occasional rooftop passes
+                    const nearRoof = Math.random() < 0.28;
+                    const span = nearRoof ? 32 : 82;
+                    pg.target.set(
+                        (Math.random() - 0.5) * span,
+                        (nearRoof ? 3.8 : 4.5) + Math.random() * 14.0,
+                        (Math.random() - 0.5) * span
+                    );
+                    pg.speed = 4.6 + Math.random() * 3.8;
+                    pg.retargetTimer = 3.5 + Math.random() * 6.5;
+                }
+
+                // Smoothly steer velocity toward target
+                const desiredVel = toTarget.normalize().multiplyScalar(pg.speed);
+                const prevVel = pg.velocity.clone();
+                pg.velocity.lerp(desiredVel, Math.min(1, dt * 1.85));
+
+                // Move bird through the 3D city space
+                pg.bird.position.addScaledVector(pg.velocity, dt);
+
+                // Orient bird nose along its 3D flight vector + bank into turns
+                const horizSpeed = Math.hypot(pg.velocity.x, pg.velocity.z) || 0.001;
+                const heading = Math.atan2(pg.velocity.x, pg.velocity.z);
+                const pitch = -Math.atan2(pg.velocity.y, horizSpeed) * 0.65;
+                const turnRate = (pg.velocity.x * prevVel.z - pg.velocity.z * prevVel.x);
+                const bankAngle = THREE.MathUtils.clamp(turnRate * 0.45, -0.55, 0.55);
+
+                pg.bird.rotation.set(pitch, heading, bankAngle, 'YXZ');
+
+                // Natural flap-and-glide cycle (gliding with outstretched wings when descending or cruising)
+                const glideWave = Math.sin(elapsed * 2.1 + pg.flapPhase);
+                const isGliding = glideWave > 0.55 || pg.velocity.y < -0.6;
+                const flap = isGliding
+                    ? 0.14 + Math.sin(elapsed * 3.5 + pg.flapPhase) * 0.06
+                    : Math.sin(elapsed * pg.flapSpeed + pg.flapPhase) * 0.78;
+                pg.leftWing.rotation.z = flap;
+                pg.rightWing.rotation.z = -flap;
+            }
+
+            // Animate Chhad BBQ Grill Embers, Fanning & Rising Smoke Puffs
+            if (bbqCoalsMat) {
+                const emberPulse = 0.5 + 0.5 * Math.sin(elapsed * 8.0);
+                bbqCoalsMat.color.setHex(emberPulse > 0.5 ? 0xf97316 : 0xef4444);
+            }
+            if (bbqFanArm && !WEATHER_PRESETS[weatherState.activePresetIdx].rain) {
+                bbqFanArm.rotation.x = -0.6 + Math.sin(elapsed * 11.0) * 0.45;
+            }
+            for (let i = 0; i < bbqSmokePuffs.length; i++) {
+                const sp = bbqSmokePuffs[i];
+                const cycle = (elapsed * 0.48 + sp.phase) % 1;
+                sp.mesh.position.set(
+                    Math.sin(elapsed * 2.5 + i) * 0.22,
+                    1.1 + cycle * 2.6,
+                    Math.cos(elapsed * 2.0 + i) * 0.16
+                );
+                sp.mesh.scale.setScalar(0.6 + cycle * 1.9);
+                sp.mesh.material.opacity = (1 - cycle) * 0.42;
+            }
+
+            // Animate Rooftop Guitar Adda Strumming & Floating Musical Notes
+            if (addaGuitarArm) {
+                addaGuitarArm.rotation.x = -0.55 + Math.sin(elapsed * 10.5) * 0.25;
+                addaGuitarArm.rotation.z = -0.2 + Math.cos(elapsed * 10.5) * 0.15;
+            }
+            for (let i = 0; i < addaMusicNotes.length; i++) {
+                const mn = addaMusicNotes[i];
+                const cycle = (elapsed * 0.42 + mn.phase) % 1;
+                mn.mesh.position.set(
+                    Math.sin(elapsed * 3.0 + i * 2) * 0.55,
+                    0.85 + cycle * 2.2,
+                    Math.cos(elapsed * 2.5 + i) * 0.35
+                );
+                mn.mesh.rotation.y += dt * 3.5;
+                mn.mesh.material.opacity = Math.sin(cycle * Math.PI) * 0.9;
+            }
+
+            // Animate Sky Airplane descending toward Dhaka Airport with blinking Wingtip Strobes
+            if (skyAirplane) {
+                skyAirplane.position.x += dt * 6.5;
+                if (skyAirplane.position.x > 60) {
+                    skyAirplane.position.x = -60;
+                }
+                const strobeOn = Math.floor(elapsed * 4) % 2 === 0;
+                skyAirplane.userData.navRed.visible = strobeOn;
+                skyAirplane.userData.navGreen.visible = !strobeOn;
+            }
+
+            // Periodically launch Sky Fireworks during Disco Party or Update Active Bursts
+            if (discoState.active && Math.random() < dt * 2.5) {
+                spawnCelebrationFirework();
+            }
+            for (let i = skyFireworks.length - 1; i >= 0; i--) {
+                const fw = skyFireworks[i];
+                fw.age += dt;
+                const prog = fw.age / fw.maxAge;
+                if (prog >= 1) {
+                    scene.remove(fw.pts);
+                    fw.geo.dispose();
+                    fw.mat.dispose();
+                    skyFireworks.splice(i, 1);
+                } else {
+                    const posAttr = fw.geo.attributes.position;
+                    for (let p = 0; p < fw.velocities.length; p++) {
+                        const v = fw.velocities[p];
+                        const nx = posAttr.getX(p) + v.x * dt;
+                        const ny = posAttr.getY(p) + v.y * dt;
+                        const nz = posAttr.getZ(p) + v.z * dt;
+                        v.y -= 4.5 * dt;
+                        posAttr.setXYZ(p, nx, ny, nz);
+                    }
+                    posAttr.needsUpdate = true;
+                    fw.mat.opacity = 1 - prog;
+                }
             }
 
             // Animate Cheering Deshi Crowd, Street Vendors & Seated Beggars
