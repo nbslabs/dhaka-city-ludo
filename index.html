@@ -20,6 +20,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,500,1,0" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+    <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
 
     <style>
         * {
@@ -114,6 +115,72 @@
             box-shadow: 0 4px 14px rgba(245, 158, 11, 0.45);
             border-color: rgba(253, 224, 71, 0.8);
         }
+        /* Online Lobby Overlay */
+        .online-lobby-input {
+            background: rgba(15, 10, 30, 0.85);
+            border: 2px solid rgba(251, 191, 36, 0.35);
+            border-radius: 1rem;
+            padding: 0.65rem 1rem;
+            color: #fde047;
+            font-family: 'Inter', monospace;
+            font-size: 1.15rem;
+            font-weight: 700;
+            letter-spacing: 0.35em;
+            text-align: center;
+            text-transform: uppercase;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .online-lobby-input::placeholder {
+            color: rgba(251, 191, 36, 0.35);
+            letter-spacing: 0.2em;
+            font-weight: 500;
+            text-transform: none;
+        }
+        .online-lobby-input:focus {
+            border-color: rgba(253, 224, 71, 0.7);
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.25);
+        }
+        .lobby-status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            animation: lobbyPulse 1.4s infinite;
+        }
+        .lobby-status-dot.connecting { background: #f59e0b; }
+        .lobby-status-dot.connected { background: #22c55e; animation: none; }
+        .lobby-status-dot.error { background: #ef4444; animation: none; }
+        @keyframes lobbyPulse {
+            0%, 100% { opacity: 0.4; transform: scale(0.85); }
+            50% { opacity: 1; transform: scale(1.15); }
+        }
+        .room-code-display {
+            font-family: 'Inter', monospace;
+            font-size: 1.6rem;
+            font-weight: 800;
+            letter-spacing: 0.4em;
+            color: #fde047;
+            text-shadow: 0 0 12px rgba(253, 224, 71, 0.7), 0 0 30px rgba(245, 158, 11, 0.5);
+            padding: 0.5rem 1.2rem;
+            background: rgba(15, 10, 30, 0.7);
+            border: 2px solid rgba(253, 224, 71, 0.4);
+            border-radius: 1rem;
+            user-select: all;
+            cursor: pointer;
+        }
+        .online-peer-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 8px;
+            background: rgba(14, 165, 233, 0.2);
+            color: #7dd3fc;
+            border: 1px solid rgba(14, 165, 233, 0.35);
+        }
         @keyframes discoGlitter {
             0%, 100% {
                 filter: hue-rotate(0deg) brightness(1);
@@ -199,7 +266,7 @@
             <!-- Game Mode Selector -->
             <div class="w-full">
                 <div class="text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-2">Select Game Mode</div>
-                <div class="grid grid-cols-3 gap-2 bg-slate-900/80 p-1.5 rounded-2xl border border-slate-700/60">
+                <div class="grid grid-cols-4 gap-2 bg-slate-900/80 p-1.5 rounded-2xl border border-slate-700/60">
                     <button type="button" data-mode="1P" class="mode-pill-btn active-mode py-2 px-2 rounded-xl text-xs font-bold text-slate-300 border border-transparent">
                         1P vs AI
                     </button>
@@ -208,6 +275,9 @@
                     </button>
                     <button type="button" data-mode="4P" class="mode-pill-btn py-2 px-2 rounded-xl text-xs font-bold text-slate-300 border border-transparent">
                         4P Local
+                    </button>
+                    <button type="button" data-mode="ONLINE_2P" class="mode-pill-btn py-2 px-2 rounded-xl text-xs font-bold text-slate-300 border border-transparent" style="background: linear-gradient(135deg, rgba(14,165,233,0.15), rgba(168,85,247,0.15)); border-color: rgba(14,165,233,0.35);">
+                        🌐 Online
                     </button>
                 </div>
             </div>
@@ -277,6 +347,79 @@
             <button id="btn-start-match" type="button" class="md-btn w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-amber-400 via-orange-500 to-rose-600 text-slate-950 font-extrabold text-sm sm:text-base tracking-wide shadow-lg flex items-center justify-center gap-2">
                 <span class="material-symbols-rounded text-xl">play_arrow</span>
                 <span id="start-btn-label">START AS LALBAGH</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Online Multiplayer Lobby Overlay -->
+    <div id="online-lobby-overlay" class="fixed inset-0 z-[55] hidden items-center justify-center p-4 bg-slate-950/90 backdrop-blur-lg">
+        <div class="md-surface w-full max-w-md rounded-3xl p-6 sm:p-7 border border-sky-400/35 text-center flex flex-col items-center gap-5 shadow-2xl">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-sky-400 via-purple-500 to-amber-400 p-0.5 shadow-lg">
+                <div class="w-full h-full bg-slate-950/90 rounded-[14px] flex items-center justify-center">
+                    <span class="material-symbols-rounded text-3xl text-sky-300">lan</span>
+                </div>
+            </div>
+
+            <div>
+                <h2 class="dhaka-glow-title text-2xl sm:text-3xl font-bold tracking-wide" style="color: #7dd3fc; text-shadow: 0 0 10px rgba(125,211,252,0.9), 0 0 24px rgba(14,165,233,0.8), 0 0 46px rgba(168,85,247,0.5), 0 4px 12px rgba(0,0,0,0.95);">ONLINE LUDO</h2>
+                <p class="text-xs text-sky-200/70 font-medium mt-1">Peer-to-Peer via WebRTC - No Server Needed</p>
+            </div>
+
+            <!-- Connection Status -->
+            <div id="lobby-status" class="flex items-center gap-2 text-xs text-slate-400">
+                <span class="lobby-status-dot connecting"></span>
+                <span id="lobby-status-text">Initializing...</span>
+            </div>
+
+            <!-- Host/Join Toggle -->
+            <div id="lobby-role-selector" class="w-full">
+                <div class="grid grid-cols-2 gap-2 bg-slate-900/80 p-1.5 rounded-2xl border border-slate-700/60">
+                    <button type="button" id="btn-lobby-host" class="mode-pill-btn active-mode py-2.5 px-3 rounded-xl text-xs font-bold text-slate-300 border border-transparent">
+                        🏠 Create Room
+                    </button>
+                    <button type="button" id="btn-lobby-join" class="mode-pill-btn py-2.5 px-3 rounded-xl text-xs font-bold text-slate-300 border border-transparent">
+                        🔗 Join Room
+                    </button>
+                </div>
+            </div>
+
+            <!-- Host Panel: Shows room code -->
+            <div id="lobby-host-panel" class="w-full flex flex-col items-center gap-3">
+                <div class="text-[11px] font-semibold uppercase tracking-wider text-slate-400">Your Room Code</div>
+                <div id="lobby-room-code" class="room-code-display" title="Click to copy">------</div>
+                <p class="text-[11px] text-slate-400 leading-relaxed max-w-xs">Share this code with your friend via WhatsApp, Messenger, or any chat app. They paste it below "Join Room" to connect!</p>
+                <div id="lobby-host-waiting" class="flex items-center gap-2 text-xs text-amber-300">
+                    <span class="lobby-status-dot connecting"></span>
+                    <span>Waiting for opponent to join...</span>
+                </div>
+            </div>
+
+            <!-- Join Panel: Input for room code -->
+            <div id="lobby-join-panel" class="w-full hidden flex-col items-center gap-3">
+                <div class="text-[11px] font-semibold uppercase tracking-wider text-slate-400">Enter Room Code</div>
+                <input type="text" id="lobby-join-input" class="online-lobby-input w-full max-w-[240px]" placeholder="ABC123" maxlength="12" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" />
+                <button type="button" id="btn-lobby-connect" class="md-btn w-full max-w-[240px] py-3 px-6 rounded-2xl bg-gradient-to-r from-sky-400 via-purple-500 to-amber-400 text-slate-950 font-extrabold text-sm tracking-wide shadow-lg flex items-center justify-center gap-2">
+                    <span class="material-symbols-rounded text-lg">cable</span>
+                    <span>CONNECT</span>
+                </button>
+                <p id="lobby-join-error" class="text-[11px] text-rose-400 hidden">Connection failed. Check the code and try again.</p>
+            </div>
+
+            <!-- Connected Panel -->
+            <div id="lobby-connected-panel" class="w-full hidden flex-col items-center gap-3">
+                <div class="flex items-center gap-2 text-sm font-bold text-emerald-400">
+                    <span class="lobby-status-dot connected"></span>
+                    <span>Opponent Connected!</span>
+                </div>
+                <button type="button" id="btn-lobby-start-game" class="md-btn w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-emerald-400 via-sky-500 to-purple-500 text-slate-950 font-extrabold text-sm tracking-wide shadow-lg flex items-center justify-center gap-2">
+                    <span class="material-symbols-rounded text-xl">sports_esports</span>
+                    <span>START ONLINE MATCH</span>
+                </button>
+            </div>
+
+            <!-- Back Button -->
+            <button type="button" id="btn-lobby-back" class="text-xs text-slate-500 hover:text-slate-300 font-medium mt-1 transition-colors">
+                ← Back to Main Menu
             </button>
         </div>
     </div>
@@ -10031,7 +10174,7 @@
          ***********************************************************************/
         const pieces = [];
         const gameState = {
-            mode: '1P', // '1P', '2P', '4P'
+            mode: '1P', // '1P', '2P', '4P', 'ONLINE_2P'
             selectedHumanTeam: 0,
             currentTurn: 0,
             diceValue: 1,
@@ -10039,6 +10182,330 @@
             aiTimeoutId: null,
             pendingNoMoveAdvance: false
         };
+
+        /***********************************************************************
+         * P2P ONLINE MULTIPLAYER MODULE (PeerJS / WebRTC DataChannel)
+         ***********************************************************************/
+        const netState = {
+            peer: null,           // PeerJS instance
+            conn: null,           // Active DataConnection
+            isHost: true,         // true = room creator, false = joiner
+            roomCode: '',         // 6-char room code
+            connected: false,     // Connection established?
+            remoteTeam: -1,       // Opponent's team index
+            localTeam: -1,        // This player's team index
+        };
+
+        function generateRoomCode() {
+            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+            let code = '';
+            for (let i = 0; i < 6; i++) code += chars[Math.floor(Math.random() * chars.length)];
+            return code;
+        }
+
+        function initPeerJS(callback) {
+            if (netState.peer && !netState.peer.destroyed) {
+                netState.peer.destroy();
+            }
+            const roomCode = generateRoomCode();
+            netState.roomCode = roomCode;
+            const peerId = 'dhaka-ludo-' + roomCode;
+
+            netState.peer = new Peer(peerId, {
+                config: {
+                    iceServers: [
+                        { urls: 'stun:stun.l.google.com:19302' },
+                        { urls: 'stun:stun1.l.google.com:19302' },
+                        { urls: 'stun:stun2.l.google.com:19302' },
+                        { urls: 'stun:stun.relay.metered.ca:80' },
+                    ]
+                }
+            });
+
+            netState.peer.on('open', () => {
+                updateLobbyStatus('connecting', 'Room created. Waiting for opponent...');
+                const codeEl = document.getElementById('lobby-room-code');
+                if (codeEl) codeEl.textContent = roomCode;
+                if (callback) callback(roomCode);
+            });
+
+            netState.peer.on('connection', (conn) => {
+                setupDataConnection(conn);
+            });
+
+            netState.peer.on('error', (err) => {
+                console.error('PeerJS error:', err);
+                if (err.type === 'unavailable-id') {
+                    // Room code collision, retry with new code
+                    initPeerJS(callback);
+                    return;
+                }
+                updateLobbyStatus('error', 'Connection error: ' + (err.message || err.type));
+            });
+        }
+
+        function joinPeerRoom(roomCode) {
+            roomCode = roomCode.toUpperCase().replace(/[^A-Z0-9]/g, '');
+            if (roomCode.length < 4) {
+                updateLobbyStatus('error', 'Room code too short.');
+                return;
+            }
+            netState.isHost = false;
+            netState.roomCode = roomCode;
+
+            if (netState.peer && !netState.peer.destroyed) {
+                netState.peer.destroy();
+            }
+
+            netState.peer = new Peer(undefined, {
+                config: {
+                    iceServers: [
+                        { urls: 'stun:stun.l.google.com:19302' },
+                        { urls: 'stun:stun1.l.google.com:19302' },
+                        { urls: 'stun:stun2.l.google.com:19302' },
+                        { urls: 'stun:stun.relay.metered.ca:80' },
+                    ]
+                }
+            });
+
+            netState.peer.on('open', () => {
+                updateLobbyStatus('connecting', 'Connecting to room ' + roomCode + '...');
+                const conn = netState.peer.connect('dhaka-ludo-' + roomCode, { reliable: true });
+                setupDataConnection(conn);
+            });
+
+            netState.peer.on('error', (err) => {
+                console.error('PeerJS join error:', err);
+                updateLobbyStatus('error', 'Could not connect. Check room code.');
+                const errEl = document.getElementById('lobby-join-error');
+                if (errEl) { errEl.classList.remove('hidden'); }
+            });
+        }
+
+        function setupDataConnection(conn) {
+            netState.conn = conn;
+
+            conn.on('open', () => {
+                netState.connected = true;
+                updateLobbyStatus('connected', 'Opponent connected!');
+
+                // Send handshake with selected team
+                conn.send({
+                    type: 'HANDSHAKE',
+                    team: gameState.selectedHumanTeam,
+                    isHost: netState.isHost
+                });
+
+                showLobbyPanel('connected');
+            });
+
+            conn.on('data', (data) => {
+                handleNetMessage(data);
+            });
+
+            conn.on('close', () => {
+                netState.connected = false;
+                if (gameState.mode === 'ONLINE_2P') {
+                    handleOpponentDisconnect();
+                }
+            });
+
+            conn.on('error', (err) => {
+                console.error('DataConnection error:', err);
+                netState.connected = false;
+                if (gameState.mode === 'ONLINE_2P') {
+                    handleOpponentDisconnect();
+                } else {
+                    updateLobbyStatus('error', 'Connection lost.');
+                }
+            });
+        }
+
+        function handleOpponentDisconnect() {
+            // Stop any pending AI/turn timeouts
+            clearTimeout(gameState.aiTimeoutId);
+            gameState.aiTimeoutId = null;
+
+            // Pause the game
+            if (gameState.phase !== 'GAME_OVER') {
+                gameState.phase = 'GAME_OVER';
+                pieces.forEach(p => p.setSelectable(false));
+            }
+
+            // Show disconnect in the victory modal (persistent, can't be missed)
+            const modal = document.getElementById('victory-modal');
+            const icon = document.getElementById('victory-icon');
+            const title = document.getElementById('victory-title');
+            const desc = document.getElementById('victory-desc');
+            if (icon) icon.textContent = 'signal_disconnected';
+            if (title) title.textContent = 'OPPONENT LEFT!';
+            if (desc) desc.textContent = `${PLAYERS[netState.remoteTeam].name} has disconnected from the match. The game cannot continue without your opponent.`;
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
+
+            updateHUD('\ud83d\udd34 Opponent disconnected - game paused.');
+
+            // Clean up peer connection
+            if (netState.peer && !netState.peer.destroyed) {
+                netState.peer.destroy();
+            }
+        }
+
+        function sendNetMessage(msg) {
+            if (netState.conn && netState.conn.open) {
+                netState.conn.send(msg);
+            }
+        }
+
+        function handleNetMessage(data) {
+            if (!data || !data.type) return;
+
+            switch (data.type) {
+                case 'HANDSHAKE':
+                    // Just record the opponent's team preference
+                    // Final assignments happen in GAME_START (host is authority)
+                    netState.remoteTeam = data.team;
+                    netState.localTeam = gameState.selectedHumanTeam;
+                    break;
+
+                case 'GAME_START':
+                    // Guest receives authoritative team assignments from host
+                    netState.localTeam = data.guestTeam;
+                    netState.remoteTeam = data.hostTeam;
+                    gameState.selectedHumanTeam = data.guestTeam;
+                    startOnlineMatch();
+                    break;
+
+                case 'DICE_ROLL':
+                    // Remote player rolled dice, apply their roll result
+                    if (gameState.phase === 'WAIT_ROLL' && gameState.currentTurn !== netState.localTeam) {
+                        gameState.phase = 'ROLLING';
+                        gameState.diceValue = data.value;
+                        diceAnim.rolling = true;
+                        diceAnim.timer = 0;
+                        diceAnim.targetValue = data.value;
+                        diceAnim.targetQuat.setFromEuler(DICE_FACE_ROTATIONS[data.value]);
+                        audio.playRoll();
+                        updateHUD(`${PLAYERS[gameState.currentTurn].name} is rolling...`);
+                    }
+                    break;
+
+                case 'MOVE_PIECE':
+                    // Remote player selected a piece to move
+                    if (gameState.phase === 'WAIT_MOVE' && gameState.currentTurn !== netState.localTeam) {
+                        const targetPiece = pieces.find(p =>
+                            p.playerIndex === data.playerIndex && p.tokenIndex === data.tokenIndex
+                        );
+                        if (targetPiece && targetPiece.isSelectable) {
+                            executePieceMove(targetPiece);
+                        }
+                    }
+                    break;
+
+                case 'DHAKA_TWIST':
+                    // Host triggered a Dhaka Twist event, apply it on guest side
+                    if (!netState.isHost) {
+                        triggerDhakaTwistEvent(data.eventType);
+                    }
+                    break;
+
+                case 'LEAVE':
+                    // Opponent gracefully left the match
+                    netState.connected = false;
+                    handleOpponentDisconnect();
+                    break;
+
+                case 'REMATCH':
+                    resetMatch();
+                    break;
+            }
+        }
+
+        function updateLobbyStatus(state, text) {
+            const dot = document.querySelector('#lobby-status .lobby-status-dot');
+            const label = document.getElementById('lobby-status-text');
+            if (dot) {
+                dot.className = 'lobby-status-dot ' + state;
+            }
+            if (label) label.textContent = text;
+        }
+
+        function showLobbyPanel(panel) {
+            const hostPanel = document.getElementById('lobby-host-panel');
+            const joinPanel = document.getElementById('lobby-join-panel');
+            const connectedPanel = document.getElementById('lobby-connected-panel');
+            const roleSelector = document.getElementById('lobby-role-selector');
+
+            if (hostPanel) hostPanel.style.display = 'none';
+            if (joinPanel) { joinPanel.style.display = 'none'; joinPanel.classList.add('hidden'); }
+            if (connectedPanel) { connectedPanel.style.display = 'none'; connectedPanel.classList.add('hidden'); }
+
+            if (panel === 'host') {
+                if (hostPanel) hostPanel.style.display = 'flex';
+                if (roleSelector) roleSelector.style.display = '';
+            } else if (panel === 'join') {
+                if (joinPanel) { joinPanel.style.display = 'flex'; joinPanel.classList.remove('hidden'); }
+                if (roleSelector) roleSelector.style.display = '';
+            } else if (panel === 'connected') {
+                if (connectedPanel) { connectedPanel.style.display = 'flex'; connectedPanel.classList.remove('hidden'); }
+                if (roleSelector) roleSelector.style.display = 'none';
+                if (hostPanel) hostPanel.style.display = 'none';
+            }
+        }
+
+        function openOnlineLobby() {
+            const overlay = document.getElementById('online-lobby-overlay');
+            if (overlay) {
+                overlay.classList.remove('hidden');
+                overlay.classList.add('flex');
+            }
+            // Default to host mode
+            netState.isHost = true;
+            showLobbyPanel('host');
+            document.querySelectorAll('#lobby-role-selector .mode-pill-btn').forEach(b => b.classList.remove('active-mode'));
+            document.getElementById('btn-lobby-host').classList.add('active-mode');
+
+            // Clear any previous join error
+            const errEl = document.getElementById('lobby-join-error');
+            if (errEl) errEl.classList.add('hidden');
+
+            // Initialize PeerJS as host
+            updateLobbyStatus('connecting', 'Initializing...');
+            initPeerJS();
+        }
+
+        function closeOnlineLobby() {
+            const overlay = document.getElementById('online-lobby-overlay');
+            if (overlay) {
+                overlay.classList.add('hidden');
+                overlay.classList.remove('flex');
+            }
+            // Cleanup peer if not connected
+            if (!netState.connected && netState.peer && !netState.peer.destroyed) {
+                netState.peer.destroy();
+            }
+        }
+
+        function startOnlineMatch() {
+            closeOnlineLobby();
+            // Close start overlay too
+            const startOverlay = document.getElementById('start-overlay');
+            if (startOverlay) {
+                startOverlay.classList.add('opacity-0', 'pointer-events-none');
+                setTimeout(() => startOverlay.classList.add('hidden'), 480);
+            }
+            gameState.mode = 'ONLINE_2P';
+            resetMatch();
+            audio.init();
+            audio.playCrowdCheer('HIGH');
+            showDhakaTwistToast('lan', '🌐 Online Match Started!', `You are ${PLAYERS[netState.localTeam].name}. ${netState.isHost ? 'You roll first!' : 'Opponent rolls first!'}`, 4500);
+        }
+
+        function isOnlineRemoteTurn() {
+            return gameState.mode === 'ONLINE_2P' && gameState.currentTurn !== netState.localTeam;
+        }
 
         function initPieces() {
             pieces.length = 0;
@@ -10054,6 +10521,9 @@
                 const opp = (gameState.selectedHumanTeam + 2) % 4;
                 return playerIdx === gameState.selectedHumanTeam || playerIdx === opp;
             }
+            if (gameState.mode === 'ONLINE_2P') {
+                return playerIdx === netState.localTeam || playerIdx === netState.remoteTeam;
+            }
             return true;
         }
 
@@ -10061,6 +10531,7 @@
             if (gameState.mode === '1P') {
                 return playerIdx !== gameState.selectedHumanTeam;
             }
+            // In ONLINE_2P, nobody is AI, remote player acts via network
             return false;
         }
 
@@ -10263,6 +10734,8 @@
                 if (tag) {
                     if (gameState.mode === '1P') {
                         tag.textContent = p === gameState.selectedHumanTeam ? 'YOU' : 'AI';
+                    } else if (gameState.mode === 'ONLINE_2P') {
+                        tag.textContent = p === netState.localTeam ? 'YOU' : (p === netState.remoteTeam ? '🌐' : '');
                     } else {
                         tag.textContent = `P${p + 1}`;
                     }
@@ -10274,7 +10747,8 @@
 
             const rollBtn = document.getElementById('btn-roll');
             if (rollBtn) {
-                rollBtn.disabled = discoState.active || !(gameState.phase === 'WAIT_ROLL' && !isPlayerAI(gameState.currentTurn));
+                const isMyOnlineTurn = gameState.mode === 'ONLINE_2P' ? (gameState.currentTurn === netState.localTeam) : true;
+                rollBtn.disabled = discoState.active || !(gameState.phase === 'WAIT_ROLL' && !isPlayerAI(gameState.currentTurn) && isMyOnlineTurn);
             }
 
             const banner = document.getElementById('status-banner');
@@ -10295,6 +10769,11 @@
         function triggerDiceRoll() {
             if (discoState.active) return;
             if (gameState.phase !== 'WAIT_ROLL') return;
+
+            // In ONLINE_2P, only allow rolling on your own turn
+            // (Remote rolls arrive via handleNetMessage DICE_ROLL, not this function)
+            if (gameState.mode === 'ONLINE_2P' && gameState.currentTurn !== netState.localTeam) return;
+
             audio.init();
             gameState.phase = 'ROLLING';
 
@@ -10308,6 +10787,11 @@
 
             audio.playRoll();
             updateHUD(`${PLAYERS[gameState.currentTurn].name} is rolling...`);
+
+            // In online mode, broadcast our roll to the opponent
+            if (gameState.mode === 'ONLINE_2P') {
+                sendNetMessage({ type: 'DICE_ROLL', value: rolled });
+            }
         }
 
         function onDiceRollFinished() {
@@ -10341,7 +10825,10 @@
 
             if (discoState.active) return;
 
-            if (isPlayerAI(gameState.currentTurn) || valid.length === 1) {
+            // In ONLINE_2P, don't auto-move for remote player (they send MOVE_PIECE)
+            const isRemoteOnlineTurn = gameState.mode === 'ONLINE_2P' && gameState.currentTurn !== netState.localTeam;
+
+            if (isPlayerAI(gameState.currentTurn) || (valid.length === 1 && !isRemoteOnlineTurn)) {
                 const delay = isPlayerAI(gameState.currentTurn) ? 650 : 380;
                 clearTimeout(gameState.aiTimeoutId);
                 gameState.aiTimeoutId = setTimeout(() => {
@@ -10382,11 +10869,16 @@
             return best;
         }
 
-        function executePieceMove(piece) {
+        function executePieceMove(piece, isFromNetwork) {
             if (discoState.active) return;
             if (gameState.phase !== 'WAIT_MOVE' || !piece.isSelectable) return;
             gameState.phase = 'ANIMATING';
             pieces.forEach(p => p.setSelectable(false));
+
+            // In ONLINE_2P, broadcast our piece selection to opponent
+            if (gameState.mode === 'ONLINE_2P' && !isFromNetwork && gameState.currentTurn === netState.localTeam) {
+                sendNetMessage({ type: 'MOVE_PIECE', playerIndex: piece.playerIndex, tokenIndex: piece.tokenIndex });
+            }
 
             const roll = gameState.diceValue;
             const startStep = piece.step;
@@ -10566,8 +11058,16 @@
                 gameState.currentTurn = next;
 
                 // Subtle 14% chance between full turns to trigger a spontaneous Dhaka Traffic Jam or Nostalgic Event
+                // In ONLINE_2P, only the host triggers these to keep both sides in sync
                 if (dhakaTwistState.currentEvent === 'NONE' && !discoState.active && Math.random() < 0.14) {
-                    triggerDhakaTwistEvent();
+                    if (gameState.mode !== 'ONLINE_2P' || netState.isHost) {
+                        const types = ['QURBANI_COW','CRICKET_SIXER','MONKEY_TROOP','ROOFTOP_CAT','PIGEON_FRENZY','TANK_OVERFLOW','ACHAR_DRYING','TRAFFIC_JAM','SHANTINAGAR_FLOOD','WASA_DIGGING','LOAD_SHEDDING','MOSQUITO_FOGGER','NOSTALGIA_HAWKER'];
+                        const chosen = types[dhakaTwistState.cycleIdx % types.length];
+                        triggerDhakaTwistEvent(chosen);
+                        if (gameState.mode === 'ONLINE_2P') {
+                            sendNetMessage({ type: 'DHAKA_TWIST', eventType: chosen });
+                        }
+                    }
                 }
             }
 
@@ -10641,15 +11141,29 @@
                 pc.intactGroup.scale.set(1, 1, 1);
                 const [bx, bz] = pc.player.baseCoords[pc.tokenIndex];
                 pc.root.position.set(bx, 0.14, bz);
-                // Hide inactive teams in 2P mode
+                // Hide inactive teams in 2P/ONLINE_2P mode
                 pc.root.visible = isPlayerActiveInMode(pc.playerIndex);
             });
 
-            gameState.currentTurn = gameState.selectedHumanTeam;
+            // In ONLINE_2P the host always starts first
+            if (gameState.mode === 'ONLINE_2P') {
+                gameState.currentTurn = netState.isHost ? netState.localTeam : netState.remoteTeam;
+                gameState.selectedHumanTeam = netState.localTeam;
+            } else {
+                gameState.currentTurn = gameState.selectedHumanTeam;
+            }
             gameState.diceValue = 1;
             gameState.phase = 'WAIT_ROLL';
             updateUIDicePips(1);
-            updateHUD('Match ready on the Chhad — Roll the dice!');
+
+            const modeLabel = gameState.mode === 'ONLINE_2P' ? 'Online match ready' : 'Match ready on the Chhad';
+            updateHUD(`${modeLabel} - Roll the dice!`);
+
+            // Update mode badge for online
+            const badge = document.getElementById('hud-mode-badge');
+            if (badge && gameState.mode === 'ONLINE_2P') {
+                badge.innerHTML = '<span style="color:#7dd3fc;">\ud83c\udf10 Online 2P</span>';
+            }
         }
 
         function openStartMenu() {
@@ -10748,7 +11262,7 @@
             }
 
             // Check if clicking the 3D center die
-            if (gameState.phase === 'WAIT_ROLL' && !isPlayerAI(gameState.currentTurn) && diceMeshGroup) {
+            if (gameState.phase === 'WAIT_ROLL' && !isPlayerAI(gameState.currentTurn) && !isOnlineRemoteTurn() && diceMeshGroup) {
                 const diceHits = raycaster.intersectObjects(diceMeshGroup.children, true);
                 if (diceHits.length > 0) {
                     triggerDiceRoll();
@@ -10757,7 +11271,7 @@
             }
 
             // Check if clicking a selectable Ludo piece
-            if (gameState.phase === 'WAIT_MOVE' && !isPlayerAI(gameState.currentTurn)) {
+            if (gameState.phase === 'WAIT_MOVE' && !isPlayerAI(gameState.currentTurn) && !isOnlineRemoteTurn()) {
                 const selectablePieces = pieces.filter(p => p.isSelectable);
                 for (let i = 0; i < selectablePieces.length; i++) {
                     const sp = selectablePieces[i];
@@ -10845,7 +11359,7 @@
         });
 
         // UI Button Listeners
-        document.getElementById('btn-roll').addEventListener('click', triggerDiceRoll);
+        document.getElementById('btn-roll').addEventListener('click', () => triggerDiceRoll());
         document.getElementById('fps-interact-prompt').addEventListener('click', triggerFPSInteraction);
         document.getElementById('btn-open-toy-shop-hud').addEventListener('click', openToyStoreModal);
         document.getElementById('btn-close-toy-store').addEventListener('click', closeToyStoreModal);
@@ -10889,11 +11403,19 @@
         });
 
         // Startup Menu Mode & Team Selection
-        document.querySelectorAll('.mode-pill-btn').forEach(btn => {
+        document.querySelectorAll('#start-overlay .mode-pill-btn').forEach(btn => {
             btn.addEventListener('click', () => {
-                document.querySelectorAll('.mode-pill-btn').forEach(b => b.classList.remove('active-mode'));
+                document.querySelectorAll('#start-overlay .mode-pill-btn').forEach(b => b.classList.remove('active-mode'));
                 btn.classList.add('active-mode');
-                gameState.mode = btn.getAttribute('data-mode') || '1P';
+                const selectedMode = btn.getAttribute('data-mode') || '1P';
+
+                // If ONLINE_2P, open the lobby instead of changing mode directly
+                if (selectedMode === 'ONLINE_2P') {
+                    openOnlineLobby();
+                    return;
+                }
+
+                gameState.mode = selectedMode;
                 const badge = document.getElementById('hud-mode-badge');
                 if (badge) {
                     badge.textContent = gameState.mode === '1P' ? '1P vs AI' : `${gameState.mode} Local`;
@@ -10932,6 +11454,84 @@
             resetMatch();
         });
 
+        // Online Lobby Event Listeners
+        document.getElementById('btn-lobby-host').addEventListener('click', () => {
+            netState.isHost = true;
+            document.querySelectorAll('#lobby-role-selector .mode-pill-btn').forEach(b => b.classList.remove('active-mode'));
+            document.getElementById('btn-lobby-host').classList.add('active-mode');
+            showLobbyPanel('host');
+            updateLobbyStatus('connecting', 'Initializing...');
+            initPeerJS();
+        });
+
+        document.getElementById('btn-lobby-join').addEventListener('click', () => {
+            netState.isHost = false;
+            document.querySelectorAll('#lobby-role-selector .mode-pill-btn').forEach(b => b.classList.remove('active-mode'));
+            document.getElementById('btn-lobby-join').classList.add('active-mode');
+            showLobbyPanel('join');
+            updateLobbyStatus('connecting', 'Enter a room code to connect.');
+            // Clear any old peer
+            if (netState.peer && !netState.peer.destroyed) netState.peer.destroy();
+        });
+
+        document.getElementById('btn-lobby-connect').addEventListener('click', () => {
+            const input = document.getElementById('lobby-join-input');
+            const code = (input && input.value) ? input.value.trim() : '';
+            if (!code) return;
+            const errEl = document.getElementById('lobby-join-error');
+            if (errEl) errEl.classList.add('hidden');
+            joinPeerRoom(code);
+        });
+
+        document.getElementById('lobby-join-input').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                document.getElementById('btn-lobby-connect').click();
+            }
+        });
+
+        document.getElementById('lobby-room-code').addEventListener('click', () => {
+            const code = netState.roomCode;
+            if (code && navigator.clipboard) {
+                navigator.clipboard.writeText(code).then(() => {
+                    updateLobbyStatus('connected', 'Room code copied to clipboard!');
+                    setTimeout(() => {
+                        if (netState.connected) {
+                            updateLobbyStatus('connected', 'Opponent connected!');
+                        } else {
+                            updateLobbyStatus('connecting', 'Waiting for opponent...');
+                        }
+                    }, 1800);
+                });
+            }
+        });
+
+        document.getElementById('btn-lobby-start-game').addEventListener('click', () => {
+            // Host is the authority for team assignments
+            netState.localTeam = gameState.selectedHumanTeam;
+
+            // Resolve conflict: if guest picked the same team, give them the opposite corner
+            if (netState.remoteTeam === -1 || netState.remoteTeam === netState.localTeam) {
+                netState.remoteTeam = (netState.localTeam + 2) % 4;
+            }
+
+            // Send authoritative assignments to guest
+            sendNetMessage({
+                type: 'GAME_START',
+                hostTeam: netState.localTeam,
+                guestTeam: netState.remoteTeam,
+            });
+
+            startOnlineMatch();
+        });
+
+        document.getElementById('btn-lobby-back').addEventListener('click', () => {
+            closeOnlineLobby();
+            // Reset the mode pill selection back to 1P
+            document.querySelectorAll('#start-overlay .mode-pill-btn').forEach(b => b.classList.remove('active-mode'));
+            document.querySelector('#start-overlay .mode-pill-btn[data-mode="1P"]').classList.add('active-mode');
+            gameState.mode = '1P';
+        });
+
         // Mouse Wheel Zoom & Responsive Window Resize
         window.addEventListener('wheel', (e) => {
             if (camState.viewMode === 'FPS') return;
@@ -10942,6 +11542,19 @@
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // Notify opponent and clean up P2P connection when leaving/closing the page
+        window.addEventListener('beforeunload', () => {
+            if (gameState.mode === 'ONLINE_2P' && netState.connected) {
+                sendNetMessage({ type: 'LEAVE' });
+            }
+            if (netState.conn) {
+                netState.conn.close();
+            }
+            if (netState.peer && !netState.peer.destroyed) {
+                netState.peer.destroy();
+            }
         });
 
         const clock = new THREE.Clock();
