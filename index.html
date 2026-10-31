@@ -250,44 +250,47 @@
     <div id="canvas-container"></div>
 
     <!-- Startup Menu Overlay -->
-    <div id="start-overlay" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md transition-opacity duration-500">
-        <div class="md-surface w-full max-w-md rounded-3xl p-6 sm:p-7 border border-amber-400/35 text-center flex flex-col items-center gap-5 shadow-2xl">
-            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-400 via-rose-500 to-emerald-500 p-0.5 shadow-lg">
-                <div class="w-full h-full bg-slate-950/90 rounded-[14px] flex items-center justify-center">
-                    <span class="material-symbols-rounded text-3xl text-amber-300">temple_hindu</span>
-                </div>
-            </div>
+    <div id="start-overlay" class="fixed inset-0 z-50 transition-opacity duration-500" style="background: #0b0714;">
+        <!-- Full-screen Background Image -->
+        <div class="absolute inset-0" style="background: url('base-menu.png') center center / cover no-repeat;"></div>
+        <!-- Vignette + darken overlay for panel readability -->
+        <div class="absolute inset-0" style="background: radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(8,4,16,0.5) 100%);"></div>
 
-            <div>
-                <h1 class="dhaka-glow-title text-3xl sm:text-4xl font-bold tracking-wide leading-tight">DHAKA CITY LUDO</h1>
-                <p class="text-xs sm:text-sm text-amber-200/80 font-medium mt-1">3D Rooftop Adda Edition</p>
-            </div>
+        <!-- Logo + Panel wrapper - right-aligned, vertically centered -->
+        <div class="absolute z-20 right-3 top-1/2 -translate-y-1/2 sm:right-5 lg:right-8 xl:right-14 flex flex-col items-center">
+
+            <!-- Logo - separate, above the panel -->
+            <img src="logo.png" alt="Dhaka Ludo" class="w-56 sm:w-64 lg:w-72 xl:w-80 mb-3" style="filter: drop-shadow(0 0 28px rgba(253,224,71,0.5)) drop-shadow(0 6px 20px rgba(0,0,0,0.8));" />
+
+            <!-- Game Menu Panel -->
+            <div class="w-[min(92vw,380px)] lg:w-[400px] xl:w-[420px] rounded-3xl p-5 sm:p-6" style="background: rgba(10, 6, 22, 0.85); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(120, 140, 200, 0.18); box-shadow: 0 24px 64px -12px rgba(0,0,0,0.75), inset 0 1px 0 rgba(255,255,255,0.05);">
 
             <!-- Game Mode Selector -->
-            <div class="w-full">
-                <div class="text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-2">Select Game Mode</div>
-                <div class="grid grid-cols-4 gap-2 bg-slate-900/80 p-1.5 rounded-2xl border border-slate-700/60">
-                    <button type="button" data-mode="1P" class="mode-pill-btn active-mode py-2 px-2 rounded-xl text-xs font-bold text-slate-300 border border-transparent">
-                        1P vs AI
+            <div class="w-full mb-5">
+                <div class="text-[11px] font-extrabold uppercase text-slate-400 mb-2.5" style="letter-spacing: 0.2em;">Select Game Mode</div>
+                <div class="flex gap-1 bg-slate-900/70 p-1.5 rounded-2xl border border-slate-700/50">
+                    <button type="button" data-mode="1P" class="mode-pill-btn active-mode flex-1 py-2.5 px-1 rounded-xl text-[11px] font-bold text-slate-300 border border-transparent flex items-center justify-center gap-1">
+                        <span class="material-symbols-rounded text-sm">smart_toy</span>
+                        <span>1P vs AI</span>
                     </button>
-                    <button type="button" data-mode="2P" class="mode-pill-btn py-2 px-2 rounded-xl text-xs font-bold text-slate-300 border border-transparent">
-                        2P Local
+                    <button type="button" data-mode="2P" class="mode-pill-btn flex-1 py-2.5 px-1 rounded-xl text-[11px] font-bold text-slate-300 border border-transparent flex items-center justify-center gap-1">
+                        <span class="material-symbols-rounded text-sm">group</span>
+                        <span>2P Local</span>
                     </button>
-                    <button type="button" data-mode="4P" class="mode-pill-btn py-2 px-2 rounded-xl text-xs font-bold text-slate-300 border border-transparent">
-                        4P Local
+                    <button type="button" data-mode="4P" class="mode-pill-btn flex-1 py-2.5 px-1 rounded-xl text-[11px] font-bold text-slate-300 border border-transparent flex items-center justify-center gap-1">
+                        <span class="material-symbols-rounded text-sm">groups</span>
+                        <span>4P Local</span>
                     </button>
-                    <button type="button" data-mode="ONLINE_2P" class="mode-pill-btn py-2 px-2 rounded-xl text-xs font-bold text-slate-300 border border-transparent" style="background: linear-gradient(135deg, rgba(14,165,233,0.15), rgba(168,85,247,0.15)); border-color: rgba(14,165,233,0.35);">
-                        🌐 Online
+                    <button type="button" data-mode="ONLINE_2P" class="mode-pill-btn flex-1 py-2.5 px-1 rounded-xl text-[11px] font-bold text-slate-300 border border-transparent flex items-center justify-center gap-1" style="background: linear-gradient(135deg, rgba(14,165,233,0.12), rgba(168,85,247,0.12)); border-color: rgba(14,165,233,0.3);">
+                        <span class="material-symbols-rounded text-sm">language</span>
+                        <span>Online</span>
                     </button>
                 </div>
             </div>
 
             <!-- Team Selection Grid -->
-            <div class="w-full">
-                <div class="flex items-center justify-between text-xs text-slate-300 mb-2 px-1">
-                    <span class="font-semibold uppercase tracking-wider text-slate-400 text-[11px]">Choose Your Team</span>
-                    <span id="selected-team-readout" class="font-bold text-rose-400">Lalbagh Rickshaw</span>
-                </div>
+            <div class="w-full mb-5">
+                <div class="text-[11px] font-extrabold uppercase text-slate-400 mb-2.5" style="letter-spacing: 0.2em;">Choose Your Team</div>
                 <div class="grid grid-cols-2 gap-2.5">
                     <button type="button" data-team="0" class="team-select-card selected-team flex items-center gap-3 p-3 rounded-2xl border-2 border-rose-500 text-left">
                         <div class="w-10 h-10 rounded-xl bg-rose-500/20 border border-rose-500/40 flex items-center justify-center text-rose-400 shrink-0">
@@ -307,8 +310,8 @@
                             </svg>
                         </div>
                         <div class="overflow-hidden">
-                            <div class="text-xs font-extrabold text-white truncate">Lalbagh</div>
-                            <div class="text-[11px] text-rose-300/90 font-medium truncate">Rickshaw</div>
+                            <div class="text-sm font-extrabold text-white truncate">Lalbagh</div>
+                            <div class="text-xs text-rose-300/90 font-medium truncate">Rickshaw</div>
                         </div>
                     </button>
 
@@ -317,8 +320,8 @@
                             <span class="material-symbols-rounded text-2xl">electric_rickshaw</span>
                         </div>
                         <div class="overflow-hidden">
-                            <div class="text-xs font-extrabold text-white truncate">Dhanmondi</div>
-                            <div class="text-[11px] text-emerald-300/90 font-medium truncate">Green CNG</div>
+                            <div class="text-sm font-extrabold text-white truncate">Dhanmondi</div>
+                            <div class="text-xs text-emerald-300/90 font-medium truncate">Green CNG</div>
                         </div>
                     </button>
 
@@ -327,8 +330,8 @@
                             <span class="material-symbols-rounded text-2xl">pets</span>
                         </div>
                         <div class="overflow-hidden">
-                            <div class="text-xs font-extrabold text-white truncate">Sonargaon</div>
-                            <div class="text-[11px] text-amber-200/90 font-medium truncate">Bagh Mama</div>
+                            <div class="text-sm font-extrabold text-white truncate">Sonargaon</div>
+                            <div class="text-xs text-amber-200/90 font-medium truncate">Bagh Mama</div>
                         </div>
                     </button>
 
@@ -337,21 +340,23 @@
                             <span class="material-symbols-rounded text-2xl">directions_boat</span>
                         </div>
                         <div class="overflow-hidden">
-                            <div class="text-xs font-extrabold text-white truncate">Buriganga</div>
-                            <div class="text-[11px] text-sky-200/90 font-medium truncate">Launch</div>
+                            <div class="text-sm font-extrabold text-white truncate">Buriganga</div>
+                            <div class="text-xs text-sky-200/90 font-medium truncate">Launch</div>
                         </div>
                     </button>
                 </div>
             </div>
 
-            <button id="btn-start-match" type="button" class="md-btn w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-amber-400 via-orange-500 to-rose-600 text-slate-950 font-extrabold text-sm sm:text-base tracking-wide shadow-lg flex items-center justify-center gap-2">
+            <!-- Start Button -->
+            <button id="btn-start-match" type="button" class="md-btn w-full py-3.5 px-6 rounded-2xl text-slate-950 font-extrabold text-sm sm:text-base tracking-wide flex items-center justify-center gap-2.5" style="background: linear-gradient(90deg, #f59e0b, #f97316, #e11d48); box-shadow: 0 6px 24px -4px rgba(245,158,11,0.5), 0 2px 8px rgba(225,29,72,0.3);">
                 <span class="material-symbols-rounded text-xl">play_arrow</span>
-                <span id="start-btn-label">START AS LALBAGH</span>
+                <span id="start-btn-label" class="tracking-widest">START AS LALBAGH</span>
             </button>
 
-            <p class="text-[10px] text-slate-500 font-medium tracking-wide mt-1">
-                ✉️ <a href="mailto:contact@nbslabs.dev" class="text-sky-400/70 hover:text-sky-300 transition-colors">contact@nbslabs.dev</a>
+            <p class="text-[10px] text-slate-500/70 font-medium tracking-wide text-center mt-3">
+                ✉️ <a href="mailto:contact@nbslabs.dev" class="text-sky-400/50 hover:text-sky-300 transition-colors">contact@nbslabs.dev</a>
             </p>
+        </div>
         </div>
     </div>
 
