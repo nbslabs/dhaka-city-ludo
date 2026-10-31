@@ -17,6 +17,7 @@ first-person rooftop exploration mode.
 
 - [Overview](#overview)
 - [Features](#features)
+- [Social Sharing & Virality](#social-sharing--virality)
 - [Tech Stack](#tech-stack)
 - [Getting Started](#getting-started)
 - [Gameplay Guide](#gameplay-guide)
@@ -26,6 +27,7 @@ first-person rooftop exploration mode.
 - [Weather System](#weather-system)
 - [Project Structure](#project-structure)
 - [Contributing](#contributing)
+- [License](#license)
 
 ---
 
@@ -89,11 +91,91 @@ traditional Bengali toys.
 - **Bilingual UI** - Bengali and English throughout the
   interface, dialogues, and toast notifications
 - **Mobile Responsive** - Touch-optimized with adaptive UI
-  for phones and tablets
+  for phones and tablets, virtual D-pad, and action buttons
 - **Online Multiplayer** - Peer-to-peer via PeerJS/WebRTC
   DataChannels, no backend server needed. Share a 6-character
   room code via WhatsApp or Messenger to connect
+- **Victory Shareable Card** - Auto-generated canvas-based
+  victory card with player stats, Bangla taglines, and
+  one-tap sharing to WhatsApp, Facebook, X/Twitter, or
+  native share
+- **📸 Chhad Moment Screenshot** - One-click clean 3D scene
+  capture with branded watermark, camera shutter sound, and
+  instant sharing (press **P** or the camera button)
+- **🌦️ Dhaka Weather Postcard** - Transform any screenshot
+  into a vintage postcard with weather-specific Bangla
+  captions, decorative stamp, paper texture, and corner
+  flourishes
+- **🎯 Challenge a Friend Deep Link** - Generate a challenge
+  URL after winning, share via WhatsApp with Bangla
+  trash-talk, and your friend auto-joins your room from the
+  link
 - **Google Analytics** - Integrated page-level tracking
+
+---
+
+## Social Sharing & Virality
+
+The game includes a complete social sharing toolkit designed
+to drive organic growth via WhatsApp, Messenger, and social
+media - the dominant sharing platforms in Bangladesh.
+
+### 🏆 Victory Shareable Card
+
+After winning, an auto-generated **1080x1080 canvas card**
+includes:
+
+- Player's team name, icon, and color gradient background
+- Win stats: Rolls, Chhakkas (sixes), and Captures
+- A randomly selected Bangla tagline (e.g. "ছাদের লুডুতে
+  চ্যাম্পিয়ন! 🏅")
+- Game logo and URL watermark
+- Share buttons: WhatsApp, Facebook, X/Twitter, Download,
+  and native Web Share API with image attachment
+
+### 📸 Chhad Moment Screenshot
+
+A camera button in the HUD (or press **P**) captures a
+clean screenshot of the 3D rooftop scene:
+
+- All UI overlays are temporarily hidden for a clean frame
+- A forced WebGL render pass captures the current scene
+- A branded watermark is composited with the game title,
+  current weather, camera mode, timestamp, and domain
+- Synthesized camera shutter sound provides audio feedback
+- Share via WhatsApp, X/Twitter, download, or native share
+
+### 🌦️ Dhaka Weather Postcard
+
+Toggle the "📮 Make Postcard" button in the screenshot modal
+to transform any capture into a vintage-style postcard:
+
+- **1440x1080** landscape layout with cream paper texture
+  and grain noise
+- Scene photo with white border, drop shadow, and vignette
+- **Weather-specific Bangla captions**, for example:
+  - Morning: "ঢাকার সকালে ছাদে চা আর লুডু ☕"
+  - Evening: "ঢাকার সন্ধ্যায় ছাদে লুডু আড্ডা 🌇"
+  - Rainy: "বৃষ্টির দিনে ছাদে বসে খেলা 🌧️"
+  - Kalboishakhi: "কালবৈশাখীর ঝড়ে ছাদে লুডু! ⛈️"
+- Decorative perforated stamp with dice icon and game
+  branding
+- Corner flourishes and "From the Chhad, Dhaka" tagline
+
+### 🎯 Challenge a Friend Deep Link
+
+After any victory, click "CHALLENGE A FRIEND" to:
+
+1. Generate a unique URL like
+   `dhakaludo.nbslabs.dev/?challenge=ABC123`
+2. Start hosting a PeerJS room with that code
+3. Share via WhatsApp with Bangla trash-talk messages, e.g.:
+   > "আমি ছাদের লুডুতে ৬ গেম জিতেছি! তোর সাহস থাকলে আয়,
+   > অনলাইনে খেল! 🎲🔥"
+4. When your friend opens the link, the game auto-joins
+   the room - no manual code entry needed
+5. Win counter is tracked in `localStorage` and included in
+   challenge messages
 
 ---
 
@@ -249,6 +331,7 @@ In FPS mode, walk around the fully realized Dhaka rooftop:
 | F / Left Click      | Shoot or launch equipped toy  |
 | Keys 1-6            | Switch equipped toy           |
 | V                   | Switch camera mode            |
+| P                   | Capture Chhad Moment screenshot |
 | Mouse / Touch Drag  | Look around                   |
 
 ### Interactive Spots
@@ -289,12 +372,15 @@ effects, and ambient sound:
 ```
 dhaka-city-ludo/
 ├── index.html    # Entire application (HTML + CSS + JS)
+├── logo.png      # Game logo (used in start overlay)
+├── base-menu.png # Menu background image
 ├── CNAME         # Custom domain for GitHub Pages
+├── LICENSE       # MIT License
 └── README.md     # This file
 ```
 
-The project is a single self-contained HTML file (~12,300
-lines, ~645 KB) that includes:
+The project is a single self-contained HTML file (~14,700
+lines, ~754 KB) that includes:
 
 - Inline CSS with Tailwind CDN and custom styles
 - Full Three.js 3D scene (board, rooftop, city environment,
@@ -303,6 +389,9 @@ lines, ~645 KB) that includes:
   Tone.js with 30+ synthesized sound effects
 - Complete game logic (dice, moves, captures, AI, events)
 - FPS mode with collision, jump physics, and NPC dialogue
+- Social sharing system (Victory Card, Screenshot, Postcard,
+  Challenge Deep Links)
+- Online P2P multiplayer via PeerJS/WebRTC
 - Responsive touch and keyboard input handling
 
 ---
@@ -323,6 +412,16 @@ Contributions are welcome! Here are some ways to help:
 - Performance optimizations for mobile devices
 - Accessibility improvements
 - Localization for additional languages
+- Replay GIF/video clip system for dramatic moments
+- Weekly leaderboard badge system
+- Bangla trash-talk sticker pack
+
+---
+
+## License
+
+This project is licensed under the
+[MIT License](LICENSE).
 
 ---
 

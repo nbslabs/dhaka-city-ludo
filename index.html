@@ -243,6 +243,385 @@
             border-color: #fbbf24;
             box-shadow: 0 0 6px rgba(225, 29, 72, 0.65);
         }
+
+        /* ============================================================
+           MOBILE RESPONSIVE STYLES
+           ============================================================ */
+
+        /* Mobile Virtual D-Pad for FPS Mode */
+        #mobile-fps-dpad {
+            display: none;
+            position: fixed;
+            bottom: 28px;
+            left: 18px;
+            z-index: 25;
+            pointer-events: auto;
+            width: 140px;
+            height: 140px;
+        }
+        #mobile-fps-dpad .dpad-btn {
+            position: absolute;
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: rgba(20, 15, 32, 0.75);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1.5px solid rgba(251, 191, 36, 0.4);
+            color: #fde047;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: none;
+        }
+        #mobile-fps-dpad .dpad-btn:active,
+        #mobile-fps-dpad .dpad-btn.pressed {
+            background: rgba(245, 158, 11, 0.45);
+            border-color: rgba(253, 224, 71, 0.8);
+            transform: scale(0.92);
+        }
+        #mobile-fps-dpad .dpad-up    { top: 0; left: 50%; transform: translateX(-50%); }
+        #mobile-fps-dpad .dpad-down  { bottom: 0; left: 50%; transform: translateX(-50%); }
+        #mobile-fps-dpad .dpad-left  { top: 50%; left: 0; transform: translateY(-50%); }
+        #mobile-fps-dpad .dpad-right { top: 50%; right: 0; transform: translateY(-50%); }
+        #mobile-fps-dpad .dpad-up:active, #mobile-fps-dpad .dpad-up.pressed { transform: translateX(-50%) scale(0.92); }
+        #mobile-fps-dpad .dpad-down:active, #mobile-fps-dpad .dpad-down.pressed { transform: translateX(-50%) scale(0.92); }
+        #mobile-fps-dpad .dpad-left:active, #mobile-fps-dpad .dpad-left.pressed { transform: translateY(-50%) scale(0.92); }
+        #mobile-fps-dpad .dpad-right:active, #mobile-fps-dpad .dpad-right.pressed { transform: translateY(-50%) scale(0.92); }
+
+        /* Mobile FPS Action Buttons (Jump, Sprint, Shoot) */
+        #mobile-fps-actions {
+            display: none;
+            position: fixed;
+            bottom: 28px;
+            right: 18px;
+            z-index: 25;
+            pointer-events: auto;
+            gap: 10px;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+        #mobile-fps-actions .fps-action-btn {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: rgba(20, 15, 32, 0.75);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1.5px solid rgba(251, 191, 36, 0.4);
+            color: #fde047;
+            font-size: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: none;
+        }
+        #mobile-fps-actions .fps-action-btn span.fps-btn-label {
+            font-size: 7px;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-top: 1px;
+        }
+        #mobile-fps-actions .fps-action-btn:active {
+            background: rgba(245, 158, 11, 0.45);
+            border-color: rgba(253, 224, 71, 0.8);
+            transform: scale(0.92);
+        }
+
+        /* ---- Small Phones (max 640px) ---- */
+        @media (max-width: 640px) {
+            /* Start Overlay: center the panel, make scrollable */
+            #start-overlay > .absolute.z-20 {
+                position: relative !important;
+                right: auto !important;
+                top: auto !important;
+                transform: none !important;
+                margin: 0 auto;
+                padding: 16px 8px 24px;
+                max-width: 100%;
+            }
+            #start-overlay {
+                overflow-y: auto !important;
+                -webkit-overflow-scrolling: touch;
+                display: flex !important;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                padding-top: 12px;
+            }
+            #start-overlay > .absolute:first-child,
+            #start-overlay > .absolute:nth-child(2) {
+                position: fixed !important;
+            }
+            #start-overlay img[alt="Dhaka Ludo"] {
+                width: 180px !important;
+            }
+
+            /* HUD Header: tighter spacing */
+            .fixed.inset-0.z-10 > header {
+                flex-wrap: wrap;
+                gap: 4px;
+                padding: 0;
+            }
+            .fixed.inset-0.z-10 > header .md-surface:first-child {
+                padding: 6px 8px;
+                gap: 6px;
+            }
+            .fixed.inset-0.z-10 > header .md-surface:first-child .w-8 {
+                width: 24px;
+                height: 24px;
+                min-width: 24px;
+            }
+            .fixed.inset-0.z-10 > header .md-surface:first-child .material-symbols-rounded {
+                font-size: 14px;
+            }
+            #status-banner {
+                max-width: 140px !important;
+                font-size: 10px !important;
+            }
+            #hud-mode-badge {
+                font-size: 9px !important;
+                padding: 1px 4px !important;
+            }
+
+            /* HUD Action Bar: make icons-only, no text labels */
+            .fixed.inset-0.z-10 > header > .flex.items-center.gap-1\\.5 {
+                gap: 4px;
+            }
+            #btn-dhaka-twist,
+            #btn-weather,
+            #btn-camera,
+            #btn-menu {
+                padding: 6px 8px;
+                min-width: 36px;
+                min-height: 36px;
+            }
+            #btn-audio,
+            #btn-screenshot {
+                width: 36px;
+                height: 36px;
+                min-width: 36px;
+            }
+
+            /* Bottom Footer: vertical stack on mobile */
+            .fixed.inset-0.z-10 > footer {
+                flex-direction: column !important;
+                gap: 6px !important;
+                padding-bottom: 4px;
+            }
+
+            /* Player cards: 2 per row, smaller */
+            .fixed.inset-0.z-10 > footer > .flex.items-center.justify-center {
+                width: 100% !important;
+                gap: 4px !important;
+            }
+            .player-card {
+                min-width: 0 !important;
+                padding: 6px 8px !important;
+                border-radius: 14px !important;
+                flex: 1;
+                max-width: 50%;
+            }
+            .player-card .w-8 {
+                width: 22px !important;
+                height: 22px !important;
+                min-width: 22px;
+                border-radius: 8px !important;
+            }
+            .player-card .text-xs {
+                font-size: 10px !important;
+            }
+            .player-card .text-\\[10px\\] {
+                font-size: 9px !important;
+            }
+            .player-card .gap-2\\.5 {
+                gap: 6px !important;
+            }
+
+            /* Dice Dock: compact on mobile */
+            .fixed.inset-0.z-10 > footer > .md-surface.pointer-events-auto {
+                padding: 6px 10px !important;
+                gap: 8px !important;
+                border-radius: 18px !important;
+                order: -1;
+            }
+            .fixed.inset-0.z-10 > footer > .md-surface .w-11 {
+                width: 36px !important;
+                height: 36px !important;
+            }
+            .pip-grid {
+                width: 28px;
+                height: 28px;
+                padding: 3px;
+                gap: 2px;
+                border-radius: 7px;
+            }
+            #btn-roll {
+                padding: 8px 14px !important;
+                font-size: 12px !important;
+                min-height: 38px;
+            }
+
+            /* Disco Button: smaller and better positioned */
+            #btn-disco {
+                width: 44px !important;
+                height: 44px !important;
+                bottom: 80px !important;
+                right: 8px !important;
+            }
+            #btn-disco .material-symbols-rounded {
+                font-size: 20px !important;
+            }
+            #disco-btn-timer {
+                font-size: 7px !important;
+            }
+
+            /* Event Toast: tighter */
+            #dhaka-event-toast {
+                top: 52px;
+                max-width: 92%;
+                padding: 8px 12px;
+            }
+
+            /* Tank Pump Alert: mobile positioning */
+            #tank-pump-alert {
+                top: 60px !important;
+                width: 95% !important;
+                padding: 10px 12px !important;
+            }
+
+            /* Victory Modal */
+            #victory-modal > .md-surface {
+                padding: 20px 16px !important;
+            }
+
+            /* FPS HUD: smaller, repositioned */
+            #fps-hud-overlay > .fixed.top-16 {
+                top: 52px !important;
+                right: 6px !important;
+                padding: 8px 10px !important;
+                max-width: 200px;
+                font-size: 9px !important;
+            }
+            #fps-hud-overlay > .fixed.top-16 .text-\\[10px\\] {
+                font-size: 9px !important;
+            }
+            #fps-hud-overlay > .fixed.top-16 .text-\\[11px\\] {
+                font-size: 9px !important;
+            }
+
+            /* FPS Toy HUD: compact */
+            #fps-toy-hud {
+                bottom: 80px !important;
+                left: 6px !important;
+                padding: 8px 10px !important;
+                max-width: 240px !important;
+                border-radius: 14px !important;
+            }
+            #fps-toy-hud .grid-cols-6 {
+                gap: 2px !important;
+            }
+            #fps-toy-hud .toy-slot-btn {
+                padding: 3px 2px !important;
+                border-radius: 8px !important;
+            }
+
+            /* FPS Interact Prompt */
+            #fps-interact-prompt {
+                bottom: 180px !important;
+                padding: 8px 12px !important;
+            }
+
+            /* FPS Dialogue Box */
+            #fps-dialogue-box {
+                bottom: 200px !important;
+                width: 94% !important;
+                padding: 12px !important;
+            }
+
+            /* Online Lobby: make scrollable */
+            #online-lobby-overlay > .md-surface {
+                max-height: 90vh;
+                overflow-y: auto;
+                padding: 16px !important;
+            }
+
+            /* Toy Store Modal */
+            #fps-toy-store-modal > .md-surface {
+                padding: 14px !important;
+                max-height: 85vh;
+                overflow-y: auto;
+            }
+            #fps-toy-store-modal .grid {
+                grid-template-columns: 1fr !important;
+            }
+
+            /* HUD main container: tighter padding */
+            .fixed.inset-0.z-10 {
+                padding: 6px !important;
+            }
+        }
+
+        /* ---- Tablets / Small Landscape (641px - 768px) ---- */
+        @media (min-width: 641px) and (max-width: 768px) {
+            #start-overlay > .absolute.z-20 {
+                right: 8px !important;
+            }
+            .player-card {
+                min-width: 160px !important;
+            }
+        }
+
+        /* ---- Landscape phones (short viewport) ---- */
+        @media (max-height: 480px) {
+            .fixed.inset-0.z-10 {
+                padding: 4px !important;
+            }
+            .fixed.inset-0.z-10 > header {
+                gap: 2px;
+            }
+            .fixed.inset-0.z-10 > footer {
+                gap: 4px !important;
+            }
+            .player-card {
+                padding: 4px 6px !important;
+            }
+            #start-overlay > .absolute.z-20 {
+                position: relative !important;
+                right: auto !important;
+                top: auto !important;
+                transform: none !important;
+                margin: 0 auto;
+            }
+            #start-overlay {
+                overflow-y: auto !important;
+                -webkit-overflow-scrolling: touch;
+            }
+            #start-overlay img[alt="Dhaka Ludo"] {
+                width: 140px !important;
+            }
+        }
+
+        /* Show mobile FPS controls only on touch devices when FPS mode is active */
+        @media (hover: none) and (pointer: coarse) {
+            #mobile-fps-dpad.fps-active {
+                display: block;
+            }
+            #mobile-fps-actions.fps-active {
+                display: flex;
+            }
+            /* Hide keyboard-only hints in FPS HUD on touch devices */
+            #fps-hud-overlay > .fixed.top-16 {
+                display: none !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -434,18 +813,143 @@
     </div>
 
     <!-- Victory Modal -->
-    <div id="victory-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
-        <div class="md-surface max-w-sm w-full rounded-3xl p-6 text-center border border-amber-400/40 flex flex-col items-center gap-4">
+    <div id="victory-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md" style="overflow-y:auto;">
+        <div class="md-surface max-w-sm w-full rounded-3xl p-6 text-center border border-amber-400/40 flex flex-col items-center gap-4" style="max-height:85vh;overflow-y:auto;">
             <div class="w-16 h-16 rounded-2xl bg-amber-400/20 border border-amber-400/50 flex items-center justify-center text-amber-300">
                 <span id="victory-icon" class="material-symbols-rounded text-4xl">emoji_events</span>
             </div>
             <h2 id="victory-title" class="dhaka-glow-title text-2xl font-bold">LALBAGH WINS!</h2>
             <p id="victory-desc" class="text-xs text-slate-300 leading-relaxed">All 4 Gutis have reached the golden Shapla Chattar monument!</p>
-            <button id="btn-play-again" type="button" class="md-btn w-full py-3 rounded-2xl bg-gradient-to-r from-amber-400 to-rose-500 text-slate-950 font-extrabold text-sm">
-                PLAY AGAIN ON THE CHHAD
+            <!-- Victory Stats Row -->
+            <div id="victory-stats-row" class="w-full grid grid-cols-3 gap-2 text-center">
+                <div class="bg-slate-900/70 rounded-xl py-2 px-1 border border-slate-700/50">
+                    <div id="victory-stat-rolls" class="text-lg font-extrabold text-amber-300">0</div>
+                    <div class="text-[9px] text-slate-400 font-semibold uppercase tracking-wider">Rolls</div>
+                </div>
+                <div class="bg-slate-900/70 rounded-xl py-2 px-1 border border-slate-700/50">
+                    <div id="victory-stat-sixes" class="text-lg font-extrabold text-rose-400">0</div>
+                    <div class="text-[9px] text-slate-400 font-semibold uppercase tracking-wider">Chhakkas</div>
+                </div>
+                <div class="bg-slate-900/70 rounded-xl py-2 px-1 border border-slate-700/50">
+                    <div id="victory-stat-captures" class="text-lg font-extrabold text-emerald-400">0</div>
+                    <div class="text-[9px] text-slate-400 font-semibold uppercase tracking-wider">Captures</div>
+                </div>
+            </div>
+            <!-- Action Buttons -->
+            <div class="w-full flex gap-2">
+                <button id="btn-play-again" type="button" class="md-btn flex-1 py-3 rounded-2xl bg-gradient-to-r from-amber-400 to-rose-500 text-slate-950 font-extrabold text-sm flex items-center justify-center gap-1.5">
+                    <span class="material-symbols-rounded text-lg">replay</span>
+                    <span>PLAY AGAIN</span>
+                </button>
+                <button id="btn-share-victory" type="button" class="md-btn flex-1 py-3 rounded-2xl bg-gradient-to-r from-emerald-400 via-sky-500 to-purple-500 text-slate-950 font-extrabold text-sm flex items-center justify-center gap-1.5">
+                    <span class="material-symbols-rounded text-lg">share</span>
+                    <span>SHARE WIN</span>
+                </button>
+            </div>
+            <!-- Challenge a Friend Button -->
+            <button id="btn-challenge-friend" type="button" class="md-btn w-full py-3 rounded-2xl bg-gradient-to-r from-rose-500 via-fuchsia-500 to-purple-600 text-white font-extrabold text-sm flex items-center justify-center gap-2 border border-fuchsia-400/40 shadow-lg shadow-fuchsia-500/20">
+                <span class="material-symbols-rounded text-lg">swords</span>
+                <span>🎯 CHALLENGE A FRIEND</span>
             </button>
+            <!-- Challenge Share Panel (hidden by default) -->
+            <div id="challenge-share-panel" class="w-full hidden flex-col items-center gap-2.5">
+                <div class="w-full bg-slate-900/80 rounded-xl p-3 border border-fuchsia-400/30">
+                    <div class="text-[10px] text-fuchsia-300 font-bold uppercase tracking-wider mb-1">Challenge Link</div>
+                    <div id="challenge-link-display" class="text-xs text-sky-300 font-mono break-all select-all leading-relaxed">---</div>
+                </div>
+                <div class="flex gap-2 w-full">
+                    <button type="button" id="btn-challenge-whatsapp" class="md-btn flex-1 py-2.5 rounded-xl bg-[#25D366] text-white font-bold text-xs flex items-center justify-center gap-1">
+                        WhatsApp
+                    </button>
+                    <button type="button" id="btn-challenge-copy" class="md-btn flex-1 py-2.5 rounded-xl bg-slate-800 text-amber-300 font-bold text-xs flex items-center justify-center gap-1.5 border border-amber-400/40">
+                        <span class="material-symbols-rounded text-sm">content_copy</span>
+                        Copy Link
+                    </button>
+                    <button type="button" id="btn-challenge-native" class="md-btn flex-1 py-2.5 rounded-xl bg-slate-800 text-sky-300 font-bold text-xs flex items-center justify-center gap-1.5 border border-sky-400/40">
+                        <span class="material-symbols-rounded text-sm">ios_share</span>
+                        More...
+                    </button>
+                </div>
+            </div>
+            <!-- Share Options Panel (hidden by default) -->
+            <div id="victory-share-panel" class="w-full hidden flex-col items-center gap-2.5 pt-1">
+                <!-- Card Preview -->
+                <div id="victory-card-preview" class="w-full rounded-2xl overflow-hidden border-2 border-amber-400/50 shadow-lg"></div>
+                <!-- Share Buttons Row -->
+                <div class="flex gap-2 w-full">
+                    <button type="button" id="btn-share-whatsapp" class="md-btn flex-1 py-2.5 rounded-xl bg-[#25D366] text-white font-bold text-xs flex items-center justify-center gap-1">
+                        <span>WhatsApp</span>
+                    </button>
+                    <button type="button" id="btn-share-facebook" class="md-btn flex-1 py-2.5 rounded-xl bg-[#1877F2] text-white font-bold text-xs flex items-center justify-center gap-1">
+                        <span>Facebook</span>
+                    </button>
+                    <button type="button" id="btn-share-x" class="md-btn flex-1 py-2.5 rounded-xl bg-slate-800 text-white font-bold text-xs flex items-center justify-center gap-1 border border-slate-600">
+                        <span>X / Twitter</span>
+                    </button>
+                </div>
+                <div class="flex gap-2 w-full">
+                    <button type="button" id="btn-share-download" class="md-btn flex-1 py-2.5 rounded-xl bg-slate-800 text-amber-300 font-bold text-xs flex items-center justify-center gap-1.5 border border-amber-400/40">
+                        <span class="material-symbols-rounded text-sm">download</span>
+                        <span>Save Image</span>
+                    </button>
+                    <button type="button" id="btn-share-native" class="md-btn flex-1 py-2.5 rounded-xl bg-slate-800 text-sky-300 font-bold text-xs flex items-center justify-center gap-1.5 border border-sky-400/40">
+                        <span class="material-symbols-rounded text-sm">ios_share</span>
+                        <span>More...</span>
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
+    <!-- Hidden Canvas for Victory Card Generation -->
+    <canvas id="victory-card-canvas" width="1080" height="1080" style="display:none;"></canvas>
+
+    <!-- Chhad Moment Screenshot Modal -->
+    <div id="screenshot-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md" style="overflow-y:auto;">
+        <div class="md-surface max-w-md w-full rounded-3xl p-5 text-center border border-fuchsia-400/40 flex flex-col items-center gap-3" style="max-height:90vh;overflow-y:auto;">
+            <div class="flex items-center gap-2">
+                <span class="material-symbols-rounded text-2xl text-fuchsia-300">photo_camera</span>
+                <h2 class="text-lg font-extrabold text-fuchsia-200">Chhad Moment</h2>
+            </div>
+            <!-- Screenshot Preview -->
+            <div id="screenshot-preview" class="w-full rounded-2xl overflow-hidden border-2 border-fuchsia-400/40 shadow-lg bg-slate-900"></div>
+            <!-- Weather & Time Badge -->
+            <div id="screenshot-badge" class="flex items-center gap-2 text-xs text-slate-400 font-semibold">
+                <span id="screenshot-weather-icon" class="material-symbols-rounded text-sm text-amber-300">wb_twilight</span>
+                <span id="screenshot-weather-label">Evening</span>
+                <span class="text-slate-600">|</span>
+                <span id="screenshot-cam-label">Chhad View</span>
+            </div>
+            <!-- Postcard Toggle -->
+            <button type="button" id="btn-ss-postcard" class="md-btn w-full py-2.5 rounded-xl bg-gradient-to-r from-fuchsia-500/20 via-amber-400/20 to-sky-400/20 text-fuchsia-200 font-bold text-xs flex items-center justify-center gap-2 border border-fuchsia-400/30 hover:border-fuchsia-400/60 transition-all">
+                <span class="material-symbols-rounded text-sm">mail</span>
+                <span id="btn-ss-postcard-label">📮 Make Postcard</span>
+            </button>
+            <!-- Share Buttons -->
+            <div class="flex gap-2 w-full">
+                <button type="button" id="btn-ss-whatsapp" class="md-btn flex-1 py-2.5 rounded-xl bg-[#25D366] text-white font-bold text-xs flex items-center justify-center gap-1">
+                    WhatsApp
+                </button>
+                <button type="button" id="btn-ss-x" class="md-btn flex-1 py-2.5 rounded-xl bg-slate-800 text-white font-bold text-xs flex items-center justify-center gap-1 border border-slate-600">
+                    X / Twitter
+                </button>
+            </div>
+            <div class="flex gap-2 w-full">
+                <button type="button" id="btn-ss-download" class="md-btn flex-1 py-2.5 rounded-xl bg-slate-800 text-amber-300 font-bold text-xs flex items-center justify-center gap-1.5 border border-amber-400/40">
+                    <span class="material-symbols-rounded text-sm">download</span>
+                    Save Image
+                </button>
+                <button type="button" id="btn-ss-share" class="md-btn flex-1 py-2.5 rounded-xl bg-slate-800 text-sky-300 font-bold text-xs flex items-center justify-center gap-1.5 border border-sky-400/40">
+                    <span class="material-symbols-rounded text-sm">ios_share</span>
+                    More...
+                </button>
+            </div>
+            <button type="button" id="btn-ss-close" class="text-xs text-slate-500 hover:text-slate-300 font-semibold mt-1">Close</button>
+        </div>
+    </div>
+    <!-- Hidden Canvas for Screenshot Watermark Compositing -->
+    <canvas id="screenshot-canvas" style="display:none;"></canvas>
+    <!-- Hidden Canvas for Postcard Compositing -->
+    <canvas id="postcard-canvas" style="display:none;"></canvas>
 
     <!-- Emergency Rooftop Water Tank Pump Switch Banner (Appears during Tank Overflow) -->
     <div id="tank-pump-alert" class="fixed top-28 left-1/2 -translate-x-1/2 z-40 hidden flex-col items-center gap-2 px-5 py-3.5 rounded-3xl md-surface border-2 border-sky-400 shadow-[0_0_35px_rgba(14,165,233,0.65)] max-w-sm w-[92%] text-center">
@@ -513,6 +1017,11 @@
                 <!-- Audio Mute/Unmute Toggle -->
                 <button id="btn-audio" type="button" title="Toggle Dhaka Soundscape & Music" class="md-surface md-btn flex items-center justify-center w-9 h-9 rounded-2xl text-slate-200 hover:text-white">
                     <span id="audio-icon" class="material-symbols-rounded text-base text-emerald-300">volume_up</span>
+                </button>
+
+                <!-- Chhad Moment Screenshot Button -->
+                <button id="btn-screenshot" type="button" title="📸 Chhad Moment - Capture & Share a Screenshot!" class="md-surface md-btn flex items-center justify-center w-9 h-9 rounded-2xl text-slate-200 hover:text-white">
+                    <span class="material-symbols-rounded text-base text-fuchsia-300">photo_camera</span>
                 </button>
 
                 <!-- Menu Button -->
@@ -848,7 +1357,53 @@
         </div>
     </div>
 
+    <!-- Mobile Virtual D-Pad for FPS Mode (Touch Devices Only) -->
+    <div id="mobile-fps-dpad">
+        <button type="button" class="dpad-btn dpad-up" data-dir="forward">
+            <span class="material-symbols-rounded">arrow_upward</span>
+        </button>
+        <button type="button" class="dpad-btn dpad-down" data-dir="backward">
+            <span class="material-symbols-rounded">arrow_downward</span>
+        </button>
+        <button type="button" class="dpad-btn dpad-left" data-dir="left">
+            <span class="material-symbols-rounded">arrow_back</span>
+        </button>
+        <button type="button" class="dpad-btn dpad-right" data-dir="right">
+            <span class="material-symbols-rounded">arrow_forward</span>
+        </button>
+    </div>
+
+    <!-- Mobile FPS Action Buttons (Touch Devices Only) -->
+    <div id="mobile-fps-actions">
+        <button type="button" class="fps-action-btn" id="mobile-btn-shoot">
+            <span class="material-symbols-rounded">gps_fixed</span>
+            <span class="fps-btn-label">Shoot</span>
+        </button>
+        <button type="button" class="fps-action-btn" id="mobile-btn-jump">
+            <span class="material-symbols-rounded">arrow_upward</span>
+            <span class="fps-btn-label">Jump</span>
+        </button>
+        <button type="button" class="fps-action-btn" id="mobile-btn-sprint">
+            <span class="material-symbols-rounded">sprint</span>
+            <span class="fps-btn-label">Run</span>
+        </button>
+        <button type="button" class="fps-action-btn" id="mobile-btn-interact">
+            <span class="material-symbols-rounded">touch_app</span>
+            <span class="fps-btn-label">Talk</span>
+        </button>
+    </div>
+
     <script>
+        /***********************************************************************
+         * 0. MOBILE DEVICE DETECTION & RESPONSIVE HELPERS
+         ***********************************************************************/
+        function _isMobileDevice() {
+            return ('ontouchstart' in window || navigator.maxTouchPoints > 0) && window.innerWidth <= 768;
+        }
+        function _isTouchDevice() {
+            return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        }
+
         /***********************************************************************
          * 1. DHAKA CITY SOUND SYNTHESIZER & AMBIENT SOUNDSCAPE (Tone.js)
          ***********************************************************************/
@@ -1282,7 +1837,14 @@
                 if (this.ambientGain) this.ambientGain.gain.rampTo(0.05, 0.15);
 
                 this.playCrowdCheer('MASSIVE');
-                clearInterval(this.discoIntervalId);
+
+                // Stop any previous Transport-based disco sequence
+                if (this._discoSequence) {
+                    this._discoSequence.stop();
+                    this._discoSequence.dispose();
+                    this._discoSequence = null;
+                }
+                Tone.Transport.stop();
                 this.discoStep = 0;
 
                 const bassLine = ['D2', 'D3', 'F2', 'F3', 'G2', 'G3', 'A2', 'C3'];
@@ -1293,44 +1855,58 @@
                     ['Bb4', 'D5', 'F5'], ['C5', 'E5', 'G5'], ['D5', 'F5', 'A5'], null
                 ];
 
-                this.discoIntervalId = setInterval(() => {
-                    if (!this.enabled || !this.initialized || !this.discoActive) return;
+                // Use Tone.Transport for sample-accurate timing (125 BPM, 8th notes = 120ms each)
+                Tone.Transport.bpm.value = 125;
+
+                const stepIndices = Array.from({ length: 16 }, (_, i) => i);
+                const self = this;
+
+                this._discoSequence = new Tone.Sequence((time, s) => {
+                    if (!self.enabled || !self.initialized || !self.discoActive) return;
                     try {
-                        const now = Tone.now() + 0.02;
-                        const s = this.discoStep % 16;
-
-                        if (s % 2 === 0 && this.discoKick) {
-                            this.discoKick.triggerAttackRelease('C1', '16n', now, 1.0);
+                        // Kick on even steps
+                        if (s % 2 === 0 && self.discoKick) {
+                            self.discoKick.triggerAttackRelease('C1', '16n', time, 1.0);
                         }
-                        if (s % 2 === 1 && this.discoHat) {
-                            this.discoHat.triggerAttackRelease('32n', now, 0.85);
+                        // Hi-hat on odd steps
+                        if (s % 2 === 1 && self.discoHat) {
+                            self.discoHat.triggerAttackRelease('32n', time, 0.85);
                         }
-                        if (this.discoBass) {
+                        // Bass on every step
+                        if (self.discoBass) {
                             const bNote = bassLine[s % bassLine.length];
-                            this.discoBass.triggerAttackRelease(bNote, '16n', now, 0.9);
+                            self.discoBass.triggerAttackRelease(bNote, '16n', time, 0.9);
                         }
+                        // Lead chords on select steps
                         const chord = discoLeadNotes[s];
-                        if (chord && this.discoLead) {
-                            this.discoLead.triggerAttackRelease(chord, '16n', now, 0.8);
+                        if (chord && self.discoLead) {
+                            self.discoLead.triggerAttackRelease(chord, '16n', time, 0.8);
                         }
-                        if (s === 4 || s === 12) {
-                            const tc = this.getSafeTime('clap', 0.01);
-                            this.crowdClapSynth.triggerAttackRelease('32n', tc, 0.8);
+                        // Clap accents
+                        if ((s === 4 || s === 12) && self.crowdClapSynth) {
+                            self.crowdClapSynth.triggerAttackRelease('32n', time + 0.005, 0.8);
                         }
-                        if (s === 15 && Math.random() < 0.55 && this.whistleSynth) {
-                            const tw = this.getSafeTime('whistle', 0.02);
-                            this.whistleSynth.triggerAttackRelease('E6', '16n', tw, 0.65);
+                        // Occasional whistle
+                        if (s === 15 && Math.random() < 0.55 && self.whistleSynth) {
+                            self.whistleSynth.triggerAttackRelease('E6', '16n', time + 0.01, 0.65);
                         }
 
-                        this.discoStep++;
+                        self.discoStep++;
                     } catch (e) {}
-                }, 120);
+                }, stepIndices, '8n');
+
+                this._discoSequence.start(0);
+                Tone.Transport.start();
             }
 
             stopDiscoMusic() {
                 this.discoActive = false;
-                clearInterval(this.discoIntervalId);
-                this.discoIntervalId = null;
+                if (this._discoSequence) {
+                    this._discoSequence.stop();
+                    this._discoSequence.dispose();
+                    this._discoSequence = null;
+                }
+                Tone.Transport.stop();
                 if (this.initialized && this.enabled) {
                     if (this.bgmGain) this.bgmGain.gain.rampTo(0.36, 0.5);
                     if (this.ambientGain) this.ambientGain.gain.rampTo(0.32, 0.5);
@@ -1635,6 +2211,21 @@
                 } catch (e) {}
             }
 
+            playCameraShutter() {
+                if (!this.enabled) return;
+                this.init();
+                if (!this.initialized) return;
+                try {
+                    // Quick click-snap: short noise burst + metallic ping
+                    const tn = this.getSafeTime('noise', 0);
+                    this.noiseSynth.triggerAttackRelease('64n', tn, 0.7);
+                    const tm = this.getSafeTime('metal', 0.03);
+                    this.metalSynth.triggerAttackRelease('C6', '64n', tm, 0.5);
+                    const tm2 = this.getSafeTime('membrane', 0.06);
+                    this.membraneSynth.triggerAttackRelease('A4', '64n', tm2, 0.35);
+                } catch (e) {}
+            }
+
             playFPSLand() {
                 if (!this.enabled) return;
                 this.init();
@@ -1917,12 +2508,17 @@
         scene.background = new THREE.Color(0x1a1025);
         scene.fog = new THREE.FogExp2(0x1a1025, 0.0085);
 
-        const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 220);
-        const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
+        const _mobileFOV = _isMobileDevice() ? 56 : 42;
+        const _mobileInitRadius = _isMobileDevice() ? 20.5 : 23.5;
+        const camera = new THREE.PerspectiveCamera(_mobileFOV, window.innerWidth / window.innerHeight, 0.1, 220);
+        const renderer = new THREE.WebGLRenderer({ antialias: !_isMobileDevice(), powerPreference: 'high-performance', preserveDrawingBuffer: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, _isMobileDevice() ? 1.25 : 1.5));
         renderer.shadowMap.enabled = true;
         renderer.shadowMap.type = THREE.PCFShadowMap;
+        if (_isMobileDevice()) {
+            renderer.shadowMap.mapSize = new THREE.Vector2(512, 512);
+        }
         container.appendChild(renderer.domElement);
 
         // Orbit & FPS Camera State
@@ -1931,10 +2527,10 @@
             viewMode: 'CHHAD',
             theta: Math.PI * 0.75,
             phi: 0.86,
-            radius: 23.5,
+            radius: _mobileInitRadius,
             targetTheta: Math.PI * 0.75,
             targetPhi: 0.86,
-            targetRadius: 23.5,
+            targetRadius: _mobileInitRadius,
             isTopDown: false,
             isDragging: false,
             dragMoved: false,
@@ -3356,6 +3952,8 @@
             const fpsOverlay = document.getElementById('fps-hud-overlay');
             const interactPrompt = document.getElementById('fps-interact-prompt');
             const dialogueBox = document.getElementById('fps-dialogue-box');
+            const mobileDpad = document.getElementById('mobile-fps-dpad');
+            const mobileActions = document.getElementById('mobile-fps-actions');
 
             // Reset movement keys when switching modes
             camState.keys.forward = false;
@@ -3376,12 +3974,15 @@
                 if (camState.fpsHeldItemGroup) {
                     camState.fpsHeldItemGroup.visible = false;
                 }
+                // Hide mobile FPS controls
+                if (mobileDpad) mobileDpad.classList.remove('fps-active');
+                if (mobileActions) mobileActions.classList.remove('fps-active');
             }
 
             if (mode === 'TOP') {
                 camState.isTopDown = true;
                 camState.targetPhi = 0.08;
-                camState.targetRadius = 21.5;
+                camState.targetRadius = _isMobileDevice() ? 18.5 : 21.5;
                 if (lbl) lbl.textContent = 'Top View';
                 if (icon) icon.textContent = 'grid_view';
                 if (fpsOverlay) {
@@ -3413,17 +4014,24 @@
                     fpsOverlay.classList.remove('hidden');
                     fpsOverlay.classList.add('flex');
                 }
+                // Show mobile FPS controls on touch devices
+                if (mobileDpad) mobileDpad.classList.add('fps-active');
+                if (mobileActions) mobileActions.classList.add('fps-active');
+
+                const isTouchDevice = _isMobileDevice();
                 showDhakaTwistToast(
                     'directions_run',
-                    '🏃 ছাদে হাঁটুন • FPS ROOFTOP MODE!',
-                    'WASD/Arrows to walk, Shift to run, Spacebar to JUMP over objects, press V to switch view!',
+                    '🏃 ছাদে হাঁটুন - FPS ROOFTOP MODE!',
+                    isTouchDevice
+                        ? 'Use on-screen D-pad to walk, swipe to look around, tap action buttons to jump/shoot!'
+                        : 'WASD/Arrows to walk, Shift to run, Spacebar to JUMP over objects, press V to switch view!',
                     3800
                 );
             } else {
                 camState.viewMode = 'CHHAD';
                 camState.isTopDown = false;
                 camState.targetPhi = 0.86;
-                camState.targetRadius = 23.5;
+                camState.targetRadius = _isMobileDevice() ? 20.5 : 23.5;
                 if (lbl) lbl.textContent = 'Chhad View';
                 if (icon) icon.textContent = '3d_rotation';
                 if (fpsOverlay) {
@@ -3954,7 +4562,9 @@
         }
 
         function updateWeatherSystem(dt, elapsed) {
-            if (weatherState.modeIndex === 0 && !discoState.active) {
+            // Pause weather auto-cycle when the game menu is open
+            const _menuOpen = !document.getElementById('start-overlay')?.classList.contains('hidden');
+            if (weatherState.modeIndex === 0 && !discoState.active && !_menuOpen) {
                 weatherState.autoTimer += dt;
                 if (weatherState.autoTimer > 18) {
                     weatherState.autoTimer = 0;
@@ -10189,7 +10799,14 @@
             diceValue: 1,
             phase: 'WAIT_ROLL', // WAIT_ROLL, ROLLING, WAIT_MOVE, ANIMATING, GAME_OVER
             aiTimeoutId: null,
-            pendingNoMoveAdvance: false
+            pendingNoMoveAdvance: false,
+            // Per-player stats for victory card
+            stats: [
+                { rolls: 0, sixes: 0, captures: 0 },
+                { rolls: 0, sixes: 0, captures: 0 },
+                { rolls: 0, sixes: 0, captures: 0 },
+                { rolls: 0, sixes: 0, captures: 0 }
+            ]
         };
 
         /***********************************************************************
@@ -10212,11 +10829,11 @@
             return code;
         }
 
-        function initPeerJS(callback) {
+        function initPeerJS(callback, providedRoomCode) {
             if (netState.peer && !netState.peer.destroyed) {
                 netState.peer.destroy();
             }
-            const roomCode = generateRoomCode();
+            const roomCode = providedRoomCode || generateRoomCode();
             netState.roomCode = roomCode;
             const peerId = 'dhaka-ludo-' + roomCode;
 
@@ -10349,6 +10966,17 @@
             if (icon) icon.textContent = 'signal_disconnected';
             if (title) title.textContent = 'OPPONENT LEFT!';
             if (desc) desc.textContent = `${PLAYERS[netState.remoteTeam].name} has disconnected from the match. The game cannot continue without your opponent.`;
+            // Hide victory-specific elements
+            const _sr = document.getElementById('victory-stats-row');
+            const _sb = document.getElementById('btn-share-victory');
+            const _sp = document.getElementById('victory-share-panel');
+            const _cb = document.getElementById('btn-challenge-friend');
+            const _cp = document.getElementById('challenge-share-panel');
+            if (_sr) _sr.style.display = 'none';
+            if (_sb) _sb.style.display = 'none';
+            if (_sp) { _sp.classList.add('hidden'); _sp.classList.remove('flex'); }
+            if (_cb) _cb.style.display = 'none';
+            if (_cp) { _cp.classList.add('hidden'); _cp.classList.remove('flex'); }
             if (modal) {
                 modal.classList.remove('hidden');
                 modal.classList.add('flex');
@@ -10516,6 +11144,119 @@
             return gameState.mode === 'ONLINE_2P' && gameState.currentTurn !== netState.localTeam;
         }
 
+        /***********************************************************************
+         * CHALLENGE A FRIEND - Deep Link System
+         ***********************************************************************/
+        const _challengeState = {
+            totalWins: 0,
+            challengeRoomCode: '',
+            challengeLink: '',
+        };
+
+        // Load win counter from localStorage
+        function _loadWinCounter() {
+            try {
+                _challengeState.totalWins = parseInt(localStorage.getItem('dcl_wins') || '0', 10);
+            } catch (e) { _challengeState.totalWins = 0; }
+        }
+
+        // Increment win counter
+        function _incrementWinCounter() {
+            _challengeState.totalWins++;
+            try {
+                localStorage.setItem('dcl_wins', String(_challengeState.totalWins));
+            } catch (e) {}
+        }
+
+        // Generate a challenge deep link
+        function _generateChallengeLink() {
+            const code = generateRoomCode();
+            _challengeState.challengeRoomCode = code;
+            const baseUrl = window.location.origin + window.location.pathname;
+            _challengeState.challengeLink = `${baseUrl}?challenge=${code}`;
+            return _challengeState.challengeLink;
+        }
+
+        // Build the Bangla challenge message
+        function _getChallengeMessage() {
+            const wins = _challengeState.totalWins;
+            const link = _challengeState.challengeLink;
+            const messages = [
+                `🎯 আমি ছাদের লুডুতে ${wins} গেম জিতেছি! তোর সাহস থাকলে আয়, অনলাইনে খেল! 🎲🔥\n\n${link}`,
+                `🎯 ছাদের লুডুতে আমাকে হারাতে পারবি? ${wins}টা জয় আমার! আয় অনলাইনে!\n\n${link}`,
+                `🎯 ঢাকার ছাদে লুডু চ্যাম্পিয়ন আমি! ${wins} wins! তুইও ট্রাই কর 🎲\n\n${link}`,
+            ];
+            return messages[Math.floor(Math.random() * messages.length)];
+        }
+
+        // Open challenge: generate room code, start hosting, show share panel
+        function _openChallenge() {
+            const link = _generateChallengeLink();
+            const code = _challengeState.challengeRoomCode;
+
+            // Show challenge share panel
+            const panel = document.getElementById('challenge-share-panel');
+            const linkDisplay = document.getElementById('challenge-link-display');
+            if (panel) { panel.classList.remove('hidden'); panel.classList.add('flex'); }
+            if (linkDisplay) linkDisplay.textContent = link;
+
+            // Set as host for the challenge room
+            netState.isHost = true;
+
+            // Start hosting this room with the specific challenge code
+            initPeerJS(() => {
+                showDhakaTwistToast('swords', '🎯 Room Ready!', 'Share the link. Waiting for your friend to join...', 3500);
+            }, code);
+        }
+
+        // Check URL for challenge deep link on page load
+        function _checkChallengeDeepLink() {
+            const params = new URLSearchParams(window.location.search);
+            const challengeCode = params.get('challenge');
+            if (!challengeCode || challengeCode.length < 4) return false;
+
+            // Clean up the URL so it doesn't persist
+            const cleanUrl = window.location.origin + window.location.pathname;
+            window.history.replaceState({}, document.title, cleanUrl);
+
+            // Auto-trigger join flow after a short delay for scene to load
+            setTimeout(() => {
+                // Hide start overlay
+                const startOverlay = document.getElementById('start-overlay');
+                if (startOverlay) {
+                    startOverlay.classList.add('opacity-0', 'pointer-events-none');
+                    setTimeout(() => startOverlay.classList.add('hidden'), 480);
+                }
+
+                // Set mode to ONLINE_2P
+                gameState.mode = 'ONLINE_2P';
+
+                // Open lobby in join mode and auto-fill the code
+                const overlay = document.getElementById('online-lobby-overlay');
+                if (overlay) {
+                    overlay.classList.remove('hidden');
+                    overlay.classList.add('flex');
+                }
+
+                // Switch to join tab
+                document.querySelectorAll('#lobby-role-selector .mode-pill-btn').forEach(b => b.classList.remove('active-mode'));
+                document.getElementById('btn-lobby-join').classList.add('active-mode');
+                showLobbyPanel('join');
+
+                // Auto-fill the room code
+                const joinInput = document.getElementById('lobby-join-input');
+                if (joinInput) joinInput.value = challengeCode.toUpperCase();
+
+                // Show connecting toast
+                showDhakaTwistToast('swords', '🎯 Challenge Accepted!', 'Connecting to challenger\'s room...', 3500);
+
+                // Auto-click connect after PeerJS initializes
+                updateLobbyStatus('connecting', 'Connecting to challenger...');
+                joinPeerRoom(challengeCode.toUpperCase());
+            }, 2500);
+
+            return true;
+        }
         function initPieces() {
             pieces.length = 0;
             for (let p = 0; p < 4; p++) {
@@ -10655,6 +11396,16 @@
                 if (icon) icon.textContent = 'flood';
                 if (title) title.textContent = 'CHHAD WASHED AWAY!';
                 if (desc) desc.textContent = 'মোটর বন্ধ করা হয়নি! The overflowing rooftop water tank flooded the entire Chhad and swept away all 16 Gutis and the Ludo board!';
+                const _sr2 = document.getElementById('victory-stats-row');
+                const _sb2 = document.getElementById('btn-share-victory');
+                const _sp2 = document.getElementById('victory-share-panel');
+                const _cb2 = document.getElementById('btn-challenge-friend');
+                const _cp2 = document.getElementById('challenge-share-panel');
+                if (_sr2) _sr2.style.display = 'none';
+                if (_sb2) _sb2.style.display = 'none';
+                if (_sp2) { _sp2.classList.add('hidden'); _sp2.classList.remove('flex'); }
+                if (_cb2) _cb2.style.display = 'none';
+                if (_cp2) { _cp2.classList.add('hidden'); _cp2.classList.remove('flex'); }
                 if (modal) {
                     modal.classList.remove('hidden');
                     modal.classList.add('flex');
@@ -10808,6 +11559,10 @@
             updateUIDicePips(val);
             const valEl = document.getElementById('dice-readout-value');
             if (valEl) valEl.textContent = val === 6 ? '6 (CHHAKKA!)' : `Rolled ${val}`;
+
+            // Track stats
+            gameState.stats[gameState.currentTurn].rolls++;
+            if (val === 6) gameState.stats[gameState.currentTurn].sixes++;
 
             if (val === 6) {
                 crowdExcitementTimer = Math.max(crowdExcitementTimer, 2.5);
@@ -11041,6 +11796,9 @@
         }
 
         function checkPostMove(piece, didCapture) {
+            // Track captures
+            if (didCapture) gameState.stats[piece.playerIndex].captures++;
+
             if (piece.step === 56) {
                 crowdExcitementTimer = Math.max(crowdExcitementTimer, 3.0);
                 audio.playCrowdCheer('HIGH');
@@ -11093,6 +11851,627 @@
             }
         }
 
+        /***********************************************************************
+         * CHHAD MOMENT - Screenshot Capture & Share System
+         ***********************************************************************/
+        let _screenshotBlob = null;
+
+        function captureChhadMoment() {
+            // 1. Gather weather & camera info before hiding UI
+            const preset = WEATHER_PRESETS[weatherState.activePresetIdx];
+            const weatherLabel = preset ? preset.label : 'Dhaka';
+            const weatherIcon = preset ? preset.icon : 'wb_twilight';
+            const camLabel = camState.viewMode === 'FPS' ? 'FPS Rooftop Walk'
+                : camState.viewMode === 'TOP' ? 'Top View' : 'Chhad View';
+
+            // 2. Temporarily hide ALL UI overlays for a clean capture
+            const uiElements = document.querySelectorAll(
+                '#game-hud, #start-overlay, #victory-modal, #screenshot-modal, #tank-pump-alert, ' +
+                '#fps-hud-hints, #fps-toy-hud, #fps-interact-prompt, #event-toast, ' +
+                '#mobile-fps-dpad, #mobile-fps-actions, #btn-disco, .fps-dialogue-box, ' +
+                '#online-lobby-modal, #toy-store-modal'
+            );
+            const prevDisplay = [];
+            uiElements.forEach(el => {
+                if (el) {
+                    prevDisplay.push({ el, vis: el.style.visibility });
+                    el.style.visibility = 'hidden';
+                }
+            });
+
+            // 3. Force a render pass with preserveDrawingBuffer temporarily enabled
+            // Since WebGL clears the buffer after each frame, we need to render now
+            renderer.render(scene, camera);
+
+            // 4. Capture the renderer canvas
+            const srcCanvas = renderer.domElement;
+            const ssCanvas = document.getElementById('screenshot-canvas');
+            const W = srcCanvas.width;
+            const H = srcCanvas.height;
+            ssCanvas.width = W;
+            ssCanvas.height = H;
+            const ctx = ssCanvas.getContext('2d');
+
+            // Draw the 3D scene
+            ctx.drawImage(srcCanvas, 0, 0, W, H);
+
+            // 5. Restore UI immediately
+            prevDisplay.forEach(({ el, vis }) => {
+                el.style.visibility = vis;
+            });
+
+            // 5.5. Store raw scene pixels for postcard re-compositing
+            _rawSceneImageData = ctx.getImageData(0, 0, W, H);
+            _lastScreenshotWeather = weatherLabel;
+            _lastScreenshotCam = camLabel;
+            _postcardMode = false;
+            const pcLabel = document.getElementById('btn-ss-postcard-label');
+            if (pcLabel) pcLabel.textContent = '📮 Make Postcard';
+
+            // 6. Add watermark overlay
+            _drawScreenshotWatermark(ctx, W, H, weatherLabel, camLabel);
+
+            // 7. Show the modal with preview
+            const dataUrl = ssCanvas.toDataURL('image/png');
+            const preview = document.getElementById('screenshot-preview');
+            if (preview) {
+                preview.innerHTML = `<img src="${dataUrl}" alt="Chhad Moment" style="width:100%;display:block;border-radius:14px;" />`;
+            }
+
+            // Update badge
+            const wIcon = document.getElementById('screenshot-weather-icon');
+            const wLabel = document.getElementById('screenshot-weather-label');
+            const cLabel = document.getElementById('screenshot-cam-label');
+            if (wIcon) wIcon.textContent = weatherIcon;
+            if (wLabel) wLabel.textContent = weatherLabel;
+            if (cLabel) cLabel.textContent = camLabel;
+
+            // Show modal
+            const modal = document.getElementById('screenshot-modal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
+
+            // Store blob for sharing
+            ssCanvas.toBlob(blob => { _screenshotBlob = blob; }, 'image/png');
+
+            // Play a camera shutter sound
+            audio.playCameraShutter();
+        }
+
+        function _drawScreenshotWatermark(ctx, W, H, weatherLabel, camLabel) {
+            const scale = W / 1920; // Scale watermark proportionally
+
+            // Semi-transparent bottom gradient bar
+            const barH = Math.round(72 * scale);
+            const barGrad = ctx.createLinearGradient(0, H - barH * 2.5, 0, H);
+            barGrad.addColorStop(0, 'transparent');
+            barGrad.addColorStop(1, 'rgba(0, 0, 0, 0.65)');
+            ctx.fillStyle = barGrad;
+            ctx.fillRect(0, H - barH * 2.5, W, barH * 2.5);
+
+            // Bottom-left: Game title
+            ctx.textAlign = 'left';
+            ctx.font = `800 ${Math.round(28 * scale)}px "Inter", sans-serif`;
+            ctx.fillStyle = 'rgba(251, 191, 36, 0.9)';
+            ctx.shadowColor = 'rgba(0,0,0,0.8)';
+            ctx.shadowBlur = 6 * scale;
+            ctx.fillText('DHAKA CITY LUDO', Math.round(24 * scale), H - Math.round(42 * scale));
+
+            ctx.font = `600 ${Math.round(16 * scale)}px "Inter", sans-serif`;
+            ctx.fillStyle = 'rgba(248, 250, 252, 0.6)';
+            ctx.fillText('Chhad Rooftop Edition', Math.round(24 * scale), H - Math.round(18 * scale));
+            ctx.shadowBlur = 0;
+
+            // Bottom-right: Weather + URL
+            ctx.textAlign = 'right';
+            ctx.font = `600 ${Math.round(18 * scale)}px "Inter", sans-serif`;
+            ctx.fillStyle = 'rgba(253, 224, 71, 0.75)';
+            ctx.shadowColor = 'rgba(0,0,0,0.8)';
+            ctx.shadowBlur = 6 * scale;
+            ctx.fillText(`${weatherLabel} - ${camLabel}`, W - Math.round(24 * scale), H - Math.round(42 * scale));
+
+            ctx.font = `500 ${Math.round(15 * scale)}px "Inter", sans-serif`;
+            ctx.fillStyle = 'rgba(14, 165, 233, 0.7)';
+            ctx.fillText('dhakaludo.nbslabs.dev', W - Math.round(24 * scale), H - Math.round(18 * scale));
+            ctx.shadowBlur = 0;
+
+            // Top-left: Timestamp
+            const now = new Date();
+            const timeStr = now.toLocaleString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+            ctx.textAlign = 'left';
+            ctx.font = `600 ${Math.round(15 * scale)}px "Inter", sans-serif`;
+            ctx.fillStyle = 'rgba(248, 250, 252, 0.45)';
+            ctx.shadowColor = 'rgba(0,0,0,0.7)';
+            ctx.shadowBlur = 4 * scale;
+            ctx.fillText(`📸 ${timeStr}`, Math.round(24 * scale), Math.round(32 * scale));
+            ctx.shadowBlur = 0;
+        }
+
+        let _postcardMode = false;
+        let _rawSceneImageData = null; // Store raw scene pixels for re-compositing
+        let _lastScreenshotWeather = '';
+        let _lastScreenshotCam = '';
+
+        function _closeScreenshotModal() {
+            const modal = document.getElementById('screenshot-modal');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+            _postcardMode = false;
+            const label = document.getElementById('btn-ss-postcard-label');
+            if (label) label.textContent = '📮 Make Postcard';
+        }
+
+        /***********************************************************************
+         * DHAKA WEATHER POSTCARD - Postcard-style overlay on screenshots
+         ***********************************************************************/
+        const POSTCARD_CAPTIONS = {
+            'MORNING':      { bn: 'ঢাকার সকালে ছাদে চা আর লুডু ☕', en: 'Morning tea & Ludo on a Dhaka rooftop' },
+            'NOON':         { bn: 'দুপুরের রোদে ছাদে লুডু খেলা 🌞', en: 'Ludo under the noon sun' },
+            'SUNNY':        { bn: 'ঝকঝকে রোদে ছাদের লুডু আড্ডা ☀️', en: 'Sunny rooftop Ludo session' },
+            'AFTERNOON':    { bn: 'বিকেলের আলোয় ছাদে বসে খেলা 🌅', en: 'Afternoon play on the Chhad' },
+            'EVENING':      { bn: 'ঢাকার সন্ধ্যায় ছাদে লুডু আড্ডা 🌇', en: 'Evening Ludo hangout on the rooftop' },
+            'NIGHT':        { bn: 'রাতের ছাদে তারার নিচে লুডু 🌙', en: 'Ludo under the stars' },
+            'MIDNIGHT':     { bn: 'মধ্যরাতে ছাদে গোপন লুডু আড্ডা 🕛', en: 'Midnight secret Ludo on the roof' },
+            'FULLMOON':     { bn: 'পূর্ণিমার রাতে ছাদে লুডু জমে গেছে 🌕', en: 'Full moon Ludo night' },
+            'RAINY':        { bn: 'বৃষ্টির দিনে ছাদে বসে খেলা 🌧️', en: 'Playing Ludo in the rain' },
+            'KALBOISHAKHI': { bn: 'কালবৈশাখীর ঝড়ে ছাদে লুডু! ⛈️', en: 'Ludo in a Kalboishakhi storm!' },
+            'SNOWY':        { bn: 'বরফ পড়ছে ছাদে, লুডু চলছে! ❄️', en: 'Snowy rooftop Ludo magic' },
+        };
+
+        function _togglePostcardMode() {
+            _postcardMode = !_postcardMode;
+            const label = document.getElementById('btn-ss-postcard-label');
+            if (label) label.textContent = _postcardMode ? '📷 Normal Screenshot' : '📮 Make Postcard';
+
+            if (!_rawSceneImageData) return;
+
+            const ssCanvas = document.getElementById('screenshot-canvas');
+            const ctx = ssCanvas.getContext('2d');
+            const W = ssCanvas.width;
+            const H = ssCanvas.height;
+
+            if (_postcardMode) {
+                // Render postcard
+                _renderPostcard(W, H);
+            } else {
+                // Restore normal screenshot: re-draw raw scene + watermark
+                ctx.putImageData(_rawSceneImageData, 0, 0);
+                _drawScreenshotWatermark(ctx, W, H, _lastScreenshotWeather, _lastScreenshotCam);
+                const dataUrl = ssCanvas.toDataURL('image/png');
+                const preview = document.getElementById('screenshot-preview');
+                if (preview) {
+                    preview.innerHTML = `<img src="${dataUrl}" alt="Chhad Moment" style="width:100%;display:block;border-radius:14px;" />`;
+                }
+                ssCanvas.toBlob(blob => { _screenshotBlob = blob; }, 'image/png');
+            }
+        }
+
+        function _renderPostcard(origW, origH) {
+            const pcCanvas = document.getElementById('postcard-canvas');
+            const preset = WEATHER_PRESETS[weatherState.activePresetIdx];
+            const weatherId = preset ? preset.id : 'EVENING';
+            const caption = POSTCARD_CAPTIONS[weatherId] || POSTCARD_CAPTIONS['EVENING'];
+
+            // Postcard dimensions: 4:3 landscape, 1440x1080
+            const PW = 1440, PH = 1080;
+            pcCanvas.width = PW;
+            pcCanvas.height = PH;
+            const ctx = pcCanvas.getContext('2d');
+
+            // Frame padding
+            const pad = 40;
+            const bottomBar = 160; // Extra space at bottom for caption
+
+            // === Outer postcard background ===
+            // Creamy vintage paper texture
+            const paperGrad = ctx.createLinearGradient(0, 0, PW, PH);
+            paperGrad.addColorStop(0, '#fefce8');
+            paperGrad.addColorStop(0.3, '#fef9c3');
+            paperGrad.addColorStop(0.7, '#fefce8');
+            paperGrad.addColorStop(1, '#fef3c7');
+            ctx.fillStyle = paperGrad;
+            ctx.fillRect(0, 0, PW, PH);
+
+            // Paper grain noise effect (subtle)
+            ctx.globalAlpha = 0.04;
+            for (let i = 0; i < 8000; i++) {
+                const gx = Math.random() * PW;
+                const gy = Math.random() * PH;
+                ctx.fillStyle = Math.random() > 0.5 ? '#92400e' : '#78350f';
+                ctx.fillRect(gx, gy, 1, 1);
+            }
+            ctx.globalAlpha = 1.0;
+
+            // === Drop shadow for photo ===
+            const photoX = pad;
+            const photoY = pad;
+            const photoW = PW - pad * 2;
+            const photoH = PH - pad * 2 - bottomBar;
+
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.25)';
+            ctx.shadowBlur = 18;
+            ctx.shadowOffsetX = 4;
+            ctx.shadowOffsetY = 6;
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(photoX - 4, photoY - 4, photoW + 8, photoH + 8);
+            ctx.shadowColor = 'transparent';
+            ctx.shadowBlur = 0;
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 0;
+
+            // === Draw scene image (from raw data) ===
+            // Create a temp canvas to hold raw scene pixels
+            const tmpCanvas = document.createElement('canvas');
+            tmpCanvas.width = origW;
+            tmpCanvas.height = origH;
+            const tmpCtx = tmpCanvas.getContext('2d');
+            tmpCtx.putImageData(_rawSceneImageData, 0, 0);
+
+            // Draw scene cropped into the photo area
+            ctx.save();
+            ctx.beginPath();
+            ctx.rect(photoX, photoY, photoW, photoH);
+            ctx.clip();
+            ctx.drawImage(tmpCanvas, 0, 0, origW, origH, photoX, photoY, photoW, photoH);
+            ctx.restore();
+
+            // Thin inner border on photo
+            ctx.strokeStyle = 'rgba(120, 53, 15, 0.15)';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(photoX, photoY, photoW, photoH);
+
+            // === Slight vignette on the photo ===
+            const vigGrad = ctx.createRadialGradient(
+                photoX + photoW / 2, photoY + photoH / 2, photoW * 0.3,
+                photoX + photoW / 2, photoY + photoH / 2, photoW * 0.7
+            );
+            vigGrad.addColorStop(0, 'transparent');
+            vigGrad.addColorStop(1, 'rgba(0, 0, 0, 0.2)');
+            ctx.fillStyle = vigGrad;
+            ctx.fillRect(photoX, photoY, photoW, photoH);
+
+            // === Bottom caption area ===
+            const captionY = photoY + photoH + 20;
+
+            // Bangla caption (main)
+            ctx.textAlign = 'center';
+            ctx.font = '700 38px "Rozha One", "Inter", serif';
+            ctx.fillStyle = '#78350f';
+            ctx.fillText(caption.bn, PW / 2, captionY + 40);
+
+            // English sub-caption
+            ctx.font = '500 18px "Inter", sans-serif';
+            ctx.fillStyle = '#92400e';
+            ctx.fillText(caption.en, PW / 2, captionY + 72);
+
+            // === Branding line ===
+            ctx.font = 'italic 500 15px "Inter", sans-serif';
+            ctx.fillStyle = '#b45309';
+            ctx.globalAlpha = 0.65;
+            ctx.fillText('From the Chhad, Dhaka  -  Dhaka City Ludo  -  dhakaludo.nbslabs.dev', PW / 2, captionY + 110);
+            ctx.globalAlpha = 1.0;
+
+            // === Decorative stamp (top-right corner) ===
+            _drawPostcardStamp(ctx, PW - pad - 110, pad + 10, preset);
+
+            // === Decorative corner flourishes ===
+            _drawCornerFlourish(ctx, pad - 8, pad - 8, 1, 1);
+            _drawCornerFlourish(ctx, PW - pad + 8, pad - 8, -1, 1);
+            _drawCornerFlourish(ctx, pad - 8, PH - 20, 1, -1);
+            _drawCornerFlourish(ctx, PW - pad + 8, PH - 20, -1, -1);
+
+            // === Show in preview ===
+            const dataUrl = pcCanvas.toDataURL('image/png');
+            const preview = document.getElementById('screenshot-preview');
+            if (preview) {
+                preview.innerHTML = `<img src="${dataUrl}" alt="Dhaka Weather Postcard" style="width:100%;display:block;border-radius:14px;" />`;
+            }
+            pcCanvas.toBlob(blob => { _screenshotBlob = blob; }, 'image/png');
+        }
+
+        function _drawPostcardStamp(ctx, x, y, preset) {
+            const sw = 100, sh = 120;
+
+            // Stamp background
+            ctx.fillStyle = '#fefce8';
+            ctx.strokeStyle = '#b45309';
+            ctx.lineWidth = 2;
+
+            // Perforated stamp border (zigzag)
+            ctx.save();
+            ctx.beginPath();
+            const teeth = 6;
+            const toothSize = 5;
+            // Top edge
+            for (let i = 0; i <= teeth * 2; i++) {
+                const px = x + (i / (teeth * 2)) * sw;
+                const py = y + (i % 2 === 0 ? 0 : -toothSize);
+                if (i === 0) ctx.moveTo(px, py);
+                else ctx.lineTo(px, py);
+            }
+            // Right edge
+            const teethV = 8;
+            for (let i = 0; i <= teethV * 2; i++) {
+                const px = x + sw + (i % 2 === 0 ? 0 : toothSize);
+                const py = y + (i / (teethV * 2)) * sh;
+                ctx.lineTo(px, py);
+            }
+            // Bottom edge
+            for (let i = teeth * 2; i >= 0; i--) {
+                const px = x + (i / (teeth * 2)) * sw;
+                const py = y + sh + (i % 2 === 0 ? 0 : toothSize);
+                ctx.lineTo(px, py);
+            }
+            // Left edge
+            for (let i = teethV * 2; i >= 0; i--) {
+                const px = x + (i % 2 === 0 ? 0 : -toothSize);
+                const py = y + (i / (teethV * 2)) * sh;
+                ctx.lineTo(px, py);
+            }
+            ctx.closePath();
+            ctx.fillStyle = '#fffbeb';
+            ctx.fill();
+            ctx.strokeStyle = '#d97706';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+            ctx.restore();
+
+            // Stamp content
+            ctx.textAlign = 'center';
+            ctx.font = '28px serif';
+            ctx.fillText('🎲', x + sw / 2, y + 40);
+
+            ctx.font = '800 11px "Inter", sans-serif';
+            ctx.fillStyle = '#92400e';
+            ctx.fillText('DHAKA', x + sw / 2, y + 62);
+            ctx.fillText('CITY', x + sw / 2, y + 76);
+            ctx.fillText('LUDO', x + sw / 2, y + 90);
+
+            // Weather label at bottom of stamp
+            ctx.font = '600 9px "Inter", sans-serif';
+            ctx.fillStyle = '#b45309';
+            ctx.fillText(preset ? preset.label : 'Dhaka', x + sw / 2, y + 108);
+        }
+
+        function _drawCornerFlourish(ctx, x, y, dirX, dirY) {
+            ctx.save();
+            ctx.strokeStyle = '#d97706';
+            ctx.lineWidth = 1.5;
+            ctx.globalAlpha = 0.35;
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.lineTo(x + 28 * dirX, y);
+            ctx.moveTo(x, y);
+            ctx.lineTo(x, y + 28 * dirY);
+            // Small decorative curl
+            ctx.moveTo(x + 5 * dirX, y + 5 * dirY);
+            ctx.quadraticCurveTo(x + 16 * dirX, y + 2 * dirY, x + 20 * dirX, y + 12 * dirY);
+            ctx.stroke();
+            ctx.globalAlpha = 1.0;
+            ctx.restore();
+        }
+
+        /***********************************************************************
+         * VICTORY SHAREABLE CARD - Canvas Image Generation & Social Sharing
+         ***********************************************************************/
+        const VICTORY_TAGLINES = [
+            'ছাদের লুডুতে চ্যাম্পিয়ন! 🏅',
+            'ছক্কা মেরে শাপলা ছুঁয়েছি! 🎲🔥',
+            'আজ ছাদের রাজা আমি! 👑',
+            'ঢাকার ছাদে লুডু ওস্তাদ! 🏆',
+            'গুটি মেরে সবাইকে হারালাম! 💪',
+        ];
+
+        const TEAM_CSS_COLORS = {
+            0: { primary: '#f43f5e', glow: 'rgba(244,63,94,0.6)', gradient: ['#881337', '#f43f5e'] },
+            1: { primary: '#10b981', glow: 'rgba(16,185,129,0.6)', gradient: ['#064e3b', '#10b981'] },
+            2: { primary: '#f59e0b', glow: 'rgba(245,158,11,0.6)', gradient: ['#78350f', '#f59e0b'] },
+            3: { primary: '#0ea5e9', glow: 'rgba(14,165,233,0.6)', gradient: ['#0c4a6e', '#0ea5e9'] },
+        };
+
+        let _lastVictoryCardBlob = null;
+
+        function generateVictoryCard(winnerPlayer, stats) {
+            const canvas = document.getElementById('victory-card-canvas');
+            const ctx = canvas.getContext('2d');
+            const W = 1080, H = 1080;
+            canvas.width = W;
+            canvas.height = H;
+            const tc = TEAM_CSS_COLORS[winnerPlayer.id] || TEAM_CSS_COLORS[0];
+
+            // === Background ===
+            const bgGrad = ctx.createLinearGradient(0, 0, 0, H);
+            bgGrad.addColorStop(0, '#0b0714');
+            bgGrad.addColorStop(0.4, '#1a1025');
+            bgGrad.addColorStop(1, '#0f0820');
+            ctx.fillStyle = bgGrad;
+            ctx.fillRect(0, 0, W, H);
+
+            // Subtle radial glow behind center
+            const radGlow = ctx.createRadialGradient(W / 2, H * 0.42, 50, W / 2, H * 0.42, 420);
+            radGlow.addColorStop(0, tc.glow);
+            radGlow.addColorStop(1, 'transparent');
+            ctx.fillStyle = radGlow;
+            ctx.fillRect(0, 0, W, H);
+
+            // Decorative top/bottom accent bars
+            const barGrad = ctx.createLinearGradient(0, 0, W, 0);
+            barGrad.addColorStop(0, tc.gradient[0]);
+            barGrad.addColorStop(0.5, tc.primary);
+            barGrad.addColorStop(1, tc.gradient[0]);
+            ctx.fillStyle = barGrad;
+            ctx.fillRect(0, 0, W, 6);
+            ctx.fillRect(0, H - 6, W, 6);
+
+            // Decorative corner triangles
+            ctx.fillStyle = tc.primary + '18';
+            ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(200, 0); ctx.lineTo(0, 200); ctx.fill();
+            ctx.beginPath(); ctx.moveTo(W, 0); ctx.lineTo(W - 200, 0); ctx.lineTo(W, 200); ctx.fill();
+
+            // === Trophy Emoji (text-based) ===
+            ctx.font = '120px serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('🏆', W / 2, 170);
+
+            // === "VICTORY" Header ===
+            ctx.font = '900 64px "Inter", sans-serif';
+            ctx.letterSpacing = '0.12em';
+            ctx.fillStyle = '#fde047';
+            ctx.shadowColor = 'rgba(253, 224, 71, 0.7)';
+            ctx.shadowBlur = 24;
+            ctx.fillText('VICTORY!', W / 2, 265);
+            ctx.shadowBlur = 0;
+
+            // === Winner Team Name ===
+            ctx.font = '800 52px "Rozha One", "Cinzel", serif';
+            ctx.fillStyle = tc.primary;
+            ctx.shadowColor = tc.glow;
+            ctx.shadowBlur = 18;
+            ctx.fillText(winnerPlayer.name.toUpperCase(), W / 2, 345);
+            ctx.shadowBlur = 0;
+
+            // === Sub-label ===
+            ctx.font = '600 22px "Inter", sans-serif';
+            ctx.fillStyle = 'rgba(248, 250, 252, 0.6)';
+            ctx.fillText(`All 4 ${winnerPlayer.vehicleName} Gutis reached Shapla Chattar!`, W / 2, 390);
+
+            // === Stats Cards ===
+            const statsY = 460;
+            const cardW = 260, cardH = 180, cardGap = 32;
+            const startX = (W - 3 * cardW - 2 * cardGap) / 2;
+
+            const statItems = [
+                { label: 'DICE ROLLS', value: stats.rolls, color: '#fbbf24', icon: '🎲' },
+                { label: 'CHHAKKAS (6)', value: stats.sixes, color: '#f43f5e', icon: '🔥' },
+                { label: 'CAPTURES', value: stats.captures, color: '#10b981', icon: '⚔️' },
+            ];
+
+            statItems.forEach((st, i) => {
+                const x = startX + i * (cardW + cardGap);
+
+                // Card background
+                ctx.fillStyle = 'rgba(15, 23, 42, 0.75)';
+                ctx.beginPath();
+                _roundRect(ctx, x, statsY, cardW, cardH, 24);
+                ctx.fill();
+
+                // Card border
+                ctx.strokeStyle = st.color + '55';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                _roundRect(ctx, x, statsY, cardW, cardH, 24);
+                ctx.stroke();
+
+                // Icon
+                ctx.font = '42px serif';
+                ctx.textAlign = 'center';
+                ctx.fillText(st.icon, x + cardW / 2, statsY + 58);
+
+                // Value
+                ctx.font = '900 48px "Inter", sans-serif';
+                ctx.fillStyle = st.color;
+                ctx.fillText(String(st.value), x + cardW / 2, statsY + 118);
+
+                // Label
+                ctx.font = '700 13px "Inter", sans-serif';
+                ctx.fillStyle = 'rgba(148, 163, 184, 0.9)';
+                ctx.letterSpacing = '0.15em';
+                ctx.fillText(st.label, x + cardW / 2, statsY + 155);
+            });
+
+            // === Bangla Tagline ===
+            const tagline = VICTORY_TAGLINES[Math.floor(Math.random() * VICTORY_TAGLINES.length)];
+            ctx.font = '700 36px "Rozha One", "Inter", sans-serif';
+            ctx.fillStyle = '#fde047';
+            ctx.textAlign = 'center';
+            ctx.shadowColor = 'rgba(253, 224, 71, 0.5)';
+            ctx.shadowBlur = 16;
+            ctx.fillText(tagline, W / 2, 730);
+            ctx.shadowBlur = 0;
+
+            // === Horizontal Divider ===
+            const divGrad = ctx.createLinearGradient(W * 0.15, 0, W * 0.85, 0);
+            divGrad.addColorStop(0, 'transparent');
+            divGrad.addColorStop(0.5, 'rgba(251, 191, 36, 0.4)');
+            divGrad.addColorStop(1, 'transparent');
+            ctx.fillStyle = divGrad;
+            ctx.fillRect(W * 0.15, 770, W * 0.7, 2);
+
+            // === Game Title/Branding ===
+            ctx.font = '800 42px "Rozha One", "Cinzel", serif';
+            ctx.fillStyle = '#fbbf24';
+            ctx.shadowColor = 'rgba(253, 224, 71, 0.6)';
+            ctx.shadowBlur = 12;
+            ctx.fillText('DHAKA CITY LUDO', W / 2, 835);
+            ctx.shadowBlur = 0;
+
+            ctx.font = '600 20px "Inter", sans-serif';
+            ctx.fillStyle = 'rgba(248, 250, 252, 0.5)';
+            ctx.fillText('Chhad Rooftop Edition - ছাদের লুডু', W / 2, 870);
+
+            // === Game Mode Badge ===
+            const modeLabels = { '1P': '1P vs AI', '2P': '2P Local', '4P': '4P Local', 'ONLINE_2P': 'Online 2P' };
+            ctx.font = '700 16px "Inter", sans-serif';
+            ctx.fillStyle = 'rgba(148, 163, 184, 0.7)';
+            ctx.fillText(`Game Mode: ${modeLabels[gameState.mode] || gameState.mode}`, W / 2, 910);
+
+            // === URL Watermark ===
+            ctx.font = '600 22px "Inter", sans-serif';
+            ctx.fillStyle = 'rgba(14, 165, 233, 0.6)';
+            ctx.fillText('🌐 dhakaludo.nbslabs.dev', W / 2, 965);
+
+            // === Bottom Tagline ===
+            ctx.font = '500 15px "Inter", sans-serif';
+            ctx.fillStyle = 'rgba(148, 163, 184, 0.4)';
+            ctx.fillText('Play free at dhakaludo.nbslabs.dev - Challenge your friends!', W / 2, 1005);
+
+            // Return data URL
+            return canvas.toDataURL('image/png');
+        }
+
+        // Rounded rect helper
+        function _roundRect(ctx, x, y, w, h, r) {
+            ctx.moveTo(x + r, y);
+            ctx.lineTo(x + w - r, y);
+            ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+            ctx.lineTo(x + w, y + h - r);
+            ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+            ctx.lineTo(x + r, y + h);
+            ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+            ctx.lineTo(x, y + r);
+            ctx.quadraticCurveTo(x, y, x + r, y);
+        }
+
+        async function _getVictoryCardBlob() {
+            const canvas = document.getElementById('victory-card-canvas');
+            return new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+        }
+
+        function _showSharePanel(winnerPlayer, stats) {
+            const dataUrl = generateVictoryCard(winnerPlayer, stats);
+            const preview = document.getElementById('victory-card-preview');
+            if (preview) {
+                preview.innerHTML = `<img src="${dataUrl}" alt="Victory Card" style="width:100%;display:block;border-radius:14px;" />`;
+            }
+            const panel = document.getElementById('victory-share-panel');
+            if (panel) {
+                panel.classList.remove('hidden');
+                panel.classList.add('flex');
+            }
+
+            // Scroll modal content to show share panel
+            const modalContent = document.querySelector('#victory-modal > div');
+            if (modalContent) {
+                setTimeout(() => modalContent.scrollTop = modalContent.scrollHeight, 100);
+            }
+        }
+
+        let _victoryShareData = null;
+
         function showVictoryModal(winnerPlayer) {
             const modal = document.getElementById('victory-modal');
             const icon = document.getElementById('victory-icon');
@@ -11101,6 +12480,44 @@
             if (icon) icon.textContent = 'emoji_events';
             if (title) title.textContent = `${winnerPlayer.name.toUpperCase()} WINS!`;
             if (desc) desc.textContent = `All 4 ${winnerPlayer.vehicleName} Gutis reached the golden Shapla Chattar monument!`;
+
+            // Populate stats
+            const ws = gameState.stats[winnerPlayer.id];
+            const rollsEl = document.getElementById('victory-stat-rolls');
+            const sixesEl = document.getElementById('victory-stat-sixes');
+            const capsEl = document.getElementById('victory-stat-captures');
+            if (rollsEl) rollsEl.textContent = ws.rolls;
+            if (sixesEl) sixesEl.textContent = ws.sixes;
+            if (capsEl) capsEl.textContent = ws.captures;
+
+            // Show stats row and share button for normal victories
+            const statsRow = document.getElementById('victory-stats-row');
+            const shareBtn = document.getElementById('btn-share-victory');
+            if (statsRow) statsRow.style.display = '';
+            if (shareBtn) shareBtn.style.display = '';
+
+            // Hide share panel on fresh open
+            const sharePanel = document.getElementById('victory-share-panel');
+            if (sharePanel) {
+                sharePanel.classList.add('hidden');
+                sharePanel.classList.remove('flex');
+            }
+
+            // Show challenge button, hide challenge share panel on fresh open
+            const challengeBtn = document.getElementById('btn-challenge-friend');
+            const challengePanel = document.getElementById('challenge-share-panel');
+            if (challengeBtn) challengeBtn.style.display = '';
+            if (challengePanel) {
+                challengePanel.classList.add('hidden');
+                challengePanel.classList.remove('flex');
+            }
+
+            // Increment win counter
+            _incrementWinCounter();
+
+            // Store share data for button handlers
+            _victoryShareData = { player: winnerPlayer, stats: ws };
+
             if (modal) {
                 modal.classList.remove('hidden');
                 modal.classList.add('flex');
@@ -11111,6 +12528,8 @@
             clearTimeout(gameState.aiTimeoutId);
             gameState.aiTimeoutId = null;
             gameState.pendingNoMoveAdvance = false;
+            // Reset per-player stats
+            gameState.stats.forEach(s => { s.rolls = 0; s.sixes = 0; s.captures = 0; });
 
             // Stop any active Disco party
             if (discoState.active) {
@@ -11318,6 +12737,13 @@
                 return;
             }
 
+            // Press 'P' anytime to capture a Chhad Moment screenshot
+            if (e.code === 'KeyP' && !e.repeat) {
+                e.preventDefault();
+                captureChhadMoment();
+                return;
+            }
+
             // FPS Movement & Jump Controller Keys (WASD / Arrow Keys + Shift to Run + Spacebar to Jump)
             if (camState.viewMode === 'FPS') {
                 if (e.code === 'KeyW' || e.code === 'ArrowUp') { camState.keys.forward = true; e.preventDefault(); }
@@ -11389,6 +12815,147 @@
         document.getElementById('btn-weather').addEventListener('click', cycleWeatherMode);
         document.getElementById('btn-camera').addEventListener('click', cycleCameraViewMode);
 
+        // ===== CHHAD MOMENT SCREENSHOT BUTTON HANDLERS =====
+        document.getElementById('btn-screenshot').addEventListener('click', captureChhadMoment);
+        document.getElementById('btn-ss-close').addEventListener('click', _closeScreenshotModal);
+        document.getElementById('btn-ss-postcard').addEventListener('click', _togglePostcardMode);
+
+        document.getElementById('btn-ss-whatsapp').addEventListener('click', () => {
+            const preset = WEATHER_PRESETS[weatherState.activePresetIdx];
+            const wl = preset ? preset.label : 'Dhaka';
+            const pcCap = _postcardMode && POSTCARD_CAPTIONS[preset?.id] ? POSTCARD_CAPTIONS[preset.id].bn : '';
+            const label = _postcardMode ? '📮 Dhaka Weather Postcard' : '📸 Chhad Moment';
+            const msg = encodeURIComponent(
+                `${label}! ${wl} rooftop vibes in Dhaka City Ludo 🎲${pcCap ? '\n' + pcCap : ''}\n\nPlay free: https://dhakaludo.nbslabs.dev`
+            );
+            window.open(`https://wa.me/?text=${msg}`, '_blank');
+        });
+
+        document.getElementById('btn-ss-x').addEventListener('click', () => {
+            const preset = WEATHER_PRESETS[weatherState.activePresetIdx];
+            const wl = preset ? preset.label : 'Dhaka';
+            const label = _postcardMode ? '📮 Dhaka Weather Postcard' : '📸 Chhad Moment';
+            const text = encodeURIComponent(
+                `${label}! ${wl} rooftop vibes in Dhaka City Ludo 🎲\n\nPlay free: https://dhakaludo.nbslabs.dev\n#DhakaCityLudo #ছাদেরলুডু`
+            );
+            window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank');
+        });
+
+        document.getElementById('btn-ss-download').addEventListener('click', () => {
+            if (!_screenshotBlob) return;
+            const url = URL.createObjectURL(_screenshotBlob);
+            const a = document.createElement('a');
+            a.href = url;
+            const preset = WEATHER_PRESETS[weatherState.activePresetIdx];
+            const prefix = _postcardMode ? 'dhaka-postcard' : 'chhad-moment';
+            a.download = `${prefix}-${(preset?.label || 'dhaka').toLowerCase()}.png`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
+
+        document.getElementById('btn-ss-share').addEventListener('click', async () => {
+            if (!_screenshotBlob) return;
+            const file = new File([_screenshotBlob], 'chhad-moment.png', { type: 'image/png' });
+            if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+                try {
+                    await navigator.share({
+                        title: 'Chhad Moment - Dhaka City Ludo',
+                        text: '📸 Check out my Chhad Moment from Dhaka City Ludo!',
+                        url: 'https://dhakaludo.nbslabs.dev',
+                        files: [file]
+                    });
+                } catch (e) {}
+            } else if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: 'Chhad Moment - Dhaka City Ludo',
+                        text: '📸 Check out my Chhad Moment from Dhaka City Ludo!',
+                        url: 'https://dhakaludo.nbslabs.dev',
+                    });
+                } catch (e) {}
+            } else {
+                try {
+                    await navigator.clipboard.writeText('📸 Chhad Moment! Play Dhaka City Ludo: https://dhakaludo.nbslabs.dev');
+                    showDhakaTwistToast('content_copy', 'Copied!', 'Share text copied to clipboard.', 2000);
+                } catch (e) {}
+            }
+        });
+
+        // ===== MOBILE VIRTUAL FPS CONTROLS =====
+        // D-Pad: continuous movement while held
+        document.querySelectorAll('#mobile-fps-dpad .dpad-btn').forEach(btn => {
+            const dir = btn.getAttribute('data-dir');
+            const startMove = (e) => {
+                e.preventDefault();
+                if (camState.viewMode !== 'FPS') return;
+                camState.keys[dir] = true;
+                btn.classList.add('pressed');
+            };
+            const stopMove = (e) => {
+                e.preventDefault();
+                camState.keys[dir] = false;
+                btn.classList.remove('pressed');
+            };
+            btn.addEventListener('touchstart', startMove, { passive: false });
+            btn.addEventListener('touchend', stopMove, { passive: false });
+            btn.addEventListener('touchcancel', stopMove, { passive: false });
+            // Fallback for non-touch
+            btn.addEventListener('mousedown', startMove);
+            btn.addEventListener('mouseup', stopMove);
+            btn.addEventListener('mouseleave', stopMove);
+        });
+
+        // Mobile Jump Button
+        const mobileBtnJump = document.getElementById('mobile-btn-jump');
+        if (mobileBtnJump) {
+            mobileBtnJump.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                if (camState.viewMode === 'FPS' && camState.fpsGrounded) {
+                    camState.fpsVelY = 6.6;
+                    camState.fpsGrounded = false;
+                    audio.playFPSJump();
+                }
+            }, { passive: false });
+        }
+
+        // Mobile Sprint Toggle Button
+        const mobileBtnSprint = document.getElementById('mobile-btn-sprint');
+        if (mobileBtnSprint) {
+            let sprintActive = false;
+            mobileBtnSprint.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                if (camState.viewMode !== 'FPS') return;
+                sprintActive = !sprintActive;
+                camState.keys.sprint = sprintActive;
+                mobileBtnSprint.style.borderColor = sprintActive ? 'rgba(253, 224, 71, 0.9)' : '';
+                mobileBtnSprint.style.background = sprintActive ? 'rgba(245, 158, 11, 0.45)' : '';
+            }, { passive: false });
+        }
+
+        // Mobile Shoot Button
+        const mobileBtnShoot = document.getElementById('mobile-btn-shoot');
+        if (mobileBtnShoot) {
+            mobileBtnShoot.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                if (camState.viewMode === 'FPS') {
+                    shootOrFlyEquippedToy();
+                }
+            }, { passive: false });
+        }
+
+        // Mobile Interact (E key) Button
+        const mobileBtnInteract = document.getElementById('mobile-btn-interact');
+        if (mobileBtnInteract) {
+            mobileBtnInteract.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                if (camState.viewMode === 'FPS') {
+                    triggerFPSInteraction();
+                }
+            }, { passive: false });
+        }
+
         document.getElementById('btn-audio').addEventListener('click', () => {
             audio.setEnabled(!audio.enabled);
             const icon = document.getElementById('audio-icon');
@@ -11400,6 +12967,129 @@
 
         document.getElementById('btn-menu').addEventListener('click', openStartMenu);
         document.getElementById('btn-play-again').addEventListener('click', resetMatch);
+
+        // ===== VICTORY SHARE BUTTON HANDLERS =====
+        document.getElementById('btn-share-victory').addEventListener('click', () => {
+            if (!_victoryShareData) return;
+            _showSharePanel(_victoryShareData.player, _victoryShareData.stats);
+        });
+
+        document.getElementById('btn-share-whatsapp').addEventListener('click', () => {
+            if (!_victoryShareData) return;
+            const p = _victoryShareData.player;
+            const s = _victoryShareData.stats;
+            const msg = encodeURIComponent(
+                `🏆 ${p.name} ছাদের লুডুতে জিতেছে!\n🎲 ${s.rolls} Rolls, 🔥 ${s.sixes} Chhakkas, ⚔️ ${s.captures} Captures\n\nতুইও খেল! 👉 https://dhakaludo.nbslabs.dev`
+            );
+            window.open(`https://wa.me/?text=${msg}`, '_blank');
+        });
+
+        document.getElementById('btn-share-facebook').addEventListener('click', () => {
+            const url = encodeURIComponent('https://dhakaludo.nbslabs.dev');
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
+        });
+
+        document.getElementById('btn-share-x').addEventListener('click', () => {
+            if (!_victoryShareData) return;
+            const p = _victoryShareData.player;
+            const s = _victoryShareData.stats;
+            const text = encodeURIComponent(
+                `🏆 ${p.name} WINS in Dhaka City Ludo!\n🎲 ${s.rolls} Rolls, 🔥 ${s.sixes} Chhakkas, ⚔️ ${s.captures} Captures\n\nPlay free: https://dhakaludo.nbslabs.dev\n#DhakaCityLudo #ছাদেরলুডু`
+            );
+            window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank');
+        });
+
+        document.getElementById('btn-share-download').addEventListener('click', async () => {
+            if (!_victoryShareData) return;
+            const blob = await _getVictoryCardBlob();
+            if (!blob) return;
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `dhaka-ludo-victory-${_victoryShareData.player.shortName.toLowerCase()}.png`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
+
+        document.getElementById('btn-share-native').addEventListener('click', async () => {
+            if (!_victoryShareData) return;
+            const p = _victoryShareData.player;
+            const s = _victoryShareData.stats;
+            const blob = await _getVictoryCardBlob();
+            if (!blob) return;
+            const file = new File([blob], 'dhaka-ludo-victory.png', { type: 'image/png' });
+            if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+                try {
+                    await navigator.share({
+                        title: 'Dhaka City Ludo - Victory!',
+                        text: `🏆 ${p.name} জিতেছে! 🎲 ${s.rolls} Rolls, 🔥 ${s.sixes} Chhakkas, ⚔️ ${s.captures} Captures. তুইও খেল!`,
+                        url: 'https://dhakaludo.nbslabs.dev',
+                        files: [file]
+                    });
+                } catch (e) {
+                    // User cancelled share or error
+                }
+            } else if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: 'Dhaka City Ludo - Victory!',
+                        text: `🏆 ${p.name} জিতেছে! তুইও খেল!`,
+                        url: 'https://dhakaludo.nbslabs.dev',
+                    });
+                } catch (e) {}
+            } else {
+                // Fallback: copy URL to clipboard
+                try {
+                    await navigator.clipboard.writeText(`🏆 ${p.name} জিতেছে Dhaka City Ludo তে! তুইও খেল: https://dhakaludo.nbslabs.dev`);
+                    showDhakaTwistToast('content_copy', 'Copied!', 'Share text copied to clipboard.', 2000);
+                } catch (e) {}
+            }
+        });
+
+        // ===== CHALLENGE A FRIEND BUTTON HANDLERS =====
+        document.getElementById('btn-challenge-friend').addEventListener('click', () => {
+            _openChallenge();
+        });
+
+        document.getElementById('btn-challenge-whatsapp').addEventListener('click', () => {
+            const msg = encodeURIComponent(_getChallengeMessage());
+            window.open(`https://wa.me/?text=${msg}`, '_blank');
+        });
+
+        document.getElementById('btn-challenge-copy').addEventListener('click', async () => {
+            try {
+                await navigator.clipboard.writeText(_challengeState.challengeLink);
+                showDhakaTwistToast('content_copy', 'Link Copied!', 'Send this link to your friend to challenge them!', 2500);
+            } catch (e) {
+                // Fallback: select the text
+                const el = document.getElementById('challenge-link-display');
+                if (el) {
+                    const range = document.createRange();
+                    range.selectNodeContents(el);
+                    window.getSelection().removeAllRanges();
+                    window.getSelection().addRange(range);
+                }
+            }
+        });
+
+        document.getElementById('btn-challenge-native').addEventListener('click', async () => {
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: '🎯 Dhaka City Ludo Challenge!',
+                        text: _getChallengeMessage(),
+                        url: _challengeState.challengeLink,
+                    });
+                } catch (e) {}
+            } else {
+                try {
+                    await navigator.clipboard.writeText(_getChallengeMessage());
+                    showDhakaTwistToast('content_copy', 'Copied!', 'Challenge message copied to clipboard.', 2000);
+                } catch (e) {}
+            }
+        });
 
         // Glittering Sphere Disco Button Event Listener
         document.getElementById('btn-disco').addEventListener('click', () => {
@@ -11549,6 +13239,8 @@
 
         window.addEventListener('resize', () => {
             camera.aspect = window.innerWidth / window.innerHeight;
+            // Dynamically adjust FOV: wider on small portrait screens for better board visibility
+            camera.fov = _isMobileDevice() ? 56 : 42;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
@@ -12984,6 +14676,12 @@
             updateToyHUD();
             updateHUD();
             animate();
+
+            // Load win counter from localStorage
+            _loadWinCounter();
+
+            // Check for ?challenge=CODE deep link
+            _checkChallengeDeepLink();
         };
     </script>
 </body>
